@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>deskmate</groupId>
+    <artifactId>deskmate</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <name>3ddm</name>
+
+    <properties>
+        <un-version>1.x-SNAPSHOT</un-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>un.engine</groupId>
+            <artifactId>engine-opengl</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.api</groupId>
+            <artifactId>api-system-jvm</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        
+        <!-- Model3D -->
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>model3d-mmd</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>model3d-xna</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        
+        <!-- Audio -->
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>media-mp3</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>media-wav</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        
+        <!-- Images -->
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>image-bmp</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>image-tga</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>image-tiff</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>image-png</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>image-dxt</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>image-jpeg</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>image-gif</artifactId>
+            <version>${un-version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <outputDirectory>target/lib</outputDirectory>
+                    <stripVersion>false</stripVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>deskmate.DeskMateRunner</mainClass>
+                            <packageName>deskmate</packageName>
+                            <addClasspath>true</addClasspath>
+                            <addExtensions/>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
