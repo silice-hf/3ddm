@@ -1,49 +1,86 @@
 
 package deskmate;
 
+import com.jogamp.openal.AL;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.List;
+import un.api.array.Arrays;
+import un.api.character.Chars;
+import un.api.collection.ArraySequence;
 import un.api.collection.Sequence;
+import un.api.event.EventListener;
+import un.api.event.EventManager;
+import un.api.event.EventSource;
+import un.api.event.PropertyEvent;
+import un.api.media.AudioSamples;
+import un.api.media.AudioStreamMeta;
+import un.api.media.MediaReader;
+import un.api.media.MediaStore;
+import un.api.media.Medias;
+import un.engine.openal.resource.ALBuffer;
+import un.engine.openal.resource.ALSource;
 import un.engine.opengl.GLC;
+import un.engine.opengl.GLExecutable;
 import un.engine.opengl.GLProcessContext;
+import un.engine.opengl.animation.Updater;
 import un.engine.opengl.material.Layer;
 import un.engine.opengl.material.mapping.ColorMapping;
+import un.engine.opengl.mesh.Crosshair3D;
 import un.engine.opengl.mesh.Mesh;
 import un.engine.opengl.mesh.MultipartMesh;
 import un.engine.opengl.mesh.Shell;
 import un.engine.opengl.phase.ClearPhase;
 import un.engine.opengl.phase.DeferredRenderPhase;
 import un.engine.opengl.phase.FBOResizePhase;
+import un.engine.opengl.phase.RenderContext;
 import un.engine.opengl.phase.UpdatePhase;
 import un.engine.opengl.phase.effect.BloomPhase;
 import un.engine.opengl.phase.effect.DOFPhase;
 import un.engine.opengl.phase.effect.DirectPhase;
 import un.engine.opengl.phase.effect.FastGaussianBlurPhase;
 import un.engine.opengl.physic.SkeletonAnimation;
+import un.engine.opengl.physic.SkeletonAnimationResolver;
 import un.engine.opengl.resource.FBO;
 import un.engine.opengl.resource.IBO;
 import un.engine.opengl.resource.Texture2D;
 import un.engine.opengl.resource.VBO;
 import un.engine.opengl.scenegraph.Camera3D;
+import un.engine.opengl.scenegraph.GLNode;
 import un.engine.opengl.scenegraph.GLScene;
+import un.science.encoding.ArrayOutputStream;
+import un.science.encoding.DataOutputStream;
+import un.science.encoding.IOException;
+import un.science.encoding.NumberEncoding;
 import un.science.encoding.color.Color;
+import un.science.math.Matrix;
+import un.science.math.Tuple;
+import un.science.math.Vector;
+import un.science.math.Vectors;
 import un.storage.imagery.process.ConvolutionMatrices;
 import un.storage.imagery.process.ConvolutionMatrix;
 import un.system.path.Path;
+import un.system.path.Paths;
 
 /**
  * Store what is being displayed.
  */
-public class View {
+public class View implements EventSource{
     
-    public final List<Path> allModels = new ArrayList<Path>();
-    public final List<Path> allAnimations = new ArrayList<Path>();
+    public static final Path DATAPATH = Paths.resolve("file>./data");
+    
+    public static final Chars PROPERTY_MODEL = new Chars("model");
+    public static final Chars PROPERTY_ANIM = new Chars("anim");
+    public static final Chars PROPERTY_AUDIO = new Chars("audio");
+    
+    public final Sequence allModels = new ArraySequence();
+    public final Sequence allAnimations = new ArraySequence();
+    public final Sequence allAudios = new ArraySequence();
     
     public GLProcessContext glContext;
     public final GLScene scene = new GLScene(new float[]{0f, 0f, 0f, 0f});
     public final Mesh ground = buildGround();
+    public final Crosshair3D cameraTarget = new Crosshair3D();
     public final Camera3D camera = new Camera3D();
     
     //rendering pipeline
@@ -59,12 +96,20 @@ public class View {
     private BloomPhase bloomAfterDofPhase;
     private BloomPhase bloomNoDofPhase;
     
+    //Music source
+    private final ALSource audioSource = new ALSource();
     
     public Path currentModelPath;
     public MultipartMesh currentModel;
     
     public Path currentAnimationPath;
     public SkeletonAnimation currentAnimation;
+    
+    public Path currentAudioPath;
+    public Object currentAudio;
+    
+    //for events
+    private final EventManager events = new EventManager();
     
     public void buildPipeline(){
                 
@@ -125,6 +170,19 @@ public class View {
         phases.add(direct2Phase);
         phases.add(bloomAfterDofPhase);
         phases.add(bloomNoDofPhase);
+        
+        //update the depth of field parameters to always focus on the camera target
+        camera.getUpdaters().add(new Updater() {
+            public void update(RenderContext context, long nanotime, GLNode node) {
+                Matrix m = cameraTarget.calculateNodeToView(camera);
+                Tuple t = m.transform(new Vector(0,0,0),1);
+                double focalDistance = Vectors.length(t.getValues());
+                dofPhase.setFocalPlaneDepth((float) focalDistance);
+                dofPhase.setNearBlurDepth((float) (focalDistance/10.0));
+                dofPhase.setFarBlurDepth((float) (focalDistance+50));
+            }
+        });
+        
     }
     
     public void updatePipeline(boolean bloom, double bloomVal, boolean depthOfField, boolean ground){
@@ -142,6 +200,138 @@ public class View {
         direct2Phase.setEnable(!bloom && depthOfField);
         
         this.ground.setVisible(ground);
+    }
+    
+    
+    public synchronized void changeModel(){
+        int modelIndex = (int) (Math.random() * (allModels.getSize()- 1));
+        Path path = (Path) allModels.get(modelIndex);
+        changeModel(path);
+    }
+    
+    public synchronized void changeModel(Path path){
+        if(path.equals(currentModelPath)) return;
+        currentModelPath = path;
+        
+        unloadModel();
+        
+        //load new model
+        currentModel = DataLoader.loadModel(path);
+        if(currentModel!=null){
+            scene.addChild(currentModel);
+        }
+        
+        events.sendPropertyEvent(this, PROPERTY_MODEL, null, currentModel);
+    }
+    
+    public synchronized void changeAnimation(){
+        int animIndex = (int) (Math.random() * (allAnimations.getSize()- 1));
+        Path path = (Path) allAnimations.get(animIndex);
+        changeAnimation(path);
+    }
+    
+    public synchronized void changeAnimation(Path path){
+        if(path.equals(currentAnimationPath)) return;
+        currentAnimationPath = path;
+        
+        stopAnimation();
+        
+        //load new animation
+        currentAnimation = DataLoader.loadAnimation(path);
+        if(currentModel!=null && currentAnimation!=null){
+            SkeletonAnimationResolver.map(currentModel.getSkeleton(), currentAnimation);
+            currentModel.getUpdaters().add(currentAnimation);
+            currentAnimation.play();
+        }
+        
+        events.sendPropertyEvent(this, PROPERTY_ANIM, null, currentAnimation);
+    }
+    
+    public synchronized void changeAudio(){
+        int animIndex = (int) (Math.random() * (allAudios.getSize()- 1));
+        Path path = (Path) allAudios.get(animIndex);
+        changeAudio(path);
+    }
+    
+    public synchronized void changeAudio(Path path){
+        if(path.equals(currentAudioPath)) return;
+        currentAudioPath = path;
+        
+        stopAudio();
+        
+        //load new audio
+        try{
+            final MediaStore store = Medias.open(path);
+
+            //tranform audio in a supported byte buffer
+            final AudioStreamMeta meta = (AudioStreamMeta) store.getStreamsMeta()[0];
+            final MediaReader reader = store.createReader(null);
+
+            //recode stream in a stereo 16 bits per sample.
+            final ArrayOutputStream out = new ArrayOutputStream();
+            final DataOutputStream ds = new DataOutputStream(out, NumberEncoding.LITTLE_ENDIAN);
+
+            while(reader.hasNext()){
+                reader.next();
+                final AudioSamples samples = (AudioSamples) reader.getBuffers()[0];
+                final int[] audiosamples = samples.asPCM(null, 16);
+                if(audiosamples.length==1){
+                    ds.writeUnsignedShort(audiosamples[0]);
+                    ds.writeUnsignedShort(audiosamples[0]);
+                }else{
+                    ds.writeUnsignedShort(audiosamples[0]);
+                    ds.writeUnsignedShort(audiosamples[1]);
+                }
+            }
+
+            final byte[] all = out.getBuffer().toArray();
+
+            //buffer which contains audio datas
+            final ALBuffer data = new ALBuffer();
+            data.setFormat(AL.AL_FORMAT_STEREO16);
+            data.setFrequency((int) meta.getSampleRate());
+            data.setSize(all.length);
+            data.setData(ByteBuffer.wrap(all));
+            data.load();
+            
+            audioSource.setBuffer(data);
+            audioSource.load();
+            audioSource.play();
+
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        
+        events.sendPropertyEvent(this, PROPERTY_AUDIO, null, currentAudio);
+    }
+    
+    public void unloadModel(){
+        stopAnimation();
+        if (currentModel != null) {
+            final GLNode trash = currentModel;
+            //release model
+            glContext.addTask(new GLExecutable() {
+                public Object execute() {
+                    scene.removeChild(trash);
+                    trash.dispose(context);
+                    return null;
+                }
+            });
+        }
+    }
+        
+    public void stopAnimation(){
+        if (currentAnimation != null) {
+            currentAnimation.stop();
+            currentModel.getUpdaters().remove(currentAnimation);
+        }
+    }
+    
+    public void stopAudio(){
+        if(audioSource.isLoaded()){
+            audioSource.stop();
+            audioSource.unload();
+        }
     }
     
     public static Mesh buildGround(){
@@ -179,6 +369,21 @@ public class View {
         mesh.getMaterial().putLayer(new Layer(new ColorMapping(Color.GRAY_DARK)));
 
         return mesh;
+    }
+
+    @Override
+    public Class[] getEventClasses() {
+        return new Class[]{PropertyEvent.class};
+    }
+
+    @Override
+    public void addEventListener(Class eventClass, EventListener listener) {
+        events.addEventListener(eventClass, listener);
+    }
+
+    @Override
+    public void removeEventListener(Class eventClass, EventListener listener) {
+        events.removeEventListener(eventClass, listener);
     }
     
 }

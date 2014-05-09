@@ -1,5 +1,6 @@
 package deskmate;
 
+import deskmate.util.XNASkeletonToVMD;
 import un.api.collection.Collection;
 import un.api.collection.Iterator;
 import un.engine.opengl.mesh.MultipartMesh;
@@ -24,6 +25,14 @@ public class DataLoader {
                 Object obj = ite.next();
                 if (obj instanceof MultipartMesh) {
                     mesh = (MultipartMesh) obj;
+                    
+                    //change xna models skeleton to adapth vmd animations
+                    //does not work correctly yet :'(
+//                    final String name = modelPath.toURI().toLowerCase();
+//                    if (name.endsWith(".mesh.ascii") || name.endsWith(".xps") || name.endsWith(".mesh")) {
+//                        XNASkeletonToVMD.adapt(mesh.getSkeleton());
+//                    }
+                    
                     break;
                 }
             }

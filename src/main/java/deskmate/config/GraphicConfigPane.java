@@ -1,5 +1,6 @@
-package deskmate;
+package deskmate.config;
 
+import deskmate.View;
 import un.api.character.Chars;
 import un.api.event.Event;
 import un.api.event.EventListener;
@@ -17,13 +18,13 @@ import un.engine.ui.widget.menu.WMenuButton;
 /**
  * Configuration panel
  */
-public class ConfigPane extends WContainer {
+public class GraphicConfigPane extends WContainer {
 
     private final View view;
-    
+
     private final WCheck depthOfField = new WCheck(new Chars("Depth of field"));
     private final WCheck bloom = new WCheck(new Chars("Bloom"));
-    private final WSpinner bloomValue = new WSpinner(new NumberSpinnerModel(),0.10d);
+    private final WSpinner bloomValue = new WSpinner(new NumberSpinnerModel(), 0.10d);
     private final WCheck ground = new WCheck(new Chars("Ground"));
     private final WMenuButton apply = new WMenuButton(new Chars("Apply"), new EventListener() {
         @Override
@@ -32,10 +33,10 @@ public class ConfigPane extends WContainer {
         }
     });
 
-    public ConfigPane(View view) {
+    public GraphicConfigPane(View view) {
         super(new BorderLayout());
         this.view = view;
-        
+
         bloom.setCheck(true);
         depthOfField.setCheck(true);
         ground.setCheck(true);
@@ -45,16 +46,16 @@ public class ConfigPane extends WContainer {
         center.addChild(bloom, new FormConstraint(1, 0));
         center.addChild(bloomValue, new FormConstraint(1, 1));
         center.addChild(depthOfField, new FormConstraint(2, 0));
-        addChild(center,BorderConstraint.CENTER);
+        addChild(center, BorderConstraint.CENTER);
 
         WButtonBar bottom = new WButtonBar();
         bottom.addChild(apply, new FormConstraint(0, 0));
-        addChild(bottom,BorderConstraint.BOTTOM);
+        addChild(bottom, BorderConstraint.BOTTOM);
     }
 
-    private void updateView(){
-        float val = ((Number)bloomValue.getValue()).floatValue();
-        view.updatePipeline(bloom.isCheck(), val, depthOfField.isCheck(),ground.isCheck());
+    private void updateView() {
+        float val = ((Number) bloomValue.getValue()).floatValue();
+        view.updatePipeline(bloom.isCheck(), val, depthOfField.isCheck(), ground.isCheck());
     }
-    
+
 }
