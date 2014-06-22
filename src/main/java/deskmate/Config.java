@@ -3,6 +3,7 @@ package deskmate;
 import un.api.collection.Sequence;
 import un.api.tree.Node;
 import un.science.encoding.IOException;
+import un.science.encoding.color.Color;
 import un.system.path.Path;
 
 /**
@@ -10,6 +11,11 @@ import un.system.path.Path;
  */
 public class Config {
 
+    public static float BLOOM_RATIO = 0.1f;
+    public static int TOON_NBSHADE = 3;
+    public static float BORDER_WIDTH = 0.001f;
+    public static Color BORDER_COLOR = Color.BLACK;
+    
     public static void search(Sequence models, Sequence animations, Sequence audios) throws IOException {
         search(View.DATAPATH, models, animations, audios);
     }

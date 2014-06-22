@@ -47,6 +47,11 @@
             <artifactId>media-wav</artifactId>
             <version>${un-version}</version>
         </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>media-flac</artifactId>
+            <version>${un-version}</version>
+        </dependency>
         
         <!-- Images -->
         <dependency>

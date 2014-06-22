@@ -83,7 +83,7 @@ public class DeskMateFrame {
                         WContainer container = frame.getContainer();
                         container.setLayout(new BorderLayout());
                         container.addChild(graphicConfigPane, BorderConstraint.CENTER);
-                        frame.setSize(300, 200);
+                        frame.setSize(640, 480);
                         frame.setVisible(true);
                     }
                 }.start();

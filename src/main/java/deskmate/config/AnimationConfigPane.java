@@ -44,8 +44,7 @@ public class AnimationConfigPane extends WContainer {
         addChild(left);
         addChild(right);
 
-        WScrollContainer scrollAnims = new WScrollContainer();
-        scrollAnims.addChild(anims);
+        WScrollContainer scrollAnims = new WScrollContainer(anims);
         anims.setModel(new DefaultRowModel(view.allAnimations));
         left.addChild(scrollAnims, BorderConstraint.CENTER);
 

@@ -5,7 +5,6 @@ import com.jogamp.openal.AL;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import un.api.array.Arrays;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
 import un.api.collection.Sequence;
@@ -23,6 +22,7 @@ import un.engine.openal.resource.ALSource;
 import un.engine.opengl.GLC;
 import un.engine.opengl.GLExecutable;
 import un.engine.opengl.GLProcessContext;
+import un.engine.opengl.animation.Animation;
 import un.engine.opengl.animation.Updater;
 import un.engine.opengl.material.Layer;
 import un.engine.opengl.material.mapping.ColorMapping;
@@ -39,15 +39,14 @@ import un.engine.opengl.phase.effect.BloomPhase;
 import un.engine.opengl.phase.effect.DOFPhase;
 import un.engine.opengl.phase.effect.DirectPhase;
 import un.engine.opengl.phase.effect.FastGaussianBlurPhase;
-import un.engine.opengl.physic.SkeletonAnimation;
-import un.engine.opengl.physic.SkeletonAnimationResolver;
+import un.engine.opengl.physic.Skeletons;
 import un.engine.opengl.resource.FBO;
 import un.engine.opengl.resource.IBO;
 import un.engine.opengl.resource.Texture2D;
+import un.engine.opengl.resource.Texture2DMS;
 import un.engine.opengl.resource.VBO;
-import un.engine.opengl.scenegraph.Camera3D;
+import un.engine.opengl.scenegraph.CameraMono;
 import un.engine.opengl.scenegraph.GLNode;
-import un.engine.opengl.scenegraph.GLScene;
 import un.science.encoding.ArrayOutputStream;
 import un.science.encoding.DataOutputStream;
 import un.science.encoding.IOException;
@@ -78,10 +77,10 @@ public class View implements EventSource{
     public final Sequence allAudios = new ArraySequence();
     
     public GLProcessContext glContext;
-    public final GLScene scene = new GLScene(new float[]{0f, 0f, 0f, 0f});
+    public final GLNode scene = new GLNode();
     public final Mesh ground = buildGround();
     public final Crosshair3D cameraTarget = new Crosshair3D();
-    public final Camera3D camera = new Camera3D();
+    public final CameraMono camera = new CameraMono();
     
     //rendering pipeline
     private ClearPhase clearPhase;
@@ -103,7 +102,7 @@ public class View implements EventSource{
     public MultipartMesh currentModel;
     
     public Path currentAnimationPath;
-    public SkeletonAnimation currentAnimation;
+    public Animation currentAnimation;
     
     public Path currentAudioPath;
     public Object currentAudio;
@@ -122,24 +121,28 @@ public class View implements EventSource{
         int height = 600;
         
         //rendering
-        final FBO fbo1 = new FBO(width, height);
-        fbo1.addAttachment(GLC.FBO.Attachment.COLOR_0, new Texture2D(width, height, Texture2D.COLOR_RGBA));
-        fbo1.addAttachment(GLC.FBO.Attachment.COLOR_1, new Texture2D(width, height, Texture2D.VEC3_FLOAT));
-        fbo1.addAttachment(GLC.FBO.Attachment.DEPTH, new Texture2D(width, height, Texture2D.DEPTH_24)); 
+        final int sampling = 4;
+        final FBO fboMS = new FBO(width, height);
+        fboMS.addAttachment(GLC.FBO.Attachment.COLOR_0, new Texture2DMS(width, height, Texture2DMS.COLOR_RGBA, sampling));
+        fboMS.addAttachment(GLC.FBO.Attachment.COLOR_1, new Texture2DMS(width, height, Texture2DMS.VEC3_FLOAT, sampling));
+        fboMS.addAttachment(GLC.FBO.Attachment.DEPTH, new Texture2DMS(width, height, Texture2DMS.DEPTH_24, sampling)); 
+        final FBO fbo1 = fboMS.createBlitFBO();
         
-        renderPhase = new DeferredRenderPhase(camera,scene,fbo1, 
+        
+        renderPhase = new DeferredRenderPhase(camera,scene,fboMS, 
                 new DeferredRenderPhase.Mapping[]{
                     DeferredRenderPhase.OUT_DIFFUSE,
                     DeferredRenderPhase.OUT_POSITION_CAMERA},
                 true);
+        renderPhase.setBlitFbo(fbo1);
         direct1Phase = new DirectPhase(fbo1.getColorTexture());
         direct1Phase.setEnable(false);
         
         // Deth of field
         final FBO fbo2 = new FBO(width, height);
-        fbo2.addAttachment(GLC.FBO.Attachment.COLOR_0, new Texture2D(width, height,Texture2D.COLOR_RGBA));
+        fbo2.addAttachment(GLC.FBO.Attachment.COLOR_0, new Texture2D(width, height,Texture2D.COLOR_RGBA_CLAMPED));
         final FBO fbo3 = new FBO(width, height);
-        fbo3.addAttachment(GLC.FBO.Attachment.COLOR_0, new Texture2D(width, height,Texture2D.COLOR_RGBA));
+        fbo3.addAttachment(GLC.FBO.Attachment.COLOR_0, new Texture2D(width, height,Texture2D.COLOR_RGBA_CLAMPED));
         
         ConvolutionMatrix gaussianRamp = ConvolutionMatrices.createGaussian(5, 6);
         horizontalBlurPhase = new FastGaussianBlurPhase(fbo2,fbo1.getColorTexture(),gaussianRamp,true);
@@ -160,6 +163,10 @@ public class View implements EventSource{
         //add all phases
         Sequence phases = glContext.getPhases();
         phases.add(clearPhase);
+        phases.add(new ClearPhase(fboMS));
+        phases.add(new ClearPhase(fbo1));
+        phases.add(new ClearPhase(fbo2));
+        phases.add(new ClearPhase(fbo3));
         phases.add(resizePhase);
         phases.add(updatePhase);
         phases.add(renderPhase);
@@ -182,6 +189,8 @@ public class View implements EventSource{
                 dofPhase.setFarBlurDepth((float) (focalDistance+50));
             }
         });
+        
+        updatePipeline(false, 0.01, false, false);
         
     }
     
@@ -239,7 +248,7 @@ public class View implements EventSource{
         //load new animation
         currentAnimation = DataLoader.loadAnimation(path);
         if(currentModel!=null && currentAnimation!=null){
-            SkeletonAnimationResolver.map(currentModel.getSkeleton(), currentAnimation);
+            Skeletons.mapAnimation(currentAnimation, currentModel.getSkeleton(), currentModel);
             currentModel.getUpdaters().add(currentAnimation);
             currentAnimation.play();
         }
@@ -276,11 +285,11 @@ public class View implements EventSource{
                 final AudioSamples samples = (AudioSamples) reader.getBuffers()[0];
                 final int[] audiosamples = samples.asPCM(null, 16);
                 if(audiosamples.length==1){
-                    ds.writeUnsignedShort(audiosamples[0]);
-                    ds.writeUnsignedShort(audiosamples[0]);
+                    ds.writeUShort(audiosamples[0]);
+                    ds.writeUShort(audiosamples[0]);
                 }else{
-                    ds.writeUnsignedShort(audiosamples[0]);
-                    ds.writeUnsignedShort(audiosamples[1]);
+                    ds.writeUShort(audiosamples[0]);
+                    ds.writeUShort(audiosamples[1]);
                 }
             }
 
@@ -317,6 +326,8 @@ public class View implements EventSource{
                     return null;
                 }
             });
+            currentModel = null;
+            currentModelPath = null;
         }
     }
         
@@ -324,6 +335,8 @@ public class View implements EventSource{
         if (currentAnimation != null) {
             currentAnimation.stop();
             currentModel.getUpdaters().remove(currentAnimation);
+            currentAnimation = null;
+            currentAnimationPath = null;
         }
     }
     

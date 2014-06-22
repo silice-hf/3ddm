@@ -62,13 +62,11 @@ public class ModelConfigPane extends WContainer {
         addChild(left);
         addChild(right);
 
-        WScrollContainer scrollModels = new WScrollContainer();
-        scrollModels.addChild(models);
+        WScrollContainer scrollModels = new WScrollContainer(models);
         models.setModel(new DefaultRowModel(view.allModels));
         left.addChild(scrollModels, BorderConstraint.CENTER);
 
-        WScrollContainer scrollParts = new WScrollContainer();
-        scrollParts.addChild(tree);
+        WScrollContainer scrollParts = new WScrollContainer(tree);
         right.addChild(scrollParts, BorderConstraint.CENTER);
 
         models.getModel().addEventListener(RowModel.RowEvent.class, new EventListener() {

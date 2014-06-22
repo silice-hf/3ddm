@@ -44,8 +44,7 @@ public class MusicConfigPane extends WContainer {
         addChild(left);
         addChild(right);
 
-        WScrollContainer scrollMusics = new WScrollContainer();
-        scrollMusics.addChild(musics);
+        WScrollContainer scrollMusics = new WScrollContainer(musics);
         musics.setModel(new DefaultRowModel(view.allAudios));
         left.addChild(scrollMusics, BorderConstraint.CENTER);
 
