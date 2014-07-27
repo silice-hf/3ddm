@@ -1,17 +1,20 @@
 package deskmate.config;
 
 import deskmate.View;
+import un.api.character.Chars;
 import un.api.event.Event;
 import un.api.event.EventListener;
 import un.api.event.PropertyEvent;
 import un.engine.ui.layout.BorderConstraint;
 import un.engine.ui.layout.BorderLayout;
 import un.engine.ui.layout.GridLayout;
+import un.engine.ui.model.ColumnModel;
+import un.engine.ui.model.DefaultColumnModel;
 import un.engine.ui.model.DefaultRowModel;
 import un.engine.ui.model.RowModel;
+import un.engine.ui.model.TableModel;
 import un.engine.ui.widget.WContainer;
-import un.engine.ui.widget.WList;
-import un.engine.ui.widget.WScrollContainer;
+import un.engine.ui.widget.WTable;
 import un.system.path.Path;
 
 /**
@@ -20,7 +23,7 @@ import un.system.path.Path;
 public class AnimationConfigPane extends WContainer {
 
     private final View view;
-    private final WList anims = new WList();
+    private final WTable anims = new WTable();
 
     private final EventListener viewListener = new EventListener() {
 
@@ -36,6 +39,7 @@ public class AnimationConfigPane extends WContainer {
     public AnimationConfigPane(final View view) {
         this.view = view;
         this.view.addEventListener(PropertyEvent.class, viewListener);
+        getStyle().getSelfRule().setProperty(new Chars("margin"), new Chars("[6,6,6,6]"));
 
         setLayout(new GridLayout(1, 2));
 
@@ -44,9 +48,10 @@ public class AnimationConfigPane extends WContainer {
         addChild(left);
         addChild(right);
 
-        WScrollContainer scrollAnims = new WScrollContainer(anims);
-        anims.setModel(new DefaultRowModel(view.allAnimations));
-        left.addChild(scrollAnims, BorderConstraint.CENTER);
+        anims.setModel(new TableModel(new DefaultRowModel(view.allAnimations), new ColumnModel[]{
+            new DefaultColumnModel(new Chars("Animations"), null)
+        }));
+        left.addChild(anims, BorderConstraint.CENTER);
 
         anims.getModel().addEventListener(RowModel.RowEvent.class, new EventListener() {
             @Override
@@ -54,7 +59,7 @@ public class AnimationConfigPane extends WContainer {
                 RowModel.RowEvent re = (RowModel.RowEvent) event;
                 int[] selected = re.getNewSelection();
                 if (selected != null && selected.length > 0) {
-                    Path p = (Path) anims.getModel().getElement(selected[0]);
+                    Path p = (Path) anims.getModel().getRowModel().getElement(selected[0]);
                     view.changeAnimation(p);
                 }
             }
@@ -66,9 +71,9 @@ public class AnimationConfigPane extends WContainer {
     private void update() {
         //update the anim list
         if (view.currentAnimationPath != null) {
-            anims.getModel().setSelectedIndex(new int[]{view.allAnimations.search(view.currentAnimationPath)});
+            anims.getModel().getRowModel().setSelectedIndex(new int[]{view.allAnimations.search(view.currentAnimationPath)});
         } else {
-            anims.getModel().setSelectedIndex(new int[]{});
+            anims.getModel().getRowModel().setSelectedIndex(new int[]{});
         }
     }
 

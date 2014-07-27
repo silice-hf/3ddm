@@ -14,7 +14,7 @@ public class Config {
     public static float BLOOM_RATIO = 0.1f;
     public static int TOON_NBSHADE = 3;
     public static float BORDER_WIDTH = 0.001f;
-    public static Color BORDER_COLOR = Color.BLACK;
+    public static Color BORDER_COLOR = Color.WHITE;
     
     public static void search(Sequence models, Sequence animations, Sequence audios) throws IOException {
         search(View.DATAPATH, models, animations, audios);
@@ -30,6 +30,8 @@ public class Config {
             } else if (name.endsWith(".vmd")) {
                 animations.add(candidate);
             } else if (name.endsWith(".wav")) {
+                audios.add(candidate);
+            } else if (name.endsWith(".flac")) {
                 audios.add(candidate);
             }
         } else {

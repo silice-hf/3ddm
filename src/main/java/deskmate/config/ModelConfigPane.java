@@ -12,20 +12,22 @@ import un.engine.ui.ievent.ActionEvent;
 import un.engine.ui.layout.BorderConstraint;
 import un.engine.ui.layout.BorderLayout;
 import un.engine.ui.layout.GridLayout;
-import un.engine.ui.model.AbstractColumnModel;
+import un.engine.ui.model.ColumnModel;
+import un.engine.ui.model.DefaultColumnModel;
 import un.engine.ui.model.DefaultRowModel;
+import un.engine.ui.model.DefaultTreeColumnModel;
 import un.engine.ui.model.DefaultTreeModel;
 import un.engine.ui.model.EmptyTreeTableModel;
 import un.engine.ui.model.ObjectPresenter;
 import un.engine.ui.model.RowModel;
+import un.engine.ui.model.TableModel;
 import un.engine.ui.model.TreeModel;
 import un.engine.ui.model.TreeTableModel;
 import un.engine.ui.widget.WButton;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WLabel;
-import un.engine.ui.widget.WList;
-import un.engine.ui.widget.WScrollContainer;
 import un.engine.ui.widget.WSpace;
+import un.engine.ui.widget.WTable;
 import un.engine.ui.widget.WTreeTable;
 import un.engine.ui.widget.Widget;
 import un.science.geometry.Extent;
@@ -37,7 +39,7 @@ import un.system.path.Path;
 public class ModelConfigPane extends WContainer {
 
     private final View view;
-    private final WList models = new WList();
+    private final WTable models = new WTable();
     private final WTreeTable tree = new WTreeTable();
 
     private final EventListener viewListener = new EventListener() {
@@ -52,6 +54,7 @@ public class ModelConfigPane extends WContainer {
     };
 
     public ModelConfigPane(final View view) {
+        getStyle().getSelfRule().setProperty(new Chars("margin"), new Chars("[6,6,6,6]"));
         this.view = view;
         this.view.addEventListener(PropertyEvent.class, viewListener);
 
@@ -62,12 +65,21 @@ public class ModelConfigPane extends WContainer {
         addChild(left);
         addChild(right);
 
-        WScrollContainer scrollModels = new WScrollContainer(models);
-        models.setModel(new DefaultRowModel(view.allModels));
-        left.addChild(scrollModels, BorderConstraint.CENTER);
+        ObjectPresenter op = new ObjectPresenter() {
 
-        WScrollContainer scrollParts = new WScrollContainer(tree);
-        right.addChild(scrollParts, BorderConstraint.CENTER);
+            @Override
+            public Widget createWidget(Object candidate) {
+                Path p = (Path) candidate;
+                return new WLabel(new Chars(p.toURI().replaceAll(View.DATAPATH.toURI(), "")));
+            }
+        };
+        
+        models.setModel(new TableModel(new DefaultRowModel(view.allModels),new ColumnModel[]{
+            new DefaultColumnModel(new Chars("Models"),op)
+        }));
+        left.addChild(models, BorderConstraint.CENTER);
+
+        right.addChild(tree, BorderConstraint.CENTER);
 
         models.getModel().addEventListener(RowModel.RowEvent.class, new EventListener() {
             
@@ -76,18 +88,9 @@ public class ModelConfigPane extends WContainer {
                 RowModel.RowEvent re = (RowModel.RowEvent) event;
                 int[] selected = re.getNewSelection();
                 if (selected != null && selected.length > 0) {
-                    Path p = (Path) models.getModel().getElement(selected[0]);
+                    Path p = (Path) models.getModel().getRowModel().getElement(selected[0]);
                     view.changeModel(p);
                 }
-            }
-        });
-
-        models.setRenderer(new ObjectPresenter() {
-
-            @Override
-            public Widget createWidget(Object candidate) {
-                Path p = (Path) candidate;
-                return new WLabel(new Chars(p.toURI().replaceAll(View.DATAPATH.toURI(), "")));
             }
         });
 
@@ -97,37 +100,37 @@ public class ModelConfigPane extends WContainer {
     private void update() {
         //update the model list
         if (view.currentModelPath != null) {
-            models.getModel().setSelectedIndex(new int[]{view.allModels.search(view.currentModelPath)});
+            models.getModel().getRowModel().setSelectedIndex(new int[]{view.allModels.search(view.currentModelPath)});
         } else {
-            models.getModel().setSelectedIndex(new int[]{});
+            models.getModel().getRowModel().setSelectedIndex(new int[]{});
         }
 
         //update the tree
         if (view.currentModel != null) {
             TreeModel tm = new DefaultTreeModel(view.currentModel);
             tm.setCellPresenter(new NamePresenter());
-            tree.setModel(new TreeTableModel(tm, new ColModel()));
+            tree.setModel(new TreeTableModel(tm, new ColumnModel[]{new DefaultTreeColumnModel(),new ColModel()}));
         } else {
             tree.setModel(new EmptyTreeTableModel());
         }
 
     }
 
-    private class ColModel extends AbstractColumnModel {
+    private class ColModel extends DefaultColumnModel {
 
         private final VisiblePresenter presenter = new VisiblePresenter();
 
         public ColModel() {
-            super(1);
+            super();
         }
 
         @Override
-        public Object getElement(Object candidate, int column) {
+        public Object getElement(Object candidate) {
             return candidate;
         }
 
         @Override
-        public ObjectPresenter getPresenter(Object candidate, int column) {
+        public ObjectPresenter getPresenter(Object candidate) {
             return presenter;
         }
 

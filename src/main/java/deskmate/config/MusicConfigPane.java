@@ -1,17 +1,20 @@
 package deskmate.config;
 
 import deskmate.View;
+import un.api.character.Chars;
 import un.api.event.Event;
 import un.api.event.EventListener;
 import un.api.event.PropertyEvent;
 import un.engine.ui.layout.BorderConstraint;
 import un.engine.ui.layout.BorderLayout;
 import un.engine.ui.layout.GridLayout;
+import un.engine.ui.model.ColumnModel;
+import un.engine.ui.model.DefaultColumnModel;
 import un.engine.ui.model.DefaultRowModel;
 import un.engine.ui.model.RowModel;
+import un.engine.ui.model.TableModel;
 import un.engine.ui.widget.WContainer;
-import un.engine.ui.widget.WList;
-import un.engine.ui.widget.WScrollContainer;
+import un.engine.ui.widget.WTable;
 import un.system.path.Path;
 
 /**
@@ -20,7 +23,7 @@ import un.system.path.Path;
 public class MusicConfigPane extends WContainer {
 
     private final View view;
-    private final WList musics = new WList();
+    private final WTable musics = new WTable();
 
     private final EventListener viewListener = new EventListener() {
 
@@ -34,6 +37,7 @@ public class MusicConfigPane extends WContainer {
     };
 
     public MusicConfigPane(final View view) {
+        getStyle().getSelfRule().setProperty(new Chars("margin"), new Chars("[6,6,6,6]"));
         this.view = view;
         this.view.addEventListener(PropertyEvent.class, viewListener);
 
@@ -44,9 +48,10 @@ public class MusicConfigPane extends WContainer {
         addChild(left);
         addChild(right);
 
-        WScrollContainer scrollMusics = new WScrollContainer(musics);
-        musics.setModel(new DefaultRowModel(view.allAudios));
-        left.addChild(scrollMusics, BorderConstraint.CENTER);
+        musics.setModel(new TableModel(
+                new DefaultRowModel(view.allAudios), 
+                new ColumnModel[]{new DefaultColumnModel(new Chars("Musics"), null)}));
+        left.addChild(musics, BorderConstraint.CENTER);
 
         musics.getModel().addEventListener(RowModel.RowEvent.class, new EventListener() {
             @Override
@@ -54,7 +59,7 @@ public class MusicConfigPane extends WContainer {
                 RowModel.RowEvent re = (RowModel.RowEvent) event;
                 int[] selected = re.getNewSelection();
                 if (selected != null && selected.length > 0) {
-                    Path p = (Path) musics.getModel().getElement(selected[0]);
+                    Path p = (Path) musics.getModel().getRowModel().getElement(selected[0]);
                     view.changeAudio(p);
                 }
             }
@@ -66,9 +71,9 @@ public class MusicConfigPane extends WContainer {
     private void update() {
         //update the anim list
         if (view.currentAudioPath != null) {
-            musics.getModel().setSelectedIndex(new int[]{view.allAudios.search(view.currentAudioPath)});
+            musics.getModel().getRowModel().setSelectedIndex(new int[]{view.allAudios.search(view.currentAudioPath)});
         } else {
-            musics.getModel().setSelectedIndex(new int[]{});
+            musics.getModel().getRowModel().setSelectedIndex(new int[]{});
         }
     }
 

@@ -56,8 +56,8 @@ import un.science.math.Matrix;
 import un.science.math.Tuple;
 import un.science.math.Vector;
 import un.science.math.Vectors;
-import un.storage.imagery.process.ConvolutionMatrices;
-import un.storage.imagery.process.ConvolutionMatrix;
+import un.api.image.process.ConvolutionMatrices;
+import un.api.image.process.ConvolutionMatrix;
 import un.system.path.Path;
 import un.system.path.Paths;
 
@@ -180,7 +180,7 @@ public class View implements EventSource{
         
         //update the depth of field parameters to always focus on the camera target
         camera.getUpdaters().add(new Updater() {
-            public void update(RenderContext context, long nanotime, GLNode node) {
+            public void update(RenderContext context, GLNode node) {
                 Matrix m = cameraTarget.calculateNodeToView(camera);
                 Tuple t = m.transform(new Vector(0,0,0),1);
                 double focalDistance = Vectors.length(t.getValues());
@@ -225,6 +225,7 @@ public class View implements EventSource{
         unloadModel();
         
         //load new model
+        System.out.println("LOADING >>>"+path);
         currentModel = DataLoader.loadModel(path);
         if(currentModel!=null){
             scene.addChild(currentModel);

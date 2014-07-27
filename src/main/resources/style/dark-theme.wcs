@@ -1,8 +1,11 @@
-color-1           : #FFFFFF
-color-2           : #BFBFBF
-color-3           : #999999
-color-4           : #808080
-color-5           : #707070
-color-6           : #606060
-color-7           : #444444
-font              : font('Tuffy',14,'none')
+(){
+    color-1           : #FFFFFF
+    color-2           : #BFBFFF
+    color-3           : #9999BB
+    color-4           : #8080AA
+    color-5           : #707099
+    color-6           : #606088
+    color-7           : #444466
+
+    font              : font('Tuffy',14,'none')
+}

@@ -12,8 +12,8 @@ import un.engine.opengl.mesh.MultipartMesh;
 import un.engine.opengl.renderer.Renderer;
 import un.engine.opengl.renderer.SilhouetteRenderer;
 import un.science.encoding.color.Color;
-import un.storage.model3d.Model3DStore;
-import un.storage.model3d.Model3Ds;
+import un.api.model3d.Model3DStore;
+import un.api.model3d.Model3Ds;
 import un.system.path.Path;
 
 /**
@@ -115,9 +115,11 @@ public class DataLoader {
             ex.printStackTrace();
         }
 
-        mesh.accept(SET_BORDER_COLOR, Config.BORDER_COLOR);
-        mesh.accept(SET_BORDER_WIDTH, Config.BORDER_WIDTH);
-        mesh.accept(SET_TOON_NBSHADE, Config.TOON_NBSHADE);
+//        if(mesh!=null){
+//            mesh.accept(SET_BORDER_COLOR, Config.BORDER_COLOR);
+//            mesh.accept(SET_BORDER_WIDTH, Config.BORDER_WIDTH);
+//            mesh.accept(SET_TOON_NBSHADE, Config.TOON_NBSHADE);
+//        }
 
         return mesh;
     }
