@@ -16,11 +16,11 @@ public class Config {
     public static float BORDER_WIDTH = 0.001f;
     public static Color BORDER_COLOR = Color.WHITE;
     
-    public static void search(Sequence models, Sequence animations, Sequence audios) throws IOException {
-        search(View.DATAPATH, models, animations, audios);
+    public static void search(Sequence models, Sequence animations, Sequence poses, Sequence audios) throws IOException {
+        search(View.DATAPATH, models, animations, poses, audios);
     }
 
-    public static void search(Path candidate, Sequence models, Sequence animations, Sequence audios) throws IOException {
+    public static void search(Path candidate, Sequence models, Sequence animations, Sequence poses, Sequence audios) throws IOException {
         if (!candidate.isContainer()) {
             String name = candidate.getName().toLowerCase();
             //select only mmd and xna files
@@ -29,14 +29,16 @@ public class Config {
                 models.add(candidate);
             } else if (name.endsWith(".vmd")) {
                 animations.add(candidate);
+            } else if (name.endsWith(".vpd")) {
+                poses.add(candidate);
             } else if (name.endsWith(".wav")) {
                 audios.add(candidate);
             } else if (name.endsWith(".flac")) {
                 audios.add(candidate);
             }
-        } else {
+        } else if(!Boolean.TRUE.equals(candidate.getPathInfo(Path.INFO_HIDDEN))){
             for (Node child : candidate.getChildren()) {
-                search((Path) child, models, animations, audios);
+                search((Path) child, models, animations, poses, audios);
             }
         }
     }

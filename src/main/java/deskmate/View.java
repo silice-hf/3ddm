@@ -12,11 +12,15 @@ import un.api.event.EventListener;
 import un.api.event.EventManager;
 import un.api.event.EventSource;
 import un.api.event.PropertyEvent;
+import un.api.image.process.ConvolutionMatrices;
+import un.api.image.process.ConvolutionMatrix;
 import un.api.media.AudioSamples;
 import un.api.media.AudioStreamMeta;
 import un.api.media.MediaReader;
 import un.api.media.MediaStore;
 import un.api.media.Medias;
+import un.api.physic.World;
+import un.api.physic.force.Gravity;
 import un.engine.openal.resource.ALBuffer;
 import un.engine.openal.resource.ALSource;
 import un.engine.opengl.GLC;
@@ -33,13 +37,18 @@ import un.engine.opengl.mesh.Shell;
 import un.engine.opengl.phase.ClearPhase;
 import un.engine.opengl.phase.DeferredRenderPhase;
 import un.engine.opengl.phase.FBOResizePhase;
+import un.engine.opengl.phase.FragmentCollector;
 import un.engine.opengl.phase.RenderContext;
 import un.engine.opengl.phase.UpdatePhase;
 import un.engine.opengl.phase.effect.BloomPhase;
 import un.engine.opengl.phase.effect.DOFPhase;
 import un.engine.opengl.phase.effect.DirectPhase;
 import un.engine.opengl.phase.effect.FastGaussianBlurPhase;
+import un.engine.opengl.physic.RelativeSkeletonPose;
+import un.engine.opengl.physic.SceneWorld;
+import un.engine.opengl.physic.SkeletonPoseResolver;
 import un.engine.opengl.physic.Skeletons;
+import un.engine.opengl.physic.WorldUpdatePhase;
 import un.engine.opengl.resource.FBO;
 import un.engine.opengl.resource.IBO;
 import un.engine.opengl.resource.Texture2D;
@@ -56,8 +65,6 @@ import un.science.math.Matrix;
 import un.science.math.Tuple;
 import un.science.math.Vector;
 import un.science.math.Vectors;
-import un.api.image.process.ConvolutionMatrices;
-import un.api.image.process.ConvolutionMatrix;
 import un.system.path.Path;
 import un.system.path.Paths;
 
@@ -70,14 +77,17 @@ public class View implements EventSource{
     
     public static final Chars PROPERTY_MODEL = new Chars("model");
     public static final Chars PROPERTY_ANIM = new Chars("anim");
+    public static final Chars PROPERTY_POSE = new Chars("pose");
     public static final Chars PROPERTY_AUDIO = new Chars("audio");
     
     public final Sequence allModels = new ArraySequence();
     public final Sequence allAnimations = new ArraySequence();
+    public final Sequence allPoses = new ArraySequence();
     public final Sequence allAudios = new ArraySequence();
     
     public GLProcessContext glContext;
     public final GLNode scene = new GLNode();
+    public final World physicWorld = new SceneWorld(scene);
     public final Mesh ground = buildGround();
     public final Crosshair3D cameraTarget = new Crosshair3D();
     public final CameraMono camera = new CameraMono();
@@ -94,6 +104,7 @@ public class View implements EventSource{
     private DirectPhase direct2Phase;
     private BloomPhase bloomAfterDofPhase;
     private BloomPhase bloomNoDofPhase;
+//    private WorldUpdatePhase physicPhase;
     
     //Music source
     private final ALSource audioSource = new ALSource();
@@ -104,6 +115,9 @@ public class View implements EventSource{
     public Path currentAnimationPath;
     public Animation currentAnimation;
     
+    public Path currentPosePath;
+    public RelativeSkeletonPose currentPose;
+    
     public Path currentAudioPath;
     public Object currentAudio;
     
@@ -112,10 +126,14 @@ public class View implements EventSource{
     
     public void buildPipeline(){
                 
+        //configure physics
+        physicWorld.addSingularity(new Gravity(-9.8));
+        
         //default phases
         clearPhase = new ClearPhase();
         resizePhase = new FBOResizePhase();
         updatePhase = new UpdatePhase(scene);
+//        physicPhase = new WorldUpdatePhase(physicWorld);
                 
         int width = 800;
         int height = 600;
@@ -130,7 +148,7 @@ public class View implements EventSource{
         
         
         renderPhase = new DeferredRenderPhase(camera,scene,fboMS, 
-                new DeferredRenderPhase.Mapping[]{
+                new FragmentCollector[]{
                     DeferredRenderPhase.OUT_DIFFUSE,
                     DeferredRenderPhase.OUT_POSITION_CAMERA},
                 true);
@@ -169,6 +187,7 @@ public class View implements EventSource{
         phases.add(new ClearPhase(fbo3));
         phases.add(resizePhase);
         phases.add(updatePhase);
+//        phases.add(physicPhase);
         phases.add(renderPhase);
         phases.add(direct1Phase);
         phases.add(horizontalBlurPhase);
@@ -213,6 +232,7 @@ public class View implements EventSource{
     
     
     public synchronized void changeModel(){
+        if(allModels.isEmpty()) return;
         int modelIndex = (int) (Math.random() * (allModels.getSize()- 1));
         Path path = (Path) allModels.get(modelIndex);
         changeModel(path);
@@ -235,6 +255,7 @@ public class View implements EventSource{
     }
     
     public synchronized void changeAnimation(){
+        if(allAnimations.isEmpty()) return;
         int animIndex = (int) (Math.random() * (allAnimations.getSize()- 1));
         Path path = (Path) allAnimations.get(animIndex);
         changeAnimation(path);
@@ -255,6 +276,30 @@ public class View implements EventSource{
         }
         
         events.sendPropertyEvent(this, PROPERTY_ANIM, null, currentAnimation);
+    }
+    
+    public synchronized void changePose(){
+        if(allPoses.isEmpty()) return;
+        int poseIndex = (int) (Math.random() * (allPoses.getSize()- 1));
+        Path path = (Path) allPoses.get(poseIndex);
+        changePose(path);
+    }
+    
+    public synchronized void changePose(Path path){
+        if(path.equals(currentPosePath)) return;
+        currentPosePath = path;
+        
+        stopAnimation();
+        
+        //load new pose
+        currentPose = DataLoader.loadPose(path);
+        if(currentModel!=null && currentPose!=null){
+            SkeletonPoseResolver.resolve1(currentModel.getSkeleton(), currentPose);
+            currentModel.getSkeleton().solveKinematics();
+            currentModel.getSkeleton().updateBindPose();
+        }
+        
+        events.sendPropertyEvent(this, PROPERTY_POSE, null, currentPose);
     }
     
     public synchronized void changeAudio(){
@@ -335,7 +380,9 @@ public class View implements EventSource{
     public void stopAnimation(){
         if (currentAnimation != null) {
             currentAnimation.stop();
-            currentModel.getUpdaters().remove(currentAnimation);
+            if(currentModel!=null){
+                currentModel.getUpdaters().remove(currentAnimation);
+            }
             currentAnimation = null;
             currentAnimationPath = null;
         }

@@ -39,7 +39,7 @@ public class DeskMateFrame {
     public DeskMateFrame() throws IOException {
         
         //search models and animations
-        Config.search(view.allModels, view.allAnimations, view.allAudios);
+        Config.search(view.allModels, view.allAnimations, view.allPoses, view.allAudios);
         
         view.glContext = frame.getContext(); 
         view.buildPipeline();
@@ -66,6 +66,12 @@ public class DeskMateFrame {
             @Override
             public void receiveEvent(Class eventClass, Event event) {
                 view.changeAnimation();
+            }
+        }), new FormConstraint(0, y++, FormConstraint.FILL_BOTH));
+        popup.addChild(new WMenuButton(new Chars("Next Pose"), null, new EventListener() {
+            @Override
+            public void receiveEvent(Class eventClass, Event event) {
+                view.changePose();
             }
         }), new FormConstraint(0, y++, FormConstraint.FILL_BOTH));
         popup.addChild(new WMenuButton(new Chars("Next Music"), null, new EventListener() {

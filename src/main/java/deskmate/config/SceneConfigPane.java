@@ -27,8 +27,9 @@ public class SceneConfigPane extends WContainer {
         addChild(tabs, BorderConstraint.CENTER);
         tabs.setTabPosition(WTabContainer.TAB_POSITION_LEFT);
 
-        tabs.addTab(new ModelConfigPane(view), createHeader("Model","mod>/style/model.png"));
+        tabs.addTab(new ModelConfigPane2(view), createHeader("Model","mod>/style/model.png"));
         tabs.addTab(new AnimationConfigPane(view), createHeader("Animation","mod>/style/video.png"));
+        tabs.addTab(new PoseConfigPane(view), createHeader("Pose","mod>/style/pose.png"));
         tabs.addTab(new MusicConfigPane(view),createHeader("Music","mod>/style/audio.png"));
         tabs.addTab(new GraphicConfigPane(view), createHeader("Graphic","mod>/style/config.png"));
         tabs.setActiveTab(0);

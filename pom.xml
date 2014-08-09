@@ -35,6 +35,11 @@
             <artifactId>model3d-xna</artifactId>
             <version>${un-version}</version>
         </dependency>
+        <dependency>
+            <groupId>un.storage</groupId>
+            <artifactId>model3d-obj</artifactId>
+            <version>${un-version}</version>
+        </dependency>
         
         <!-- Audio -->
         <dependency>

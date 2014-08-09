@@ -1,5 +1,6 @@
 package deskmate.config;
 
+import deskmate.Config;
 import deskmate.View;
 import un.api.character.Chars;
 import un.api.event.Event;
@@ -8,39 +9,45 @@ import un.api.event.PropertyEvent;
 import un.engine.opengl.mesh.Mesh;
 import un.engine.opengl.scenegraph.GLNode;
 import un.engine.scenegraph.SceneNode;
+import un.engine.ui.component.path.PathView;
+import un.engine.ui.component.path.WPreviewView;
 import un.engine.ui.ievent.ActionEvent;
-import un.engine.ui.layout.BorderConstraint;
-import un.engine.ui.layout.BorderLayout;
+import un.engine.ui.layout.FormConstraint;
+import un.engine.ui.layout.FormLayout;
 import un.engine.ui.layout.GridLayout;
 import un.engine.ui.model.ColumnModel;
 import un.engine.ui.model.DefaultColumnModel;
-import un.engine.ui.model.DefaultRowModel;
 import un.engine.ui.model.DefaultTreeColumnModel;
 import un.engine.ui.model.DefaultTreeModel;
 import un.engine.ui.model.EmptyTreeTableModel;
 import un.engine.ui.model.ObjectPresenter;
-import un.engine.ui.model.RowModel;
-import un.engine.ui.model.TableModel;
 import un.engine.ui.model.TreeModel;
 import un.engine.ui.model.TreeTableModel;
 import un.engine.ui.widget.WButton;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WLabel;
 import un.engine.ui.widget.WSpace;
-import un.engine.ui.widget.WTable;
 import un.engine.ui.widget.WTreeTable;
 import un.engine.ui.widget.Widget;
 import un.science.geometry.Extent;
 import un.system.path.Path;
+import un.system.path.VirtualFolder;
 
 /**
  * Model config pane.
  */
-public class ModelConfigPane extends WContainer {
-
+public class ModelConfigPane2 extends WContainer {
+    
     private final View view;
-    private final WTable models = new WTable();
     private final WTreeTable tree = new WTreeTable();
+    private final WPreviewView ptree = new WPreviewView();
+    private final WButton refreshPreview = new WButton(new Chars("Reset thumbnails"), new EventListener() {
+
+        @Override
+        public void receiveEvent(Class eventClass, Event event) {
+            WPreviewView.deleteThumbnails(View.DATAPATH);
+        }
+    });
 
     private final EventListener viewListener = new EventListener() {
 
@@ -53,57 +60,36 @@ public class ModelConfigPane extends WContainer {
         }
     };
 
-    public ModelConfigPane(final View view) {
+    public ModelConfigPane2(final View view) {
         getStyle().getSelfRule().setProperty(new Chars("margin"), new Chars("[6,6,6,6]"));
         this.view = view;
         this.view.addEventListener(PropertyEvent.class, viewListener);
-
-        setLayout(new GridLayout(1, 2));
-
-        WContainer left = new WContainer(new BorderLayout());
-        WContainer right = new WContainer(new BorderLayout());
-        addChild(left);
-        addChild(right);
-
-        ObjectPresenter op = new ObjectPresenter() {
-
-            @Override
-            public Widget createWidget(Object candidate) {
-                Path p = (Path) candidate;
-                return new WLabel(new Chars(p.toURI().replaceAll(View.DATAPATH.toURI(), "")));
-            }
-        };
         
-        models.setModel(new TableModel(new DefaultRowModel(view.allModels),new ColumnModel[]{
-            new DefaultColumnModel(new Chars("Models"),op)
-        }));
-        left.addChild(models, BorderConstraint.CENTER);
-
-        right.addChild(tree, BorderConstraint.CENTER);
-
-        models.getModel().addEventListener(RowModel.RowEvent.class, new EventListener() {
-            
-            @Override
+        ptree.setBlockSize(new Extent(200, 200));
+        ptree.setCacheThumbs(true);
+        ptree.setThumbFormat(new Chars("bmp"));
+        setLayout(new FormLayout());
+        ((FormLayout)getLayout()).setRowSize(0, FormLayout.SIZE_EXPAND);
+        ((FormLayout)getLayout()).setColumnSize(1, FormLayout.SIZE_EXPAND);
+        addChild(ptree, new FormConstraint(0,0,2,1));
+        addChild(refreshPreview, new FormConstraint(0,1,1,1));
+        
+        
+        ptree.addEventListener(PropertyEvent.class, new EventListener() {
             public void receiveEvent(Class eventClass, Event event) {
-                RowModel.RowEvent re = (RowModel.RowEvent) event;
-                int[] selected = re.getNewSelection();
-                if (selected != null && selected.length > 0) {
-                    Path p = (Path) models.getModel().getRowModel().getElement(selected[0]);
-                    view.changeModel(p);
+                if( ((PropertyEvent)event).getPropertyName().equals(PathView.PROPERTY_SELECTED_PATHS) ){
+                    Path[] p = ptree.getSelectedPath();
+                    if(p != null && p.length>0){
+                        view.changeModel(p[0]);
+                    }
                 }
             }
         });
-
+        
         update();
     }
 
     private void update() {
-        //update the model list
-        if (view.currentModelPath != null) {
-            models.getModel().getRowModel().setSelectedIndex(new int[]{view.allModels.search(view.currentModelPath)});
-        } else {
-            models.getModel().getRowModel().setSelectedIndex(new int[]{});
-        }
 
         //update the tree
         if (view.currentModel != null) {
@@ -114,6 +100,11 @@ public class ModelConfigPane extends WContainer {
             tree.setModel(new EmptyTreeTableModel());
         }
 
+        //update the block view
+        final Path p = new VirtualFolder("models");
+        p.addChildren(view.allModels);
+        ptree.setViewRoot(p);
+        
     }
 
     private class ColModel extends DefaultColumnModel {

@@ -1,19 +1,21 @@
 package deskmate;
 
+import deskmate.util.XNASkeletonToVMD;
 import un.api.collection.Collection;
 import un.api.collection.Iterator;
 import un.api.collection.Sequence;
+import un.api.model3d.Model3DStore;
+import un.api.model3d.Model3Ds;
 import un.api.tree.DefaultNodeVisitor;
 import un.api.tree.Node;
 import un.api.tree.NodeVisitor;
 import un.engine.opengl.animation.Animation;
 import un.engine.opengl.mesh.Mesh;
 import un.engine.opengl.mesh.MultipartMesh;
+import un.engine.opengl.physic.RelativeSkeletonPose;
 import un.engine.opengl.renderer.Renderer;
 import un.engine.opengl.renderer.SilhouetteRenderer;
 import un.science.encoding.color.Color;
-import un.api.model3d.Model3DStore;
-import un.api.model3d.Model3Ds;
 import un.system.path.Path;
 
 /**
@@ -103,10 +105,10 @@ public class DataLoader {
 
                     //change xna models skeleton to adapth vmd animations
                     //does not work correctly yet :'(
-//                    final String name = modelPath.toURI().toLowerCase();
-//                    if (name.endsWith(".mesh.ascii") || name.endsWith(".xps") || name.endsWith(".mesh")) {
-//                        XNASkeletonToVMD.adapt(mesh.getSkeleton());
-//                    }
+                    final String name = modelPath.toURI().toLowerCase();
+                    if (name.endsWith(".mesh.ascii") || name.endsWith(".xps") || name.endsWith(".mesh")) {
+                        XNASkeletonToVMD.adapt(mesh.getSkeleton());
+                    }
                     
                     break;
                 }
@@ -115,11 +117,11 @@ public class DataLoader {
             ex.printStackTrace();
         }
 
-//        if(mesh!=null){
-//            mesh.accept(SET_BORDER_COLOR, Config.BORDER_COLOR);
-//            mesh.accept(SET_BORDER_WIDTH, Config.BORDER_WIDTH);
-//            mesh.accept(SET_TOON_NBSHADE, Config.TOON_NBSHADE);
-//        }
+        if(mesh!=null){
+            mesh.accept(SET_BORDER_COLOR, Config.BORDER_COLOR);
+            mesh.accept(SET_BORDER_WIDTH, Config.BORDER_WIDTH);
+            mesh.accept(SET_TOON_NBSHADE, Config.TOON_NBSHADE);
+        }
 
         return mesh;
     }
@@ -143,6 +145,27 @@ public class DataLoader {
         }
 
         return animation;
+    }
+    
+    public static RelativeSkeletonPose loadPose(Path posePath) {
+        RelativeSkeletonPose pose = null;
+
+        try {
+            Model3DStore store = Model3Ds.read(posePath);
+            Collection elements = store.getElements();
+            Iterator ite = elements.createIterator();
+            while (ite.hasNext()) {
+                Object obj = ite.next();
+                if (obj instanceof RelativeSkeletonPose) {
+                    pose = (RelativeSkeletonPose) obj;
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return pose;
     }
 
 }
