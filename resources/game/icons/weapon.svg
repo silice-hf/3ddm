@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="1000"
+   height="1000"
+   id="svg2">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="m 465.51233,31.801146 0,140.906254 c -152.5693,18.5264 -273.5361,139.4932 -292.0625,292.0625 l -140.906254,0 0,81.71875 140.906254,0 c 18.53348,152.5619 139.49793,273.53766 292.0625,292.0625 l 0,140.875 81.71875,0 0,-140.90625 C 699.77938,819.98101 820.73025,699.03905 839.26233,546.48865 l 140.90625,0 0,-81.71875 -140.90625,0 C 820.73717,312.21084 699.7859,191.2463 547.23108,172.7074 l 0,-140.906254 -81.71875,0 z m 0,212.718754 0,220.25 -220.25,0 c 17.57244,-113.22513 107.02545,-202.67219 220.25,-220.25 z m 81.71875,0 c 113.21506,17.57472 202.67181,107.0384 220.25,220.25 l -220.25,0 0,-220.25 z m -302,301.96875 220.28125,0 0,220.25 C 352.28283,749.1718 262.81085,659.71388 245.23108,546.48865 z m 302,0 220.25,0 c -17.57819,113.21506 -107.03494,202.67181 -220.25,220.25 l 0,-220.25 z"
+     id="path2983"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+</svg>

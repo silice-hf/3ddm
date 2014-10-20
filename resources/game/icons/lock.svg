@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="1000"
+   height="1000"
+   id="svg2">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="m 481.4375,73.25 c -28.29429,0.0018 -56.57709,5.629034 -82.71726,16.457629 -26.14017,10.828601 -50.11714,26.850051 -70.12422,46.857141 -20.00709,20.00708 -36.02854,43.98405 -46.85714,70.12422 -10.8286,26.14017 -16.45581,54.42297 -16.45763,82.71726 l 0,207.0625 -67.75,0 0,403.53125 602.46875,0 0,-403.53125 -85.125,0 0,-207.0625 c -0.002,-28.29429 -5.62903,-56.57709 -16.45763,-82.71726 -10.8286,-26.14017 -26.85005,-50.11714 -46.85714,-70.12422 C 631.55315,116.55768 607.57618,100.53623 581.43601,89.707629 555.29584,78.879034 527.01304,73.251818 498.71875,73.25 z m -0.1875,67.625 12.3125,0 c 20.18617,0.001 40.3819,4.02448 59.03125,11.75 18.64934,7.72551 35.75747,19.16372 50.03125,33.4375 14.27378,14.27378 25.68074,31.38191 33.40625,50.03125 7.72553,18.64935 11.749,38.81383 11.75,59 l 4.40625,201.375 -320.75,0 -4.40625,-201.375 c 10e-4,-20.18617 4.02448,-40.35065 11.75,-59 7.72551,-18.64934 19.13247,-35.75747 33.40625,-50.03125 14.27379,-14.27379 31.3819,-25.71199 50.03125,-33.4375 18.64934,-7.72551 38.84508,-11.749 59.03125,-11.75 z"
+     id="rect3865"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+</svg>
