@@ -28,3 +28,31 @@ Motion
 
 Audio
 - WAV
+- FLAC (bugs, not all files work)
+- MP4 (bugs, not all files work)
+
+How to build
+------------
+- Install a JDK at least 1.6 (http://www.oracle.com/technetwork/java/javase/downloads)
+- Install Apache Maven (http://maven.apache.org)
+- Install Mercurial (http://mercurial.selenic.com)
+- Install Git (http://git-scm.com)
+
+*build the 3d engine*
+- open a shell and move to the folder where you want the project
+- hg clone https://bitbucket.org/Eclesia/unlicense
+- move in folder : cd unlicense-lib
+- compile : mvn clean install -DskipTests
+
+*build 3ddm*
+- open a shell and move to the folder where you want the project
+- git clone https://github.com/silice-hf/3ddm.git
+- move in folder : cd 3ddm
+- compile : mvn clean install -DskipTests
+
+*run the application*
+Use your IDE(eclipse,netbeans,intellij) to run the Game class in the project.
+
+
+
+
