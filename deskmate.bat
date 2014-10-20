@@ -1,0 +1,1 @@
+java -jar deskmate-1.0.jar

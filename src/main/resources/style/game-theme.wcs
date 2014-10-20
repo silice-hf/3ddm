@@ -1,0 +1,107 @@
+
+
+(){
+    color-main-15         : #000000
+    color-main-14         : #111111
+    color-main-13         : #222222
+    color-main-12         : #333333
+    color-main-11         : #444444
+    color-main-10         : #555555
+    color-main-9          : #666666
+    color-main-8          : #777777
+    color-main-7          : #888888
+    color-main-6          : #999999
+    color-main-5          : #AAAAAA
+    color-main-4          : #BBBBBB
+    color-main-3          : #CCCCCC
+    color-main-2          : #DDDDDD
+    color-main-1          : #EEEEEE
+    color-main-0          : #FFFFFF
+    color-trs             : #00000000
+
+    font              : font('mona',16,'none')
+    font-fill-paint   : colorfill($color-main-0)
+    env-background    : colorfill($color-main-15)
+}
+
+("Class"='un.engine.ui.widget.WButton':class) {
+    font-fill-paint     : colorfill(#FFFFFF)
+    background          : none
+    margin              : [10,20,10,20]
+    border-margin       : [20,20,20,20]
+    border-radius       : [30,30,30,30]
+    border-brush        : plainbrush(2,'round')
+    border-brush-paint  : colorfill($color-main-3)
+    border-fill-paint   : lineargradientfill('%',0,0,1,0,0,$color-main-15,0.5,$color-main-10,1,$color-main-15)
+
+    ("MouseOver"=true) {
+        font-fill-paint     : colorfill($color-main-5)
+        border-fill-paint   : none
+    }
+
+    ("MousePress"=true) {
+        border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-6,1,$color-main-8)
+    }
+
+    ("StackEnable"=false) {
+        font-fill-paint     : colorfill($color-main-10)
+        border-fill-paint   : colorfill($color-main-12)
+    }
+}
+
+("Class"='un.engine.ui.widget.WSpinner$WSpinnerUpButton':class) {
+    border-brush        : plainbrush(1,'round')
+    border-brush-paint  : colorfill($color-main-8)
+    border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-11,1,$color-main-9)
+    border-margin       : [4,6,4,6]
+    margin              : [4,6,4,6]
+    border-radius       : [0,5,0,0]
+}
+
+("Class"='un.engine.ui.widget.WSpinner$WSpinnerDownButton':class) {
+    border-brush        : plainbrush(1,'round')
+    border-brush-paint  : colorfill($color-main-8)
+    border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-11,1,$color-main-9)
+    border-margin       : [4,6,4,6]
+    margin              : [4,6,4,6]
+    border-radius       : [0,0,5,0]
+}
+
+("Class"='un.engine.ui.widget.AbstractRowWidget':class) {
+    cornertop-fill-paint    : none
+    cornerbottom-fill-paint : none
+    line1-fill-paint        : none
+    line2-fill-paint        : none
+}
+
+("Class"='un.engine.ui.widget.WScrollContainer':class) {
+    background          : none
+    border-radius       : 0
+    border-brush        : none
+    border-brush-paint  : none
+}
+
+("Class"='un.engine.ui.widget.WScrollBar':class) {
+    back-paint          : none
+    corner-paint        : none
+    cursor-paint        : colorfill($color-main-0)
+}
+
+("Class"='un.engine.ui.widget.WSwitch':class) {
+    ("Id"='state') {
+        margin              : [4,4,4,4]
+        border-margin       : [3,3,3,3]
+        border-radius       : [8,8,8,8]
+        border-brush        : plainbrush(0,'round')
+        border-brush-paint  : none
+        border-fill-paint   : none
+
+        ("MousePress"=true) {
+            border-fill-paint   : colorfill($color-main-5)
+        }
+
+        ("Check"=true) {
+            border-fill-paint   : colorfill($color-main-5)
+        }
+    }
+}

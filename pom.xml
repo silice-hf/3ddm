@@ -1,0 +1,160 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>freeh</groupId>
+    <artifactId>kitsune</artifactId>
+    <version>1</version>
+    <packaging>jar</packaging>
+    <name>Kitsune</name>
+
+    <properties>
+        <un-version>1.x-SNAPSHOT</un-version>
+    </properties>
+
+    <dependencies>
+        <dependency><groupId>un.engine</groupId><artifactId>engine-opengl</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>binding-xml</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>binding-json</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.api</groupId><artifactId>api-system-jvm</artifactId><version>${un-version}</version></dependency>
+        
+        <dependency><groupId>un.storage</groupId><artifactId>model2d-svg</artifactId><version>${un-version}</version></dependency>
+        
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-3ds</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-ase</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-blend</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-bsp</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-bvh</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-collada</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-fbx</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-lwo</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-md2</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-md3</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-md5</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-mdl</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-mmd</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-mqo</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-ms3d</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-obj</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-off</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-ply</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-stl</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-x3d</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>model3d-xna</artifactId><version>${un-version}</version></dependency>
+        
+        <dependency><groupId>un.storage</groupId><artifactId>media-aac</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-avi</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-f4v</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-flac</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-flv</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-ivf</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-midi</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-mkv</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-mpeg123</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-mpeg4</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-ogg</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-swf</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-vp8</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-vp9</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-wav</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>media-webm</artifactId><version>${un-version}</version></dependency>
+        
+        <dependency><groupId>un.storage</groupId><artifactId>image-bmp</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-dicom</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-dng</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-dxt</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-etc</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-exr</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-gif</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-grib</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-hdr</artifactId><version>${un-version}</version></dependency>
+        <!--dependency><groupId>un.storage</groupId><artifactId>image-ico</artifactId><version>${un-version}</version></dependency-->
+        <dependency><groupId>un.storage</groupId><artifactId>image-jpeg</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-jpeg2k</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-netcdf</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-pcx</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-pgf</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-pic</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-png</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-pnm</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-psd</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-raw</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-sgi</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-tga</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-tiff</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-wbmp</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-webp</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-xbm</artifactId><version>${un-version}</version></dependency>
+        <dependency><groupId>un.storage</groupId><artifactId>image-xpm</artifactId><version>${un-version}</version></dependency>
+        
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <outputDirectory>target/lib</outputDirectory>
+                    <stripVersion>false</stripVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>freeh.kitsune.Game</mainClass>
+                            <packageName>freeh.kitsune</packageName>
+                            <addClasspath>true</addClasspath>
+                            <addExtensions/>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!--plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <configuration>
+                            <tasks>
+                                <copy file="repaint.bat" todir="./target/"/>
+                                <copy todir="./target/resources">
+                                    <fileset dir="resources"/>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin-->
+        </plugins>
+    </build>
+
+</project>
