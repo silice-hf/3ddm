@@ -41,9 +41,10 @@ public class Items {
     }
     
     public static Item getRandomItem(){
-        final Item[] items = getItems();
-        final int modelIndex = (int) (Math.random() * (items.length- 1));
-        return items[modelIndex];
+        final Item[] candidates = getItems();
+        if(candidates.length==0) return null;
+        final int modelIndex = (int) (Math.random() * (candidates.length- 1));
+        return candidates[modelIndex];
     }
     
 }

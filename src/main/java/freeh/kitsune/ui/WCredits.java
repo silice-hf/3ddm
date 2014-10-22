@@ -11,7 +11,5 @@ public class WCredits extends WContainer{
 
     public WCredits() {
     }
-    
-    
-    
+        
 }

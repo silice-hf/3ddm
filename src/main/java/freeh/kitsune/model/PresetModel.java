@@ -251,8 +251,8 @@ public class PresetModel extends Model {
     }
     
     @Override
-    public String toString() {
-        return "ModelPreset "+path;
+    public Chars toChars() {
+        return new Chars("ModelPreset "+path);
     }
     
 }

@@ -3,6 +3,7 @@
 package freeh.kitsune.stages;
 
 import freeh.kitsune.Game;
+import freeh.kitsune.toys.Toy;
 import freeh.kitsune.toys.Toys;
 import un.api.image.Image;
 import un.api.image.Images;
@@ -13,7 +14,6 @@ import un.engine.opengl.control.OrbitController;
 import un.engine.opengl.light.PointLight;
 import un.engine.opengl.mesh.SkyBox;
 import un.engine.opengl.phase.RenderContext;
-import un.engine.opengl.resource.Texture2D;
 import un.engine.opengl.scenegraph.Camera;
 import un.engine.opengl.scenegraph.GLNode;
 import un.science.geometry.BBox;
@@ -48,26 +48,36 @@ public class MenuStage extends Stage{
         
         try{            
               
-            final GLNode toyModel = Toys.getRandomToy().createModel().getNode();
-            final BBox bbox = GLUtilities.calculateBBox(toyModel);
-            final GLNode sub = new GLNode();
-            sub.getNodeTransform().getTranslation().set(bbox.getMiddle());
-            sub.getNodeTransform().notifyChanged();
-            toyModel.addChild(sub);
-            addChild(toyModel);
+            final float dist;
+            final GLNode orbitTarget;
             
-            //set camera at good distance
-            final double fov = game.getGamePhases().getCamera().getFieldOfView();
-            final double spanX = bbox.getSpan(0);
-            final double distX = spanX / Math.tan(fov);
-            final double spanY = bbox.getSpan(1);
-            final double distY = spanY / Math.tan(fov);
-            // x2 because screen space is [-1...+1]
-            // x1.2 to compensate perspective effect
-            final float dist = (float)(Maths.max(distX,distY) * 2.0 * 1.2);
+            final Toy toy = Toys.getRandomToy();
+            if(toy!=null){
+                final GLNode toyModel = toy.createModel().getNode();
+                final BBox bbox = GLUtilities.calculateBBox(toyModel);
+                orbitTarget = new GLNode();
+                orbitTarget.getNodeTransform().getTranslation().set(bbox.getMiddle());
+                orbitTarget.getNodeTransform().notifyChanged();
+                toyModel.addChild(orbitTarget);
+                addChild(toyModel);
+
+                //set camera at good distance
+                final double fov = game.getGamePhases().getCamera().getFieldOfView();
+                final double spanX = bbox.getSpan(0);
+                final double distX = spanX / Math.tan(fov);
+                final double spanY = bbox.getSpan(1);
+                final double distY = spanY / Math.tan(fov);
+                // x2 because screen space is [-1...+1]
+                // x1.2 to compensate perspective effect
+                dist = (float)(Maths.max(distX,distY) * 2.0 * 1.2);
+            }else{
+                orbitTarget = new GLNode();
+                addChild(orbitTarget);
+                dist = 20;
+            }
             
             
-            controller = new OrbitController(game.getFrame(),sub);
+            controller = new OrbitController(game.getFrame(),orbitTarget);
             rotator = new Updater() {
                 double angle = 0;
                 public void update(RenderContext context, GLNode node) {
@@ -80,7 +90,7 @@ public class MenuStage extends Stage{
             
             final Camera camera = gamePipeline.getCamera();
             
-            sub.addChild(camera);
+            orbitTarget.addChild(camera);
             camera.getUpdaters().add(rotator);
             camera.getUpdaters().add(controller);
             

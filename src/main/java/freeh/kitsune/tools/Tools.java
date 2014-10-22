@@ -41,9 +41,10 @@ public class Tools {
     }
     
     public static Tool getRandomTool(){
-        final Tool[] items = getTools();
-        final int modelIndex = (int) (Math.random() * (items.length- 1));
-        return items[modelIndex];
+        final Tool[] candidates = getTools();
+        if(candidates.length==0) return null;
+        final int modelIndex = (int) (Math.random() * (candidates.length- 1));
+        return candidates[modelIndex];
     }
     
 }

@@ -39,6 +39,7 @@ public class Maps {
     
     public static Map getRandom(){
         final Sequence candidates = getAll();
+        if(candidates.isEmpty()) return null;
         final int index = (int) (Math.random() * (candidates.getSize()- 1));
         return (Map) candidates.get(index);
     }

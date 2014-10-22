@@ -34,6 +34,7 @@ public class Musics {
     
     public static Music getRandom(){
         final Sequence candidates = getAll();
+        if(candidates.isEmpty()) return null;
         final int index = (int) (Math.random() * (candidates.getSize()- 1));
         return (Music) candidates.get(index);
     }

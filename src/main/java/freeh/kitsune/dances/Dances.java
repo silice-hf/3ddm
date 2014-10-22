@@ -34,6 +34,7 @@ public class Dances {
     
     public static Dance getRandom(){
         final Sequence candidates = getAll();
+        if(candidates.isEmpty()) return null;
         final int index = (int) (Math.random() * (candidates.getSize()- 1));
         return (Dance)candidates.get(index);
     }

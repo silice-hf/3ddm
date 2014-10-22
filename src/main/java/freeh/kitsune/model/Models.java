@@ -169,6 +169,7 @@ public class Models {
     
     public static Model getRandomPreset(){
         final Sequence candidates = getPresets();
+        if(candidates.isEmpty()) return null;
         final int index = (int) (Math.random() * (candidates.getSize()- 1));
         return (Model)candidates.get(index);
     }

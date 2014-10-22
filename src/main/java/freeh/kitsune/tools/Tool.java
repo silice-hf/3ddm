@@ -5,7 +5,6 @@ import freeh.kitsune.model.PresetModel;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.Models;
 import un.api.character.Chars;
-import un.api.character.LChars;
 import un.api.collection.Dictionary;
 import un.api.collection.Sequence;
 import un.api.image.Image;
@@ -19,6 +18,7 @@ public class Tool extends MetaObject {
 
     private static final Chars PATH_NAME = new Chars("name");
     private static final Chars PATH_CONTROL = new Chars("control");
+    private static final Chars PATH_SOUND = new Chars("sound");
 
     private final Path modelPath;
     private ToolControl control = null;
@@ -34,6 +34,14 @@ public class Tool extends MetaObject {
 
     public Chars getName() {
         return getPathValueChars(PATH_NAME, Chars.EMPTY);
+    }
+    
+    public Path getSound() {
+        final Chars soundStr = getPathValueChars(PATH_SOUND, Chars.EMPTY);
+        if(!soundStr.isEmpty()){
+            return getMetaPath().getParent().resolve(soundStr.toString());
+        }
+        return null;
     }
 
     public Model createModel() {

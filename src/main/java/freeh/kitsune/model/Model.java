@@ -2,6 +2,7 @@
 
 package freeh.kitsune.model;
 
+import freeh.kitsune.MetaObject;
 import freeh.kitsune.model.clothes.Clothe;
 import freeh.kitsune.model.clothes.ClotheState;
 import freeh.kitsune.model.clothes.PresetClothe;
@@ -14,11 +15,13 @@ import un.api.physic.skeleton.Skeleton;
 import un.engine.opengl.GLProcessContext;
 import un.engine.opengl.phase.picking.PickResetPhase;
 import un.engine.opengl.scenegraph.GLNode;
+import un.science.encoding.IOException;
+import un.system.path.Path;
 
 /**
  *
  */
-public abstract class Model {
+public abstract class Model extends MetaObject {
     
     protected final Sequence clothes = new ArraySequence();
     
@@ -28,6 +31,10 @@ public abstract class Model {
                 clothesChanged((CollectionEvent)event);
             }
         });
+    }
+    
+    public Model(Path metaPath) throws IOException {
+        super(metaPath);
     }
     
     public abstract GLNode getNode();

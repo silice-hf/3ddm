@@ -23,7 +23,7 @@ public class Weapon extends Tool{
     public double getSpeed() {
         return getPathValueNumber(PATH_SPEED, 0.2).doubleValue();
     }
-
+    
     public Geometry2D getShape() {
         return new Circle(getPathValueNumber(PATH_RADIUS, 20.0).doubleValue());
     }

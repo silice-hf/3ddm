@@ -4,9 +4,7 @@ package freeh.kitsune.stages.freemode;
 
 import freeh.kitsune.Game;
 import freeh.kitsune.GameProperties;
-import freeh.kitsune.maps.Map;
 import freeh.kitsune.maps.MapSelector;
-import freeh.kitsune.maps.Maps;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.stages.DefaultStage;
 import freeh.kitsune.stages.valley.Player;
@@ -23,7 +21,6 @@ import un.engine.opengl.control.PlayerOrientationConstraint;
 import un.engine.opengl.light.AmbientLight;
 import un.engine.opengl.light.DirectionalLight;
 import un.engine.opengl.operation.GridBuilder;
-import un.engine.opengl.scenegraph.GLNode;
 import un.engine.ui.ievent.KeyEvent;
 import un.engine.ui.widget.WButton;
 import un.science.geometry.BBox;
@@ -144,13 +141,15 @@ public class FreeModeStage extends DefaultStage{
             
             //build navigation map
             final BBox bbox = GLUtilities.calculateBBox(this);
-            final Extent ext = new Extent(200, 200, 200);
-            final GridBuilder gridBuilder = new GridBuilder(bbox, ext);
-            gridBuilder.append(this);
-            final Grid navMap = gridBuilder.getResult();
-            final double cellHeight = navMap.getGridToGeom().get(1, 1);
-            navConstraint = new PlayerNavigationMapConstraint(navMap);
-            navConstraint.setGroundDistance(cellHeight*6);
+            if(bbox.getSpan(0)>0 && bbox.getSpan(1)>0 && bbox.getSpan(2)>0){
+                final Extent ext = new Extent(200, 200, 200);
+                final GridBuilder gridBuilder = new GridBuilder(bbox, ext);
+                gridBuilder.append(this);
+                final Grid navMap = gridBuilder.getResult();
+                final double cellHeight = navMap.getGridToGeom().get(1, 1);
+                navConstraint = new PlayerNavigationMapConstraint(navMap);
+                navConstraint.setGroundDistance(cellHeight*6);
+            }
                         
         }catch(Exception ex){
             ex.printStackTrace();

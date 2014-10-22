@@ -47,7 +47,7 @@ import un.science.geometry.s3d.Ray;
 import un.science.math.Matrix;
 import un.science.math.Vector;
 import un.science.math.Vectors;
-import un.system.path.Paths;
+import un.system.path.Path;
 
 /**
  *
@@ -67,9 +67,11 @@ public class WeaponFireTask extends LocalController.GestureTask {
         super(name, trigger);
         this.game = game;
         this.player = player;
-        
+    }
+    
+    public void setSound(Path path){
         try{
-            final MediaStore store = Medias.open(Paths.resolve("file>./resources/pan.wav"));
+            final MediaStore store = Medias.open(path);
 
             //tranform audio in a supported byte buffer
             final AudioStreamMeta meta = (AudioStreamMeta) store.getStreamsMeta()[0];
@@ -105,7 +107,6 @@ public class WeaponFireTask extends LocalController.GestureTask {
         }catch(Exception ex){
             ex.printStackTrace();
         }
-        
     }
     
     public void execute(GestureState state, LocalController control) {
@@ -118,7 +119,9 @@ public class WeaponFireTask extends LocalController.GestureTask {
 
         lastShot %= 0.2;
 
-        alsource.play();
+        if(alsource!=null){
+            alsource.play();
+        }
             
         final int mx = (int) ((game.getGamePhases().getSize().get(0) /2.0));// + (Math.random()*12)-6);
         final int my = (int) ((game.getGamePhases().getSize().get(1) /2.0));// + (Math.random()*12)-6);

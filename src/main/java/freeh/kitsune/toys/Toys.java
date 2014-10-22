@@ -42,6 +42,7 @@ public class Toys {
     
     public static Toy getRandomToy(){
         final Toy[] toys = getToys();
+        if(toys.length==0) return null;
         final int modelIndex = (int) (Math.random() * (toys.length- 1));
         return toys[modelIndex];
     }

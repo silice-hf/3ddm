@@ -34,6 +34,7 @@ public class Poses {
     
     public static Pose getRandom(){
         final Sequence candidates = getAll();
+        if(candidates.isEmpty()) return null;
         final int index = (int) (Math.random() * (candidates.getSize()- 1));
         return (Pose) candidates.get(index);
     }
