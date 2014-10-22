@@ -1,6 +1,6 @@
 
 
-package freeh.kitsune.model.poses;
+package freeh.kitsune.poses;
 
 import freeh.kitsune.GameInfo;
 import freeh.kitsune.model.Models;

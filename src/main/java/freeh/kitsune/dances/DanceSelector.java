@@ -1,5 +1,6 @@
-package freeh.kitsune.model.poses;
+package freeh.kitsune.dances;
 
+import freeh.kitsune.ui.GameObjectPresenter;
 import un.api.character.Chars;
 import un.api.event.Event;
 import un.api.event.EventListener;
@@ -16,22 +17,21 @@ import un.engine.ui.widget.WTable;
 import un.engine.ui.widget.Widget;
 
 /**
- * Animation config pane.
+ * Dances config pane.
  */
-public class PoseSelector extends WContainer {
+public class DanceSelector extends WContainer {
 
-    public static final Chars PROPERTY_POSE = new Chars("Pose");
+    public static final Chars PROPERTY_DANCE = new Chars("Dance");
     
     private final WTable table = new WTable();
 
-    public PoseSelector() {
+    public DanceSelector() {
         getStyle().getSelfRule().setProperty(new Chars("margin"), new Chars("[6,6,6,6]"));
 
         setLayout(new BorderLayout());
 
-
-        table.setModel(new TableModel(new DefaultRowModel(Poses.getAll()), new ColumnModel[]{
-            new DefaultColumnModel(new Chars("Poses"), null)
+        table.setModel(new TableModel(new DefaultRowModel(Dances.getAll()), new ColumnModel[]{
+            new DefaultColumnModel(new Chars("Dances"), GameObjectPresenter.INSTANCE)
         }));
         addChild(table, BorderConstraint.CENTER);
 
@@ -41,8 +41,8 @@ public class PoseSelector extends WContainer {
                 RowModel.RowEvent re = (RowModel.RowEvent) event;
                 int[] selected = re.getNewSelection();
                 if (selected != null && selected.length > 0) {
-                    Pose p = (Pose) table.getModel().getRowModel().getElement(selected[0]);
-                    getEventManager().sendPropertyEvent(PoseSelector.this, PROPERTY_POSE, null, p);
+                    Dance p = (Dance) table.getModel().getRowModel().getElement(selected[0]);
+                    getEventManager().sendPropertyEvent(DanceSelector.this, PROPERTY_DANCE, null, p);
                 }
             }
         });
@@ -51,25 +51,25 @@ public class PoseSelector extends WContainer {
         table.setRowHeight(24);
     }
 
-    public void setPose(Pose candidate){
-        final Pose old = getPose();
+    public void setDance(Dance candidate){
+        final Dance old = getDance();
         if(old==candidate) return;
         
         if(candidate!=null){
-            table.getModel().getRowModel().setSelectedIndex(new int[]{Poses.getAll().search(candidate)});
+            table.getModel().getRowModel().setSelectedIndex(new int[]{Dances.getAll().search(candidate)});
         }else{
             table.getModel().getRowModel().setSelectedIndex(new int[]{});
         }
-        getEventManager().sendPropertyEvent(this, PROPERTY_POSE, old, candidate);
+        getEventManager().sendPropertyEvent(this, PROPERTY_DANCE, old, candidate);
     }
     
-    public Pose getPose(){
+    public Dance getDance(){
         final Object[] elements = table.getModel().getRowModel().getSelectedElements();
         if(elements.length>0){
-            return (Pose) elements[0];
+            return (Dance) elements[0];
         }else{
             return null;
         }
     }
-
+    
 }

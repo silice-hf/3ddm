@@ -11,12 +11,12 @@ import freeh.kitsune.maps.Maps;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.ModelSelector;
 import freeh.kitsune.model.Models;
-import freeh.kitsune.model.dances.Dance;
-import freeh.kitsune.model.dances.DanceSelector;
-import freeh.kitsune.model.dances.Dances;
-import freeh.kitsune.model.poses.Pose;
-import freeh.kitsune.model.poses.PoseSelector;
-import freeh.kitsune.model.poses.Poses;
+import freeh.kitsune.dances.Dance;
+import freeh.kitsune.dances.DanceSelector;
+import freeh.kitsune.dances.Dances;
+import freeh.kitsune.poses.Pose;
+import freeh.kitsune.poses.PoseSelector;
+import freeh.kitsune.poses.Poses;
 import java.nio.ByteBuffer;
 import un.api.CObjects;
 import un.api.character.Chars;
@@ -197,6 +197,7 @@ public class DefaultStage extends Stage {
         data.load();
 
         audioSource.setBuffer(data);
+        audioSource.setLoop(true);
         audioSource.load();
         audioSource.play();
         

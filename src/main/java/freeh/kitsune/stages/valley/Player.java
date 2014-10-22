@@ -111,7 +111,7 @@ public class Player extends GLNode {
         fpsCamera.addChild(plan);
 
         final UVMapping text = new UVMapping(new Texture2D(GameInfo.SMALL_CROSSHAIR));
-        plan.getShell().setUVs(new VBO(new float[]{0,0,1,0,1,1,0,1},2));
+        plan.getShape().setUVs(new VBO(new float[]{0,0,1,0,1,1,0,1},2));
         plan.getMaterial().putOrReplaceLayer(new Layer(text));
         plan.getNodeTransform().getTranslation().setXYZ(0, 0, -1);
         plan.getNodeTransform().getScale().setXYZ(0.01, 0.01, 0.01);

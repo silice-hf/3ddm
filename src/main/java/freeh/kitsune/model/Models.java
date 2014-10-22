@@ -4,8 +4,8 @@ package freeh.kitsune.model;
 
 import freeh.kitsune.GameInfo;
 import freeh.kitsune.audios.Music;
-import freeh.kitsune.model.dances.Dance;
-import freeh.kitsune.model.poses.Pose;
+import freeh.kitsune.dances.Dance;
+import freeh.kitsune.poses.Pose;
 import freeh.kitsune.stages.deskmate.DeskMateStage;
 import freeh.kitsune.stages.deskmate.XNASkeletonToVMD;
 import un.api.array.Arrays;
@@ -129,12 +129,13 @@ public class Models {
                 
                 text.getTexture().setForgetOnLoad(false);
 
-                mesh.getShell().getVertices().setForgetOnLoad(false);
-                mesh.getShell().getUVs().setForgetOnLoad(false);
-                mesh.getShell().getIndexes().setForgetOnLoad(false);
-                ((SkinShell)mesh.getShell()).getJointIndexes().setForgetOnLoad(false);
-                ((SkinShell)mesh.getShell()).getWeights().setForgetOnLoad(false);
-                ((SkinShell)mesh.getShell()).getReducedVBO().setForgetOnLoad(false);
+                final SkinShell shell = (SkinShell) mesh.getShape();
+                shell.getVertices().setForgetOnLoad(false);
+                shell.getUVs().setForgetOnLoad(false);
+                shell.getIndexes().setForgetOnLoad(false);
+                shell.getJointIndexes().setForgetOnLoad(false);
+                shell.getWeights().setForgetOnLoad(false);
+//                ((SkinShell)mesh.getShell()).getReducedVBO().setForgetOnLoad(false);
 
                 //attach a pick actor on the meshes we want to pick
                 mesh.getExtShaderActors().add(new PickActor(pickPhase, mesh));

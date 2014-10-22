@@ -4,12 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>freeh</groupId>
     <artifactId>kitsune</artifactId>
-    <version>1</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <name>Kitsune</name>
 
     <properties>
         <un-version>1.x-SNAPSHOT</un-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -68,7 +69,6 @@
         <dependency><groupId>un.storage</groupId><artifactId>image-gif</artifactId><version>${un-version}</version></dependency>
         <dependency><groupId>un.storage</groupId><artifactId>image-grib</artifactId><version>${un-version}</version></dependency>
         <dependency><groupId>un.storage</groupId><artifactId>image-hdr</artifactId><version>${un-version}</version></dependency>
-        <!--dependency><groupId>un.storage</groupId><artifactId>image-ico</artifactId><version>${un-version}</version></dependency-->
         <dependency><groupId>un.storage</groupId><artifactId>image-jpeg</artifactId><version>${un-version}</version></dependency>
         <dependency><groupId>un.storage</groupId><artifactId>image-jpeg2k</artifactId><version>${un-version}</version></dependency>
         <dependency><groupId>un.storage</groupId><artifactId>image-netcdf</artifactId><version>${un-version}</version></dependency>
@@ -134,7 +134,7 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!--plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
                 <executions>
@@ -142,10 +142,22 @@
                         <phase>install</phase>
                         <configuration>
                             <tasks>
-                                <copy file="repaint.bat" todir="./target/"/>
+                                <!-- rename jar file -->
+                                <move file="./target/kitsune-1.0.jar" tofile="./target/kitsune.jar"/>
+                                <!-- add executables -->
+                                <copy file="kitsune-windows.bat" todir="./target/"/>
+                                <copy file="kitsune-linux.sh" todir="./target/"/>
+                                <!-- copy resources -->
+                                <copy file="license.txt" todir="./target/"/>
                                 <copy todir="./target/resources">
                                     <fileset dir="resources"/>
                                 </copy>
+                                <!-- build bundle -->
+                                <zip destfile="kitsune.zip">
+                                    <fileset dir="./target" includes="lib/**"/>
+                                    <fileset dir="./target" includes="resources/**"/>
+                                    <fileset dir="./target" includes="kitsune.jar,kitsune-windows.bat,kitsune-linux.sh,license.txt"/>
+                                </zip>
                             </tasks>
                         </configuration>
                         <goals>
@@ -153,7 +165,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin-->
+            </plugin>
         </plugins>
     </build>
 

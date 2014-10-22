@@ -1,5 +1,3 @@
-
-
 package freeh.kitsune.tools;
 
 import freeh.kitsune.MetaObject;
@@ -17,26 +15,28 @@ import un.system.path.Path;
 /**
  *
  */
-public class Tool extends MetaObject{
-    
+public class Tool extends MetaObject {
+
     private static final Chars PATH_NAME = new Chars("name");
     private static final Chars PATH_CONTROL = new Chars("control");
-    
+
     private final Path modelPath;
     private ToolControl control = null;
-    
+
     public Tool(Path path) throws IOException {
         super(path.resolve("meta.json"));
         final Sequence models = Models.searchModels(path);
-        if(models.isEmpty()) throw new IOException("No model in given path");
+        if (models.isEmpty()) {
+            throw new IOException("No model in given path");
+        }
         modelPath = (Path) models.get(0);
     }
-    
-    public Chars getName(){
+
+    public Chars getName() {
         return getPathValueChars(PATH_NAME, Chars.EMPTY);
     }
-        
-    public Model createModel(){
+
+    public Model createModel() {
         return new PresetModel(modelPath);
     }
 
@@ -45,7 +45,7 @@ public class Tool extends MetaObject{
     }
 
     /**
-     * 
+     *
      * @return Dictionnary : Item > number(int)
      */
     public Dictionary getRequieredItems() {
@@ -53,16 +53,16 @@ public class Tool extends MetaObject{
     }
 
     public synchronized ToolControl getControl() {
-        if(control==null){
-            try{
+        if (control == null) {
+            try {
                 control = (ToolControl) Class.forName(
                         getPathValueChars(PATH_CONTROL, null).toString()
                 ).newInstance();
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         }
         return control;
     }
-    
+
 }

@@ -1,6 +1,6 @@
 
 
-package freeh.kitsune.model.dances;
+package freeh.kitsune.dances;
 
 import freeh.kitsune.GameInfo;
 import freeh.kitsune.model.Models;

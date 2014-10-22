@@ -5,7 +5,7 @@ package freeh.kitsune.ui;
 import freeh.kitsune.audios.Music;
 import freeh.kitsune.items.Item;
 import freeh.kitsune.maps.Map;
-import freeh.kitsune.model.dances.Dance;
+import freeh.kitsune.dances.Dance;
 import un.engine.ui.model.DefaultObjectPresenter;
 import un.engine.ui.widget.WLabel;
 import un.engine.ui.widget.Widget;

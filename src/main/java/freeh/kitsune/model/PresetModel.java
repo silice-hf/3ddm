@@ -130,11 +130,13 @@ public class PresetModel extends Model {
         }
         
         //load hit tree
-        try {
-            hitTree = getOrCreateHitTree();
-            updateClothes();
-        } catch (IOException ex) {
-            Game.LOGGER.log(ex, Logger.LEVEL_WARNING);
+        if(mesh!=null){
+            try {
+                hitTree = getOrCreateHitTree();
+                updateClothes();
+            } catch (IOException ex) {
+                Game.LOGGER.log(ex, Logger.LEVEL_WARNING);
+            }
         }
 
         clothes.addAll(allClothes);

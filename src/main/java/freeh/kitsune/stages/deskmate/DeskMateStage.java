@@ -3,10 +3,6 @@ package freeh.kitsune.stages.deskmate;
 
 import freeh.kitsune.Game;
 import freeh.kitsune.GameInfo;
-import freeh.kitsune.audios.Musics;
-import freeh.kitsune.model.Models;
-import freeh.kitsune.model.dances.Dances;
-import freeh.kitsune.model.poses.Poses;
 import freeh.kitsune.stages.DefaultStage;
 import freeh.kitsune.stages.valley.ShowCenterTask;
 import java.nio.FloatBuffer;
@@ -171,7 +167,7 @@ public class DeskMateStage extends DefaultStage {
         shell.setIndexes(new IBO(indexes, 2), IBO.Range.LINES(0, indexes.capacity()));
 
         final Mesh mesh = new Mesh();
-        mesh.setShell(shell);
+        mesh.setShape(shell);
 //        mesh.getMaterial().setLightVulnerable(false);
         mesh.getMaterial().putOrReplaceLayer(new Layer(new ColorMapping(Color.WHITE)));
 
@@ -189,8 +185,8 @@ public class DeskMateStage extends DefaultStage {
         plan.getMaterial().putOrReplaceLayer(new Layer(new ReflectionMapping()));
         plan.getMaterial().getLayers().add(new Layer(new ColorMapping(new Color(255, 255, 255, 150)),Layer.TYPE_DIFFUSE,Layer.METHOD_MULTIPLY));
         plan.getMaterial().setLightVulnerable(false);
-        plan.getShell().getNormals().setForgetOnLoad(false);
-        plan.getShell().getVertices().setForgetOnLoad(false);
+        plan.getShape().getNormals().setForgetOnLoad(false);
+        plan.getShape().getVertices().setForgetOnLoad(false);
         plan.setCullFace(-1);
         
         return plan;

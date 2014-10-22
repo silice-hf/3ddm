@@ -131,7 +131,7 @@ public class WeaponFireTask extends LocalController.GestureTask {
                 final Mesh p = (Mesh) pe.getSelection();
 
                 //find the texture coordinate
-                final Shell shell = p.getShell();
+                final Shell shell = (Shell) p.getShape();
 
                 final int[] vids = pe.findVertexId(null);
                 final VBO uvs = shell.getUVs();

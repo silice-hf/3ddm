@@ -19,10 +19,9 @@ public final class GameInfo {
     public static final String PATH_ITEMS = "file>./resources/game/items";
     public static final String PATH_TOOLS = "file>./resources/game/tools";
     public static final String PATH_IMAGES = "file>./resources/game/images";
-    public static final String PATH_MODELS = "file>./resources/game/models";
+    public static final String PATH_DANCES = "file>./resources/game/dances";
+    public static final String PATH_POSES = "file>./resources/game/poses";
     public static final String PATH_CLOTHES = "file>./resources/game/models/clothes";
-    public static final String PATH_DANCES = "file>./resources/game/models/dances";
-    public static final String PATH_POSES = "file>./resources/game/models/poses";
     public static final String PATH_PRESETS = "file>./resources/game/models/presets";
     
     public static final Image SMALL_CROSSHAIR;
