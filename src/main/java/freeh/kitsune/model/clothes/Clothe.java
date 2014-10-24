@@ -16,7 +16,7 @@ public abstract class Clothe extends MetaObject{
     private final Sequence states = new ArraySequence();
     private final Sequence textureSets = new ArraySequence();
 
-    private ClotheState state;
+    protected ClotheState state;
     private TextureSet textureSet;
     private Model model;
     

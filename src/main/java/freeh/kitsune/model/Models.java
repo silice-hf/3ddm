@@ -54,7 +54,7 @@ public class Models {
         
     private static final String[] MODEL_EXTS = new String[]{"pmx","pmd","mesh.ascii","xps","mesh"};
     private static final String[] MOTION_EXTS = new String[]{"vmd"};
-    private static final String[] POSE_EXTS = new String[]{"vpd"};
+    private static final String[] POSE_EXTS = new String[]{"vpd","pose"};
     private static final String[] AUDIO_EXTS = new String[]{"wav","flac","mp4","adts"};
     
     private static final NodeVisitor SET_SILHOUETTE = new DefaultNodeVisitor() {

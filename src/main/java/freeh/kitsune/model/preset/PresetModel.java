@@ -19,9 +19,6 @@ import un.api.tree.Node;
 import un.api.tree.NodeVisitor;
 import un.engine.opengl.GLExecutable;
 import un.engine.opengl.GLProcessContext;
-import un.engine.opengl.material.Layer;
-import un.engine.opengl.material.Material;
-import un.engine.opengl.material.mapping.UVMapping;
 import un.engine.opengl.mesh.Mesh;
 import un.engine.opengl.mesh.MultipartMesh;
 import un.engine.opengl.scenegraph.GLNode;
@@ -40,8 +37,8 @@ import un.system.path.Path;
  */
 public class PresetModel extends Model {
 
-    private static final Chars PROP_CLOTHE = new Chars("isClothe");
     private static final Chars TRUE = new Chars("true");
+    private static final Chars FALSE = new Chars("false");
     
     private static final NodeVisitor FIND_CLOTHES = new DefaultNodeVisitor(){
         public Object visit(Node node, Object context) {
@@ -49,23 +46,15 @@ public class PresetModel extends Model {
             final Object[] array = (Object[])context;
             final DomElement dom = (DomElement)array[0];
             
-            test:
             if(node instanceof Mesh){
                 final Mesh mesh = ((Mesh)node);
-
-                final Material material = mesh.getMaterial();
-                if(!(material.getLayer(Layer.TYPE_DIFFUSE).getMapping() instanceof UVMapping)){
-                    break test;
-                }
-                
                 final Chars isClothe = (Chars) dom.getProperties().getValue(new Chars("clothe"));
-                if(!TRUE.equals(isClothe)) break test;
-                
-                //this mesh is hittable, convert it to a clothe
-                mesh.getParent().removeChild(mesh);
-                final Sequence clothes = (Sequence) array[1];
-                final Clothe clothe = new PresetModelClothe(mesh);
-                clothes.add(clothe);
+                if(TRUE.equals(isClothe)){
+                    //this mesh is a clothe
+                    final Sequence clothes = (Sequence) array[1];
+                    final Clothe clothe = new PresetModelClothe(mesh);
+                    clothes.add(clothe);
+                }
             }
             
             final Node[] children = node.getChildren();
@@ -134,7 +123,7 @@ public class PresetModel extends Model {
         //load hit tree
         if(mesh!=null){
             try {
-                hitTree = getOrCreateHitTree();
+                hitTree = getOrCreateClotheMap();
                 updateClothes();
             } catch (IOException ex) {
                 Game.LOGGER.log(ex, Logger.LEVEL_WARNING);
@@ -149,39 +138,14 @@ public class PresetModel extends Model {
         return hitTree;
     }
 
-    private DomNode getOrCreateHitTree() throws IOException{
+    private DomNode getOrCreateClotheMap() throws IOException{
         //load hit tree
         final Path hitPath = GameInfo.replaceSuffix(path,"hitmap");
         try{
             hitPath.createInputStream().close();
         }catch(Exception ex){
             //create it if it does not exist
-            DomNode node = (DomNode) mesh.accept(new NodeVisitor(){
-                public Object visit(Node node, Object context) {                
-                    final DomElement dom = new DomElement(new QName(null, new Chars("mesh")));
-                    if(node instanceof Mesh){
-                        final Mesh mesh = (Mesh) node;
-                        dom.getProperties().add(new Chars("name"), mesh.getName());
-                        dom.getProperties().add(new Chars("clothe"), Boolean.TRUE.equals(mesh.getProperties().getValue(PROP_CLOTHE)));
-                    }
-                    
-                    final Node[] children = node.getChildren();
-                    for(int i=0;i<children.length;i++){
-                        if(children[i]!=null){
-                            DomNode n = (DomNode) children[i].accept(this, context);
-                            dom.addChild(n);
-                        }
-                    }                
-                    return dom;
-                }
-            }, null);
-
-            final XMLOutputStream out = new XMLOutputStream();
-            out.setOutput(hitPath);
-            DomWriter writer = new DomWriter();
-            writer.setOutput(out);
-            out.setIndent(new Chars("  "));
-            writer.write(node);
+            saveClotheMap();
         }
         
         final DomReader reader = new DomReader();
@@ -189,17 +153,17 @@ public class PresetModel extends Model {
         return reader.read();
     }
         
-    public void saveHitTree() {
+    public void saveClotheMap() {
         try{
-            final Path hitPath = path.getParent().resolve(path.getName()+".hitmap");
+            final Path hitPath = GameInfo.replaceSuffix(path,"hitmap");
             
-            DomNode node = (DomNode) mesh.accept(new NodeVisitor(){
+            hitTree = (DomNode) mesh.accept(new NodeVisitor(){
                 public Object visit(Node node, Object context) {                
                     final DomElement dom = new DomElement(new QName(null, new Chars("mesh")));
                     if(node instanceof Mesh){
                         final Mesh mesh = (Mesh) node;
                         dom.getProperties().add(new Chars("name"), mesh.getName());
-                        dom.getProperties().add(new Chars("clothe"), Boolean.TRUE.equals(mesh.getProperties().getValue(PROP_CLOTHE)));
+                        dom.getProperties().add(new Chars("clothe"), PresetModelClothe.isClothe(mesh) ? TRUE : FALSE);
                     }
                     
                     final Node[] children = node.getChildren();
@@ -218,7 +182,7 @@ public class PresetModel extends Model {
             DomWriter writer = new DomWriter();
             writer.setOutput(out);
             out.setIndent(new Chars("  "));
-            writer.write(node);
+            writer.write(hitTree);
         }catch(IOException ex){
             Game.LOGGER.log(ex, Logger.LEVEL_WARNING);
         }
@@ -231,6 +195,7 @@ public class PresetModel extends Model {
         allClothes.removeAll();
         FIND_CLOTHES.visit(mesh, new Object[]{hitTree,allClothes});
         clothes.addAll(allClothes);
+                
     }
 
     /**

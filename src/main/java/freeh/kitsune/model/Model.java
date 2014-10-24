@@ -15,7 +15,6 @@ import un.api.physic.skeleton.Skeleton;
 import un.engine.opengl.GLProcessContext;
 import un.engine.opengl.phase.picking.PickResetPhase;
 import un.engine.opengl.scenegraph.GLNode;
-import un.science.encoding.IOException;
 import un.system.path.Path;
 
 /**
@@ -26,15 +25,16 @@ public abstract class Model extends MetaObject {
     protected final Sequence clothes = new ArraySequence();
     
     public Model() {
+        this(null);
+    }
+    
+    public Model(Path metaPath) {
+        super(metaPath);
         clothes.addEventListener(CollectionEvent.class, new EventListener() {
             public void receiveEvent(Event event) {
                 clothesChanged((CollectionEvent)event);
             }
         });
-    }
-    
-    public Model(Path metaPath) {
-        super(metaPath);
     }
     
     public abstract GLNode getNode();

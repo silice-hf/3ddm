@@ -7,7 +7,6 @@ import freeh.kitsune.model.custom.CustomModelSelector;
 import freeh.kitsune.model.preset.PresetModelSelector;
 import freeh.kitsune.model.preset.PresetModel;
 import freeh.kitsune.GameBundle;
-import freeh.kitsune.GameProperties;
 import un.api.character.Chars;
 import un.api.event.Event;
 import un.api.event.EventListener;
@@ -19,7 +18,6 @@ import un.engine.ui.model.CheckGroup;
 import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WSwitch;
-import un.engine.ui.widget.WTable;
 import un.engine.ui.widget.Widget;
 
 /**
@@ -45,14 +43,8 @@ public class ModelSelector extends WContainer{
             center.removeChild(customPane);
             center.addChild(customPane, BorderConstraint.CENTER);
         }
-    });    
-    private final WSwitch rotateButton = new WSwitch(null, GameProperties.ICON_ROTATE, new EventListener() {
-        public void receiveEvent(Event event) {
-            
-        }
     });
     
-    private final WTable posesTable = new WTable();
     private final PresetModelSelector presetPane = new PresetModelSelector();
     private final CustomModelSelector customPane = new CustomModelSelector();
     
@@ -61,24 +53,14 @@ public class ModelSelector extends WContainer{
     public ModelSelector() {
         super(new BorderLayout());
         addChild(center, BorderConstraint.CENTER);
-        addChild(right, BorderConstraint.RIGHT);
                 
         PropertyBinding.bidirectional(this, PROPERTY_MODEL, presetPane, ModelSelector.PROPERTY_MODEL);
         PropertyBinding.bidirectional(this, PROPERTY_MODEL, customPane, ModelSelector.PROPERTY_MODEL);
-        
-        posesTable.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
-        
-        right.addChild(posesTable, BorderConstraint.CENTER);
-        right.addChild(rotateButton, BorderConstraint.BOTTOM);
-        right.getStyle().getSelfRule().setProperties(new Chars(
-                "margin     : [5,5,5,5]\n"+
-                "background : none"));
-        
+          
         getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         
         customButton.setId(new Chars("state"));
         presetButton.setId(new Chars("state"));
-        rotateButton.setId(new Chars("state"));
         
         final WContainer topPane = new WContainer(new GridLayout(1,2,0,0));
         topPane.addChild(customButton);

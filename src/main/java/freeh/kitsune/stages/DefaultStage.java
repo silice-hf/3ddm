@@ -28,6 +28,7 @@ import un.engine.opengl.animation.Animation;
 import un.engine.opengl.physic.RelativeSkeletonPose;
 import un.engine.opengl.physic.SkeletonPoseResolver;
 import un.engine.opengl.physic.Skeletons;
+import un.engine.opengl.scenegraph.GLNode;
 import un.engine.ui.ievent.KeyEvent;
 
 /**
@@ -114,16 +115,25 @@ public class DefaultStage extends Stage {
         return currentModel;
     }
 
-    public synchronized void setModel(Model model){
+    public void setModel(Model model){
         if(CObjects.equals(currentModel,model)) return;
         unloadModel();
         currentModel = model;
                 
         if(model==null) return;
         
-        addChild(currentModel.getNode());
-        currentModel.makeCLotheHittable(game.getGamePhases().getPickingPhase());
+        loadModel();
+        //currentModel.makeCLotheHittable(game.getGamePhases().getPickingPhase());
         getEventManager().sendPropertyEvent(this, ModelSelector.PROPERTY_MODEL, null, currentModel);
+    }
+    
+    private void loadModel(){
+        new Thread(){
+            public void run() {
+                final GLNode node = currentModel.getNode();
+                DefaultStage.this.addChild(node);
+            }
+        }.start();
     }
     
     public Dance getDance() {

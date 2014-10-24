@@ -14,7 +14,7 @@ import un.system.path.Paths;
 public final class GameInfo {
 
     public static final String NAME = "Kitsune";
-    public static final String PATH_RESOURCE = "file>./resources-all";
+    public static final String PATH_RESOURCE = "file>./resources";
     public static final String PATH_MUSICS = PATH_RESOURCE+"/game/musics";
     public static final String PATH_MAPS = PATH_RESOURCE+"/game/maps";
     public static final String PATH_TOYS = PATH_RESOURCE+"/game/toys";

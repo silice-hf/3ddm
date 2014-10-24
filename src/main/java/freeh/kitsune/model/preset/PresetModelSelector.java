@@ -5,7 +5,6 @@ package freeh.kitsune.model.preset;
 import freeh.kitsune.Game;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.ModelSelector;
-import freeh.kitsune.model.Models;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
 import un.api.collection.Sequence;
@@ -14,7 +13,6 @@ import un.api.event.EventListener;
 import un.api.event.PropertyEvent;
 import un.api.logging.Logger;
 import un.api.predicate.ClassPredicate;
-import un.api.predicate.Predicate;
 import un.api.tree.Node;
 import un.engine.ui.component.path.PathPresenters;
 import un.engine.ui.component.path.PathView;
@@ -39,7 +37,6 @@ public class PresetModelSelector extends WContainer{
     
     private final WPreviewView ptree = new WPreviewView();
     private final WButton refreshPreview = new WButton(new Chars("Reset thumbnails"), new EventListener() {
-
         @Override
         public void receiveEvent(Event event) {
             try {
@@ -49,6 +46,7 @@ public class PresetModelSelector extends WContainer{
             }
         }
     });
+    private final PresetModelClotheEditor clotheEditor = new PresetModelClotheEditor();
 
     private Model model;
     
@@ -70,8 +68,10 @@ public class PresetModelSelector extends WContainer{
         setLayout(new FormLayout());
         ((FormLayout)getLayout()).setRowSize(0, FormLayout.SIZE_EXPAND);
         ((FormLayout)getLayout()).setColumnSize(1, FormLayout.SIZE_EXPAND);
+        ((FormLayout)getLayout()).setColumnSize(2, 150);
         addChild(ptree, new FormConstraint(0,0,2,1));
         addChild(refreshPreview, new FormConstraint(0,1,1,1));
+        addChild(clotheEditor, new FormConstraint(2,0,1,1));
         
         ptree.addEventListener(PropertyEvent.class, new EventListener() {
             public void receiveEvent(Event event) {
@@ -98,6 +98,7 @@ public class PresetModelSelector extends WContainer{
         if(this.model == model) return;
         final Model old = this.model;
         this.model = model;
+        clotheEditor.setModel((PresetModel) model);
         getEventManager().sendPropertyEvent(this, PROPERTY_MODEL, old, model);
     }
 
