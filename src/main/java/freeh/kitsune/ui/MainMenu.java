@@ -4,6 +4,7 @@ package freeh.kitsune.ui;
 
 import freeh.kitsune.Game;
 import freeh.kitsune.GameBundle;
+import freeh.kitsune.GameInfo;
 import freeh.kitsune.stages.deskmate.DeskMateStage;
 import freeh.kitsune.stages.freemode.FreeModeStage;
 import freeh.kitsune.stages.valley.ValleyStage;
@@ -113,7 +114,6 @@ public class MainMenu extends WContainer {
         
         newGame.setEnable(false);
         controls.setEnable(false);
-        credits.setEnable(false);
         
         final WContainer flagsContainer = new WContainer(new FormLayout());
         flagsContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
@@ -137,7 +137,7 @@ public class MainMenu extends WContainer {
         while(ite.hasNext()){
             final DefaultLanguage lg = (DefaultLanguage) ite.next();
             final Country cnt = (Country) lg.getDivisions()[0];
-            final Path flagPath = Paths.resolve("file>./resources/flags/png/64x42/flags-"+cnt.getISOCode3().toString()+".png");
+            final Path flagPath = Paths.resolve(GameInfo.PATH_RESOURCE+"/flags/png/64x42/flags-"+cnt.getISOCode3().toString()+".png");
             Image flagImage = null;
             try{
                 flagImage = Images.read(flagPath);

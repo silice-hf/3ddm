@@ -10,6 +10,7 @@ import freeh.kitsune.items.Items;
 import freeh.kitsune.maps.Maps;
 import freeh.kitsune.model.Models;
 import freeh.kitsune.dances.Dances;
+import freeh.kitsune.model.preset.PresetModels;
 import freeh.kitsune.poses.Poses;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +40,7 @@ public class StartingStage extends Stage{
     public void install(final Game game){
         super.install(game);
         
+        game.getGamePhases().setAlphaEnable(true);
         game.getFrame().setUndecorated(true);
         
         final FormLayout layout = new FormLayout();
@@ -61,7 +63,7 @@ public class StartingStage extends Stage{
         
         final WLabel image = new WLabel();
         try{
-            final Path folder = Paths.resolve("file>./resources/starters");
+            final Path folder = Paths.resolve(GameInfo.PATH_RESOURCE+"/starters");
             final Node[] nodes = folder.getChildren();
             final int index = Maths.clip((int)(Math.random()*nodes.length),0,nodes.length);
             final Path path = (Path)nodes[index];
@@ -104,11 +106,11 @@ public class StartingStage extends Stage{
                 
                 final WLabel modelNumber = new WLabel(GameBundle.get(new Chars("start.buildmodellist")));
                 container.addChild(modelNumber,new FormConstraint(1, ++y));
-                container.addChild(new WLabel(new Chars(""+Models.getPresets().getSize())),new FormConstraint(2, y));
+                container.addChild(new WLabel(new Chars(""+PresetModels.getAll().getSize())),new FormConstraint(2, y));
                 modelNumber.setText(GameBundle.get(new Chars("start.model")));
                 
                 try {
-                    sleep(3000);
+                    sleep(2000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(StartingStage.class.getName()).log(Level.SEVERE, null, ex);
                 }

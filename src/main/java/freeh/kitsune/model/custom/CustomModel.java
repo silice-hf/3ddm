@@ -1,7 +1,8 @@
 
 
-package freeh.kitsune.model;
+package freeh.kitsune.model.custom;
 
+import freeh.kitsune.model.Model;
 import un.api.physic.skeleton.Skeleton;
 import un.engine.opengl.scenegraph.GLNode;
 

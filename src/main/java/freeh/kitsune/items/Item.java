@@ -3,7 +3,7 @@
 package freeh.kitsune.items;
 
 import freeh.kitsune.MetaObject;
-import freeh.kitsune.model.PresetModel;
+import freeh.kitsune.model.preset.PresetModel;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.Models;
 import un.api.character.Chars;

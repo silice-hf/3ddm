@@ -2,11 +2,10 @@
 
 package freeh.kitsune.model;
 
-import freeh.kitsune.GameInfo;
+import freeh.kitsune.model.preset.PresetModel;
 import freeh.kitsune.audios.Music;
 import freeh.kitsune.dances.Dance;
 import freeh.kitsune.poses.Pose;
-import freeh.kitsune.stages.deskmate.DeskMateStage;
 import freeh.kitsune.stages.deskmate.XNASkeletonToVMD;
 import un.api.array.Arrays;
 import un.api.character.Chars;
@@ -151,29 +150,7 @@ public class Models {
             return null;
         }
     };
-    
-    private static Sequence PRESETS = null;
-    
-    public static synchronized Sequence getPresets(){
-        if(PRESETS==null){
-            final Path path = Paths.resolve(GameInfo.PATH_PRESETS);
-            PRESETS = new ArraySequence();
-            try {
-                Models.search(path, PRESETS, null, null, null, true);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        return PRESETS;
-    }
-    
-    public static Model getRandomPreset(){
-        final Sequence candidates = getPresets();
-        if(candidates.isEmpty()) return null;
-        final int index = (int) (Math.random() * (candidates.getSize()- 1));
-        return (Model)candidates.get(index);
-    }
-    
+        
     public static void setSilhouette(GLNode node, SilhouetteInfo info){
         node.accept(SET_SILHOUETTE, info);
     }

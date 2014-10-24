@@ -3,7 +3,7 @@
 package freeh.kitsune.maps;
 
 import freeh.kitsune.model.Models;
-import freeh.kitsune.model.PresetModel;
+import freeh.kitsune.model.preset.PresetModel;
 import javax.media.opengl.GLContext;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;

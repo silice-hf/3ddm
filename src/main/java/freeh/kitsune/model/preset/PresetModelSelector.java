@@ -1,8 +1,11 @@
 
 
-package freeh.kitsune.model;
+package freeh.kitsune.model.preset;
 
 import freeh.kitsune.Game;
+import freeh.kitsune.model.Model;
+import freeh.kitsune.model.ModelSelector;
+import freeh.kitsune.model.Models;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
 import un.api.collection.Sequence;
@@ -77,7 +80,7 @@ public class PresetModelSelector extends WContainer{
                     if(p != null && p.length>0){
                         final Sequence seq = new ArraySequence(ptree.getViewRoot().getChildren());
                         final int index = seq.search(p[0]);
-                        final Model model = (Model) Models.getPresets().get(index);
+                        final Model model = (Model) PresetModels.getAll().get(index);
                         setModel(model);
                     }
                 }
@@ -100,7 +103,7 @@ public class PresetModelSelector extends WContainer{
 
     private void update() {
         
-        final Sequence presets = Models.getPresets();
+        final Sequence presets = PresetModels.getAll();
         final Sequence paths = new ArraySequence();
         for(int i=0,n=presets.getSize();i<n;i++){
             final PresetModel pm = (PresetModel) presets.get(i);

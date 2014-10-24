@@ -4,7 +4,6 @@ package freeh.kitsune.toys;
 
 import freeh.kitsune.GameInfo;
 import un.api.collection.ArraySequence;
-import un.api.collection.Collections;
 import un.api.collection.Sequence;
 import un.api.tree.Node;
 import un.science.encoding.IOException;
@@ -16,35 +15,33 @@ import un.system.path.Paths;
  */
 public class Toys {
     
-    private static Toy[] TOYS = null;
+    private static Sequence ALL = null;
     
     private Toys(){}
     
-    public static synchronized Toy[] getToys(){
-        if(TOYS==null){
+    public static synchronized Sequence getAll(){
+        if(ALL==null){
             final Path path = Paths.resolve(GameInfo.PATH_TOYS);
-            final Sequence seq = new ArraySequence();
+            ALL = new ArraySequence();
             for(Node n : path.getChildren()){
                 final Path p = (Path) n;
                 try{
                     if(p.isContainer()){
-                        seq.add(new Toy(p));
+                        ALL.add(new Toy(p));
                     }
                 }catch(IOException ex){
                     throw new RuntimeException(ex);
                 }
             }
-            TOYS = new Toy[seq.getSize()];
-            Collections.copy(seq, TOYS, 0);
         }
-        return TOYS;
+        return ALL;
     }
     
     public static Toy getRandomToy(){
-        final Toy[] toys = getToys();
-        if(toys.length==0) return null;
-        final int modelIndex = (int) (Math.random() * (toys.length- 1));
-        return toys[modelIndex];
+        final Sequence candidates = getAll();
+        if(candidates.isEmpty()) return null;
+        final int index = (int) (Math.random() * (candidates.getSize()- 1));
+        return (Toy) candidates.get(index);
     }
     
 }

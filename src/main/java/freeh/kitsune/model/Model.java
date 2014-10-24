@@ -5,7 +5,7 @@ package freeh.kitsune.model;
 import freeh.kitsune.MetaObject;
 import freeh.kitsune.model.clothes.Clothe;
 import freeh.kitsune.model.clothes.ClotheState;
-import freeh.kitsune.model.clothes.PresetClothe;
+import freeh.kitsune.model.preset.PresetModelClothe;
 import un.api.collection.ArraySequence;
 import un.api.collection.CollectionEvent;
 import un.api.collection.Sequence;
@@ -33,7 +33,7 @@ public abstract class Model extends MetaObject {
         });
     }
     
-    public Model(Path metaPath) throws IOException {
+    public Model(Path metaPath) {
         super(metaPath);
     }
     
@@ -75,7 +75,7 @@ public abstract class Model extends MetaObject {
     public void makeCLotheHittable(PickResetPhase pickingPhase){
         final Sequence clothes = getClothes();
         for(int i=0,n=clothes.getSize();i<n;i++){
-            final PresetClothe clothe = (PresetClothe) clothes.get(i);
+            final PresetModelClothe clothe = (PresetModelClothe) clothes.get(i);
             Models.setHittable(clothe.getMesh(), pickingPhase);
             clothe.setState((ClotheState) clothe.getStates().get(1));
             clothe.setState((ClotheState) clothe.getStates().get(0));

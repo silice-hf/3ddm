@@ -1,7 +1,8 @@
 
-package freeh.kitsune.model;
+package freeh.kitsune.model.custom;
 
-import static freeh.kitsune.model.PresetModelSelector.PROPERTY_MODEL;
+import freeh.kitsune.model.Model;
+import static freeh.kitsune.model.preset.PresetModelSelector.PROPERTY_MODEL;
 import un.engine.ui.widget.WContainer;
 
 /**

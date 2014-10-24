@@ -1,5 +1,5 @@
 
-package freeh.kitsune.model;
+package freeh.kitsune.model.custom;
 
 
 /**

@@ -2,6 +2,10 @@
 
 package freeh.kitsune.model;
 
+import freeh.kitsune.model.custom.CustomModel;
+import freeh.kitsune.model.custom.CustomModelSelector;
+import freeh.kitsune.model.preset.PresetModelSelector;
+import freeh.kitsune.model.preset.PresetModel;
 import freeh.kitsune.GameBundle;
 import freeh.kitsune.GameProperties;
 import un.api.character.Chars;

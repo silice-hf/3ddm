@@ -2,6 +2,7 @@
 
 package freeh.kitsune.ui;
 
+import freeh.kitsune.GameInfo;
 import un.api.character.Chars;
 import un.api.tree.Node;
 import un.engine.opengl.widget.WMediaPreview;
@@ -38,7 +39,7 @@ public class WLoading extends WContainer{
     public synchronized void updateLoader(){
         
         //change loading image
-        final Path folder = Paths.resolve("file>./resources/loaders");
+        final Path folder = Paths.resolve(GameInfo.PATH_RESOURCE+"/loaders");
         final Node[] nodes = folder.getChildren();
         final int index = Maths.clip((int)(Math.random()*nodes.length),0,nodes.length);
 

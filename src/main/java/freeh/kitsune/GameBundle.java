@@ -15,7 +15,7 @@ public class GameBundle {
     
     private static final TranslationStore bundle;
     static {
-        bundle = new TranslationStore(Paths.resolve("file>./resources/bundle"));
+        bundle = new TranslationStore(Paths.resolve(GameInfo.PATH_RESOURCE+"/bundle"));
         try {
             bundle.load();
         } catch (IOException ex) {

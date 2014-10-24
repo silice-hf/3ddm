@@ -1,10 +1,11 @@
 
 
-package freeh.kitsune.model;
+package freeh.kitsune.model.preset;
 
 import freeh.kitsune.Game;
+import freeh.kitsune.GameInfo;
+import freeh.kitsune.model.Model;
 import freeh.kitsune.model.clothes.Clothe;
-import freeh.kitsune.model.clothes.PresetClothe;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
 import un.api.collection.Iterator;
@@ -63,7 +64,7 @@ public class PresetModel extends Model {
                 //this mesh is hittable, convert it to a clothe
                 mesh.getParent().removeChild(mesh);
                 final Sequence clothes = (Sequence) array[1];
-                final Clothe clothe = new PresetClothe(mesh);
+                final Clothe clothe = new PresetModelClothe(mesh);
                 clothes.add(clothe);
             }
             
@@ -84,6 +85,7 @@ public class PresetModel extends Model {
     private DomNode hitTree = null;
     
     public PresetModel(Path modelPath){
+        super(GameInfo.replaceSuffix(modelPath,"meta"));
         this.path = modelPath;
     }
 
@@ -149,7 +151,7 @@ public class PresetModel extends Model {
 
     private DomNode getOrCreateHitTree() throws IOException{
         //load hit tree
-        final Path hitPath = path.getParent().resolve(path.getName()+".hitmap");
+        final Path hitPath = GameInfo.replaceSuffix(path,"hitmap");
         try{
             hitPath.createInputStream().close();
         }catch(Exception ex){

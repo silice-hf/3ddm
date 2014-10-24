@@ -23,9 +23,9 @@ import un.system.path.Path;
  */
 public class MetaObject extends AbstractEventSource {
     
+    private final Chars KEY_TITLE = new Chars("title");
     private final Chars KEY_PREVIEW = new Chars("preview");
-    private final Chars KEY_AUTHOR = new Chars("author");
-    private final Chars KEY_README = new Chars("readme");
+    private final Chars KEY_CREDITS = new Chars("credits");
     
     private NamedNode meta;
     private final Path path;
@@ -37,6 +37,11 @@ public class MetaObject extends AbstractEventSource {
     public MetaObject(NamedNode meta) {
         this.meta = meta;
         this.path = null;
+    }
+    
+    public MetaObject(NamedNode meta, Path path) {
+        this.meta = meta;
+        this.path = path;
     }
     
     public MetaObject(Path metaPath) {
@@ -68,38 +73,56 @@ public class MetaObject extends AbstractEventSource {
     }
     
     /**
+     * @return object name if defined, empty chars otherwise
+     */
+    public Chars getTitle(){
+        return getPathValueChars(KEY_TITLE, Chars.EMPTY);
+    }
+    
+    /**
      * 
-     * @return preview image, null if not set.
+     * @return object preview image, null if not set.
      */
     public Image getPreview(){
-        final Chars imgPathText = getPathValueChars(KEY_PREVIEW, Chars.EMPTY);
-        if(!imgPathText.isEmpty()){
-            Path imgpath = path.getParent().resolve(imgPathText.toString());
-            try{
-                return Images.read(imgpath);
-            }catch(IOException ex){
-                Game.LOGGER.warning(new Chars("Preview image : fail to load ").concat(imgpath.toChars()),ex);
-            }
+        Image img = getPathValueImage(KEY_PREVIEW);
+        if(img == null){
+            img = GameInfo.MISSING;
         }
-        return null;
+        return img;
     }
-    
-    /**
-     * @return author name if defined, empty chars otherwise
-     */
-    public Chars getAuthor(){
-        return getPathValueChars(KEY_AUTHOR, Chars.EMPTY);
-    }
-    
-    /**
-     * @return readme info, license, usage conditions ... if defined, empty chars otherwise
-     */
-    public Chars getReadme(){
-        return getPathValueChars(KEY_README, Chars.EMPTY);
+
+    public MetaCredits getCredits() {
+        final NamedNode creditsNode = Nodes.getPathNode(getMeta(), KEY_CREDITS, true);
+        return new MetaCredits(creditsNode, path);
     }
     
     protected Boolean getPathValueBoolean(Chars path, Boolean defaultValue){
-        final NamedNode node = Nodes.getPathNode(getMeta(), path, true);
+        return getPathValueBoolean(getMeta(), path, defaultValue);
+    }
+    
+    protected Number getPathValueNumber(Chars path, Number defaultValue){
+        return getPathValueNumber(getMeta(), path, defaultValue);
+    }
+    
+    protected Chars getPathValueChars(Chars path, Chars defaultValue){
+        return getPathValueChars(getMeta(), path, defaultValue);
+    }
+    
+    protected Path getPathValuePath(Chars path){
+        return getPathValuePath(getMeta(), path, this.path.getParent());
+    }
+    
+    protected Image getPathValueImage(Chars path){
+        return getPathValueImage(getMeta(), path, this.path.getParent());
+    }
+
+    @Override
+    public Class[] getEventClasses() {
+        return new Class[]{PropertyEvent.class};
+    }
+
+    public static Boolean getPathValueBoolean(NamedNode root, Chars path, Boolean defaultValue){
+        final NamedNode node = Nodes.getPathNode(root, path, true);
         Object val = node.getValue();
         if(val!=null && !(val instanceof Boolean)){
             throw new RuntimeException("Node value is not a boolean : "+val);
@@ -112,8 +135,8 @@ public class MetaObject extends AbstractEventSource {
         return (Boolean) val;
     }
     
-    protected Number getPathValueNumber(Chars path, Number defaultValue){
-        final NamedNode node = Nodes.getPathNode(getMeta(), path, true);
+    public static Number getPathValueNumber(NamedNode root, Chars path, Number defaultValue){
+        final NamedNode node = Nodes.getPathNode(root, path, true);
         Object val = node.getValue();
         if(val!=null && !(val instanceof Number)){
             throw new RuntimeException("Node value is not a Number : "+val);
@@ -126,8 +149,8 @@ public class MetaObject extends AbstractEventSource {
         return (Number) val;
     }
     
-    protected Chars getPathValueChars(Chars path, Chars defaultValue){
-        final NamedNode node = Nodes.getPathNode(getMeta(), path, true);
+    public static Chars getPathValueChars(NamedNode root, Chars path, Chars defaultValue){
+        final NamedNode node = Nodes.getPathNode(root, path, true);
         Object val = node.getValue();
         if(val!=null && !(val instanceof Chars)){
             throw new RuntimeException("Node value is not a Chars : "+val);
@@ -139,11 +162,26 @@ public class MetaObject extends AbstractEventSource {
         }
         return (Chars) val;
     }
-
-    @Override
-    public Class[] getEventClasses() {
-        return new Class[]{PropertyEvent.class};
+    
+    public static Path getPathValuePath(NamedNode root, Chars path, Path folderPath){
+        final Chars pathText = getPathValueChars(root,path, Chars.EMPTY);
+        if(!pathText.isEmpty()){
+            return folderPath.resolve(pathText.toString());
+        }
+        return null;
     }
-
+    
+    public static Image getPathValueImage(NamedNode root, Chars path, Path folderPath){
+        final Chars imgPathText = getPathValueChars(root,path, Chars.EMPTY);
+        if(!imgPathText.isEmpty()){
+            final Path imgpath = folderPath.resolve(imgPathText.toString());
+            try{
+                return Images.read(imgpath);
+            }catch(IOException ex){
+                Game.LOGGER.warning(new Chars("Loading image : fail to load ").concat(imgpath.toChars()),ex);
+            }
+        }
+        return null;
+    }
     
 }

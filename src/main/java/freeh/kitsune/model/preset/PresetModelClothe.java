@@ -1,25 +1,25 @@
 
 
-package freeh.kitsune.model.clothes;
+package freeh.kitsune.model.preset;
 
-import freeh.kitsune.Game;
 import freeh.kitsune.GameProperties;
 import freeh.kitsune.model.Model;
-import freeh.kitsune.model.Models;
+import freeh.kitsune.model.clothes.Clothe;
+import freeh.kitsune.model.clothes.ClotheState;
 import un.api.character.Chars;
 import un.engine.opengl.mesh.Mesh;
 
 /**
  *
  */
-public class PresetClothe extends Clothe {
+public class PresetModelClothe extends Clothe {
 
     private static final Chars STATE_VISIBLE = new Chars("visible");
     private static final Chars STATE_UNVISIBLE = new Chars("unvisible");
     
     private final Mesh clotheMesh;
 
-    public PresetClothe(Mesh mesh) {
+    public PresetModelClothe(Mesh mesh) {
         this.clotheMesh = mesh;
         getStates().add(new PresetClotheState(true));
         getStates().add(new PresetClotheState(false));

@@ -4,7 +4,7 @@ package freeh.kitsune.model.clothes;
 
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.ModelSelector;
-import freeh.kitsune.model.PresetModel;
+import freeh.kitsune.model.preset.PresetModel;
 import un.api.character.Chars;
 import un.api.collection.Sequence;
 import un.api.event.Event;

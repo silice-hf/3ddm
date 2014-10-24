@@ -14,6 +14,7 @@ import freeh.kitsune.model.Models;
 import freeh.kitsune.dances.Dance;
 import freeh.kitsune.dances.DanceSelector;
 import freeh.kitsune.dances.Dances;
+import freeh.kitsune.model.preset.PresetModels;
 import freeh.kitsune.poses.Pose;
 import freeh.kitsune.poses.PoseSelector;
 import freeh.kitsune.poses.Poses;
@@ -78,7 +79,7 @@ public class DefaultStage extends Stage {
     }
         
     public void randomModel(){
-        setModel(Models.getRandomPreset());
+        setModel(PresetModels.getRandomPreset());
     }
     
     public void randomDance(){

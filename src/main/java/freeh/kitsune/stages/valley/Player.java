@@ -9,8 +9,6 @@ import freeh.kitsune.tools.WeaponFireTask;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
 import un.api.collection.Sequence;
-import un.api.image.Image;
-import un.api.image.Images;
 import un.engine.opengl.control.GestureTrigger;
 import un.engine.opengl.control.LocalController;
 import un.engine.opengl.control.OrbitController;
@@ -23,11 +21,8 @@ import un.engine.opengl.resource.VBO;
 import un.engine.opengl.scenegraph.CameraMono;
 import un.engine.opengl.scenegraph.GLNode;
 import un.engine.ui.ievent.MouseEvent;
-import un.science.encoding.IOException;
-import un.science.geometry.Extent;
 import un.science.math.DefaultTuple;
 import un.science.math.Vector;
-import un.system.path.Paths;
 
 /**
  *
@@ -37,14 +32,6 @@ public class Player extends GLNode {
     public static final Chars PROPERTY_TOOL = new Chars("Tool");
     public static final Chars PROPERTY_ACTIONMODE = new Chars("ActionMode");
     public static final Chars PROPERTY_FPSMODE = new Chars("FPSMode");
-    public static final Image IMAGE_CENTER;
-    static {
-        try {
-            IMAGE_CENTER = Images.read(Paths.resolve("file>./resources/crosshair2.gif"));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
     
     private final Sequence tools = new ArraySequence();
     private Tool tool;
@@ -54,7 +41,7 @@ public class Player extends GLNode {
     private final CameraMono fpsCamera = new CameraMono();
     private final CameraMono orbitCamera = new CameraMono();
     private final GLNode orbitParent = new GLNode();
-    private final BillBoard orbitTarget = new BillBoard(new Texture2D(IMAGE_CENTER),1f,1f);
+    private final BillBoard orbitTarget = new BillBoard(new Texture2D(GameInfo.BIG_CROSSHAIR),1f,1f);
     private final LocalController fpsController;
     private final OrbitController orbitController;
 

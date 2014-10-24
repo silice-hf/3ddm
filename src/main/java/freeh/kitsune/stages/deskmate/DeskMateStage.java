@@ -61,6 +61,7 @@ public class DeskMateStage extends DefaultStage {
 
     public void install(final Game game) {
         super.install(game);
+        game.getGamePhases().setAlphaEnable(true);
         game.getUI().setLoadingVisible();
                 
         final NewtFrame frame = game.getFrame();

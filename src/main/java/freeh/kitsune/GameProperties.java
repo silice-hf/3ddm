@@ -36,23 +36,23 @@ public class GameProperties {
     public static final Image ICON_WEAPON;
     static {
         try {
-            ICON_CLOTHE_OFF = Images.read(Paths.resolve("file>./resources/game/icons/clothe_off.png"));
-            ICON_CLOTHE_ON = Images.read(Paths.resolve("file>./resources/game/icons/clothe_on.png"));
-            ICON_CONFIG = Images.read(Paths.resolve("file>./resources/game/icons/config.png"));
-            ICON_CUM = Images.read(Paths.resolve("file>./resources/game/icons/cum.png"));
-            ICON_FAVORITE = Images.read(Paths.resolve("file>./resources/game/icons/favorite.png"));
-            ICON_LOCK = Images.read(Paths.resolve("file>./resources/game/icons/lock.png"));
-            ICON_MODEL = Images.read(Paths.resolve("file>./resources/game/icons/model.png"));
-            ICON_MOTION = Images.read(Paths.resolve("file>./resources/game/icons/motion.png"));
-            ICON_MOVE = Images.read(Paths.resolve("file>./resources/game/icons/move.png"));
-            ICON_MUSIC = Images.read(Paths.resolve("file>./resources/game/icons/music.png"));
-            ICON_ORBIT = Images.read(Paths.resolve("file>./resources/game/icons/orbit.png"));
-            ICON_PLACE = Images.read(Paths.resolve("file>./resources/game/icons/place.png"));
-            ICON_POSE = Images.read(Paths.resolve("file>./resources/game/icons/pose.png"));
-            ICON_ROTATE = Images.read(Paths.resolve("file>./resources/game/icons/rotate.png"));
-            ICON_STAGE = Images.read(Paths.resolve("file>./resources/game/icons/stage.png"));
-            ICON_TOY = Images.read(Paths.resolve("file>./resources/game/icons/toy.png"));
-            ICON_WEAPON = Images.read(Paths.resolve("file>./resources/game/icons/weapon.png"));
+            ICON_CLOTHE_OFF = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/clothe_off.png"));
+            ICON_CLOTHE_ON = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/clothe_on.png"));
+            ICON_CONFIG = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/config.png"));
+            ICON_CUM = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/cum.png"));
+            ICON_FAVORITE = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/favorite.png"));
+            ICON_LOCK = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/lock.png"));
+            ICON_MODEL = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/model.png"));
+            ICON_MOTION = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/motion.png"));
+            ICON_MOVE = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/move.png"));
+            ICON_MUSIC = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/music.png"));
+            ICON_ORBIT = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/orbit.png"));
+            ICON_PLACE = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/place.png"));
+            ICON_POSE = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/pose.png"));
+            ICON_ROTATE = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/rotate.png"));
+            ICON_STAGE = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/stage.png"));
+            ICON_TOY = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/toy.png"));
+            ICON_WEAPON = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/icons/weapon.png"));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -64,7 +64,7 @@ public class GameProperties {
 
     private GameProperties() {
         try{
-            Path path = Paths.resolve("file>./resources/config.properties");
+            Path path = Paths.resolve(GameInfo.PATH_RESOURCE+"/config.properties");
             path.createLeaf();
             configProperties = new KeyValueStore(path).load();
         }catch(IOException ex){

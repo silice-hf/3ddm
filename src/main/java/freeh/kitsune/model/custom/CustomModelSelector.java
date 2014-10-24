@@ -1,6 +1,6 @@
 
 
-package freeh.kitsune.model;
+package freeh.kitsune.model.custom;
 
 import freeh.kitsune.GameBundle;
 import un.api.character.Chars;

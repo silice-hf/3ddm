@@ -3,6 +3,7 @@
 package freeh.kitsune.stages;
 
 import freeh.kitsune.Game;
+import freeh.kitsune.GameInfo;
 import freeh.kitsune.toys.Toy;
 import freeh.kitsune.toys.Toys;
 import un.api.image.Image;
@@ -34,12 +35,13 @@ public class MenuStage extends Stage{
      
     public void install(Game game){
         super.install(game);
+        game.getGamePhases().setAlphaEnable(false);
         
         final PointLight light = new PointLight();
         addChild(light);
         
         try{
-            final Image tiletex = Images.read(Paths.resolve("file>./resources/game/skybox/tile.png"));
+            final Image tiletex = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/skybox/tile.png"));
             final SkyBox skyBox = new SkyBox(tiletex,tiletex,tiletex,tiletex,tiletex,tiletex);
             addChild(skyBox);
         }catch(Exception ex){
