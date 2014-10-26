@@ -63,7 +63,7 @@ public class PresetModelSelector extends WContainer{
         
         setBestExtent(new Extent(440, 400));
         
-        ptree.setBlockSize(new Extent(128,128));
+//        ptree.setBlockSize(new Extent(128,128));
         ptree.setCacheThumbs(true);
         setLayout(new FormLayout());
         ((FormLayout)getLayout()).setRowSize(0, FormLayout.SIZE_EXPAND);

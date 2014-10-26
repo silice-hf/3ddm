@@ -113,6 +113,7 @@ public class MainMenu extends WContainer {
         layout.setRowSize(9, FormLayout.SIZE_EXPAND);
         
         newGame.setEnable(false);
+        freeMode.setEnable(false);
         controls.setEnable(false);
         
         final WContainer flagsContainer = new WContainer(new FormLayout());

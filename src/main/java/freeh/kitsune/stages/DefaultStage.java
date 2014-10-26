@@ -123,7 +123,6 @@ public class DefaultStage extends Stage {
         if(model==null) return;
         
         loadModel();
-        //currentModel.makeCLotheHittable(game.getGamePhases().getPickingPhase());
         getEventManager().sendPropertyEvent(this, ModelSelector.PROPERTY_MODEL, null, currentModel);
     }
     
@@ -131,6 +130,7 @@ public class DefaultStage extends Stage {
         new Thread(){
             public void run() {
                 final GLNode node = currentModel.getNode();
+                currentModel.makeCLotheHittable(game.getGamePhases().getPickingPhase());
                 DefaultStage.this.addChild(node);
             }
         }.start();

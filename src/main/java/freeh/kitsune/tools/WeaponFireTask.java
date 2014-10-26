@@ -113,11 +113,11 @@ public class WeaponFireTask extends LocalController.GestureTask {
             
         lastShot += control.getDeltaTime();
 
-        if(lastShot<0.2){
-            return;
-        }
-
-        lastShot %= 0.2;
+//        if(lastShot<0.2){
+//            return;
+//        }
+//
+//        lastShot %= 0.2;
 
         if(alsource!=null){
             alsource.play();
@@ -130,11 +130,11 @@ public class WeaponFireTask extends LocalController.GestureTask {
             public void receiveEvent(Event event) {
                 final PickEvent pe = (PickEvent) event;
 
-                if(pe.getSelection()==null) return;
-                final Mesh p = (Mesh) pe.getSelection();
+                final Mesh mesh = (Mesh) pe.getSelection();
+                if(mesh==null) return;
 
                 //find the texture coordinate
-                final Shell shell = (Shell) p.getShape();
+                final Shell shell = (Shell) mesh.getShape();
 
                 final int[] vids = pe.findVertexId(null);
                 final VBO uvs = shell.getUVs();
@@ -143,10 +143,10 @@ public class WeaponFireTask extends LocalController.GestureTask {
                 final float[] uv2 = uvs.getTupleFloat(vids[2], null);
 
                 //triangle
-                final Matrix ntr = p.getNodeToRootSpace();
-                Vector v0 = Skeletons.evaluatePosition(p, vids[0]);
-                Vector v1 = Skeletons.evaluatePosition(p, vids[1]);
-                Vector v2 = Skeletons.evaluatePosition(p, vids[2]);
+                final Matrix ntr = mesh.getNodeToRootSpace();
+                Vector v0 = Skeletons.evaluatePosition(mesh, vids[0]);
+                Vector v1 = Skeletons.evaluatePosition(mesh, vids[1]);
+                Vector v2 = Skeletons.evaluatePosition(mesh, vids[2]);
                 v0 = (Vector)ntr.transform(v0, 1);
                 v1 = (Vector)ntr.transform(v1, 1);
                 v2 = (Vector)ntr.transform(v2, 1);
@@ -178,7 +178,7 @@ public class WeaponFireTask extends LocalController.GestureTask {
                     ex.printStackTrace();
                 }
 
-                final Layer layer = p.getMaterial().getLayer(Layer.TYPE_DIFFUSE);
+                final Layer layer = mesh.getMaterial().getLayer(Layer.TYPE_DIFFUSE);
                 final UVMapping mapping = (UVMapping) layer.getMapping();
                 final Texture2D tex = mapping.getTexture();
                 final int width = tex.getWidth();
@@ -194,13 +194,13 @@ public class WeaponFireTask extends LocalController.GestureTask {
                     painter.setPaint(new ColorPaint(new Color(0, 0, 0, 0)));
                     painter.setAlphaBlending(AlphaBlending.create(AlphaBlending.SRC,1));
                 }
-
+                
                 painter.getWorker().fbo = fbo;
                 painter.setSize(width, height);
                 
                 hit.localMultiply(new Vector(tex.getWidth(), tex.getHeight()));
                 painter.fill(new Circle(hit, 60));
-
+                
 
                 cp.addTask(painter.getWorker());
                 cp.addTask(new GLExecutable() {

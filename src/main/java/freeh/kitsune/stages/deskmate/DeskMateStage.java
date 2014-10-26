@@ -74,10 +74,10 @@ public class DeskMateStage extends DefaultStage {
         try{
             buildScene();
             randomModel();
+            randomDance();
             randomMusic();
-
-            game.getGamePhases().setCamera(camera);
         }finally{
+            game.getGamePhases().setCamera(camera);
             game.getUI().setNoneVisible();
             game.getUI().setVisible(menu,true);
         }

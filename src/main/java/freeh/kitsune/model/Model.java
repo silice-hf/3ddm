@@ -77,8 +77,6 @@ public abstract class Model extends MetaObject {
         for(int i=0,n=clothes.getSize();i<n;i++){
             final PresetModelClothe clothe = (PresetModelClothe) clothes.get(i);
             Models.setHittable(clothe.getMesh(), pickingPhase);
-            clothe.setState((ClotheState) clothe.getStates().get(1));
-            clothe.setState((ClotheState) clothe.getStates().get(0));
         }
     }
 }

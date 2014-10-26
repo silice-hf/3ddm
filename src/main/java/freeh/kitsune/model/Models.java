@@ -22,6 +22,7 @@ import un.api.tree.NodeVisitor;
 import un.engine.opengl.animation.Animation;
 import un.engine.opengl.material.Layer;
 import un.engine.opengl.material.Material;
+import un.engine.opengl.material.mapping.Mapping;
 import un.engine.opengl.material.mapping.UVMapping;
 import un.engine.opengl.mesh.Mesh;
 import un.engine.opengl.mesh.MultipartMesh;
@@ -113,31 +114,45 @@ public class Models {
                 final Mesh mesh = ((Mesh)node);
 
                 final Material material = mesh.getMaterial();
-                if(!(material.getLayer(Layer.TYPE_DIFFUSE).getMapping() instanceof UVMapping)){
-                    break test;
+                final Sequence layers = material.getLayers();
+                boolean hittable = false;
+                for(int i=0;i<layers.getSize();i++){
+                    final Layer layer = (Layer) layers.get(i);
+                    if(layer.getType()!=Layer.TYPE_DIFFUSE) continue;
+                    
+                    final Mapping mapping = layer.getMapping();
+                    
+                    if(mapping instanceof UVMapping){
+                        final UVMapping text = (UVMapping) mapping;
+                        Image image = text.getTexture().getImage();
+                        ImagePainter2D painter = Painters.getPainterManager().createPainter(image.getDimensionSize(0), image.getDimensionSize(1));
+                        painter.paint(image, new Matrix4().setToIdentity());
+                        Image rgba = painter.getImage();
+                        painter.dispose();
+                        text.getTexture().setImage(rgba);
+                        text.getTexture().setMipmap(false);
+                        text.getTexture().setForgetOnLoad(false);
+                        hittable = true;
+                    }
                 }
-                                
-                final UVMapping text = (UVMapping) material.getLayer(Layer.TYPE_DIFFUSE).getMapping();
-                Image image = text.getTexture().getImage();
-                ImagePainter2D painter = Painters.getPainterManager().createPainter(image.getDimensionSize(0), image.getDimensionSize(1));
-                painter.paint(image, new Matrix4().setToIdentity());
-                Image rgba = painter.getImage();
-                painter.dispose();
-                text.getTexture().setImage(rgba);
-                text.getTexture().setMipmap(false);
                 
-                text.getTexture().setForgetOnLoad(false);
-
-                final SkinShell shell = (SkinShell) mesh.getShape();
-                shell.getVertices().setForgetOnLoad(false);
-                shell.getUVs().setForgetOnLoad(false);
-                shell.getIndexes().setForgetOnLoad(false);
-                shell.getJointIndexes().setForgetOnLoad(false);
-                shell.getWeights().setForgetOnLoad(false);
-//                ((SkinShell)mesh.getShell()).getReducedVBO().setForgetOnLoad(false);
-
-                //attach a pick actor on the meshes we want to pick
-                mesh.getExtShaderActors().add(new PickActor(pickPhase, mesh));
+                if(hittable){
+                    final SkinShell shell = (SkinShell) mesh.getShape();
+                    shell.getVertices().setForgetOnLoad(false);
+                    shell.getUVs().setForgetOnLoad(false);
+                    shell.getIndexes().setForgetOnLoad(false);
+                    shell.getJointIndexes().setForgetOnLoad(false);
+                    shell.getWeights().setForgetOnLoad(false);
+                        
+                    //attach a pick actor on the meshes we want to pick
+                    final Sequence actors = mesh.getExtShaderActors();
+                    boolean found = false;
+                    for(int i=0;i<actors.getSize();i++){
+                        if(actors.get(i) instanceof PickActor) found=true;
+                    }
+                    if(!found) actors.add(new PickActor(pickPhase, mesh));
+                }
+                
             }
             
             final Node[] children = node.getChildren();
