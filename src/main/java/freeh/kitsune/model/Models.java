@@ -6,29 +6,21 @@ import freeh.kitsune.model.preset.PresetModel;
 import freeh.kitsune.audios.Music;
 import freeh.kitsune.dances.Dance;
 import freeh.kitsune.poses.Pose;
-import freeh.kitsune.stages.deskmate.XNASkeletonToVMD;
 import un.api.array.Arrays;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
-import un.api.collection.Collection;
-import un.api.collection.Iterator;
 import un.api.collection.Sequence;
 import un.api.image.Image;
-import un.api.model3d.Model3DStore;
-import un.api.model3d.Model3Ds;
 import un.api.tree.DefaultNodeVisitor;
 import un.api.tree.Node;
 import un.api.tree.NodeVisitor;
-import un.engine.opengl.animation.Animation;
 import un.engine.opengl.material.Layer;
 import un.engine.opengl.material.Material;
 import un.engine.opengl.material.mapping.Mapping;
 import un.engine.opengl.material.mapping.UVMapping;
 import un.engine.opengl.mesh.Mesh;
-import un.engine.opengl.mesh.MultipartMesh;
 import un.engine.opengl.phase.picking.PickActor;
 import un.engine.opengl.phase.picking.PickResetPhase;
-import un.engine.opengl.physic.RelativeSkeletonPose;
 import un.engine.opengl.physic.SkinShell;
 import un.engine.opengl.renderer.Renderer;
 import un.engine.opengl.renderer.SilhouetteRenderer;
@@ -36,7 +28,7 @@ import un.engine.opengl.scenegraph.GLNode;
 import un.engine.painter2d.ImagePainter2D;
 import un.engine.painter2d.Painter2D;
 import un.engine.painter2d.Painters;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.science.geometry.BBox;
 import un.science.math.Matrix4;
 import un.storage.model2d.svg.RenderState;
@@ -44,7 +36,7 @@ import un.storage.model2d.svg.SVGReader;
 import un.storage.model2d.svg.model.SVGDocument;
 import un.storage.model2d.svg.model.SVGElement;
 import un.storage.model2d.svg.model.SVGGraphic;
-import un.system.path.Path;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -212,81 +204,6 @@ public class Models {
         }
     }
     
-    public static MultipartMesh loadModel(Path modelPath) {
-        MultipartMesh mesh = null;
-
-        try {
-            Model3DStore store = Model3Ds.read(modelPath);
-            Collection elements = store.getElements();
-            Iterator ite = elements.createIterator();
-            while (ite.hasNext()) {
-                Object obj = ite.next();
-                if (obj instanceof MultipartMesh) {
-                    mesh = (MultipartMesh) obj;
-
-                    //change xna models skeleton to adapth vmd animations
-                    //does not work correctly yet :'(
-                    final String name = modelPath.toURI().toLowerCase();
-                    if (name.endsWith(".mesh.ascii") || name.endsWith(".xps") || name.endsWith(".mesh")) {
-                        XNASkeletonToVMD.adapt(mesh.getSkeleton());
-                    }
-                    
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        if(mesh!=null){
-            setSilhouette(mesh, new SilhouetteInfo());
-        }
-        
-        return mesh;
-    }
-
-    public static Animation loadAnimation(Path animationPath) {
-        Animation animation = null;
-
-        try {
-            Model3DStore store = Model3Ds.read(animationPath);
-            Collection elements = store.getElements();
-            Iterator ite = elements.createIterator();
-            while (ite.hasNext()) {
-                Object obj = ite.next();
-                if (obj instanceof Animation) {
-                    animation = (Animation) obj;
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return animation;
-    }
-    
-    public static RelativeSkeletonPose loadPose(Path posePath) {
-        RelativeSkeletonPose pose = null;
-
-        try {
-            Model3DStore store = Model3Ds.read(posePath);
-            Collection elements = store.getElements();
-            Iterator ite = elements.createIterator();
-            while (ite.hasNext()) {
-                Object obj = ite.next();
-                if (obj instanceof RelativeSkeletonPose) {
-                    pose = (RelativeSkeletonPose) obj;
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return pose;
-    }
-
     public static Image buildImage(Chars path) throws IOException{
         final SVGReader reader = new SVGReader();
         reader.setInput(Paths.resolve(path.toJVMString()));

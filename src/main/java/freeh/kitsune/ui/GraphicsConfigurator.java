@@ -47,6 +47,7 @@ public class GraphicsConfigurator extends WContainer{
         PropertyBinding.bidirectional(game, Game.PROPERTY_FULLSCREEN, fullscreen, WCheck.PROPERTY_CHECK);
         
         gameEngineConfig = new WGameGraphics(gamePhases, GameBundle.getTextBundle());
+        gameEngineConfig.getStyle().getSelfRule().setProperties(new Chars("background : none"));
         addChild(gameEngineConfig,  new FormConstraint(0, 1, 2, 1));
                 
     }

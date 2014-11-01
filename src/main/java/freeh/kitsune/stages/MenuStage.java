@@ -45,7 +45,7 @@ public class MenuStage extends Stage{
             final SkyBox skyBox = new SkyBox(tiletex,tiletex,tiletex,tiletex,tiletex,tiletex);
             addChild(skyBox);
         }catch(Exception ex){
-            ex.printStackTrace();
+            Game.LOGGER.warning(ex);
         }
         
         try{            

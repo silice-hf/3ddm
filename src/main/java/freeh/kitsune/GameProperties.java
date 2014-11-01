@@ -5,10 +5,9 @@ package freeh.kitsune;
 import un.api.character.Chars;
 import un.api.image.Image;
 import un.api.image.Images;
-import un.api.logging.Logger;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.storage.keyvalue.KeyValueStore;
-import un.system.path.Path;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -68,6 +67,7 @@ public class GameProperties {
             path.createLeaf();
             configProperties = new KeyValueStore(path).load();
         }catch(IOException ex){
+            Game.LOGGER.warning(ex);
             throw new RuntimeException(ex);
         }
     }
@@ -121,7 +121,7 @@ public class GameProperties {
         try {
             configProperties.save();
         } catch (IOException ex) {
-            Game.LOGGER.log(ex, Logger.LEVEL_WARNING);
+            Game.LOGGER.warning(ex);
         }
     }
         

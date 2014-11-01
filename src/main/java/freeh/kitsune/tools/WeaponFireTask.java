@@ -35,9 +35,9 @@ import un.engine.opengl.resource.Texture2D;
 import un.engine.opengl.resource.VBO;
 import un.engine.opengl.scenegraph.CameraMono;
 import un.engine.painter2d.ColorPaint;
-import un.science.encoding.ArrayOutputStream;
-import un.science.encoding.DataOutputStream;
-import un.science.encoding.NumberEncoding;
+import un.api.io.ArrayOutputStream;
+import un.api.io.DataOutputStream;
+import un.api.io.NumberEncoding;
 import un.science.encoding.color.AlphaBlending;
 import un.science.encoding.color.Color;
 import un.science.geometry.Point;
@@ -47,7 +47,7 @@ import un.science.geometry.s3d.Ray;
 import un.science.math.Matrix;
 import un.science.math.Vector;
 import un.science.math.Vectors;
-import un.system.path.Path;
+import un.api.path.Path;
 
 /**
  *
@@ -105,7 +105,7 @@ public class WeaponFireTask extends LocalController.GestureTask {
             alsource.setBuffer(data);
             alsource.load();
         }catch(Exception ex){
-            ex.printStackTrace();
+            Game.LOGGER.warning(ex);
         }
     }
     
@@ -175,7 +175,7 @@ public class WeaponFireTask extends LocalController.GestureTask {
                     hit.localAdd(new Vector(Vectors.scale(uv2, (float)bary[2])));
 
                 }catch(Exception ex){
-                    ex.printStackTrace();
+                    Game.LOGGER.warning(ex);
                 }
 
                 final Layer layer = mesh.getMaterial().getLayer(Layer.TYPE_DIFFUSE);

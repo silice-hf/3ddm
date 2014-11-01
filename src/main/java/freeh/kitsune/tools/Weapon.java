@@ -3,10 +3,10 @@
 package freeh.kitsune.tools;
 
 import un.api.character.Chars;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.science.geometry.s2d.Circle;
 import un.science.geometry.s2d.Geometry2D;
-import un.system.path.Path;
+import un.api.path.Path;
 
 /**
  *

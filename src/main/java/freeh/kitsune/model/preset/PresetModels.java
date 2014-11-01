@@ -2,13 +2,14 @@
 
 package freeh.kitsune.model.preset;
 
+import freeh.kitsune.Game;
 import freeh.kitsune.GameInfo;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.Models;
 import un.api.collection.ArraySequence;
 import un.api.collection.Sequence;
-import un.science.encoding.IOException;
-import un.system.path.Path;
+import un.api.io.IOException;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -25,7 +26,7 @@ public class PresetModels {
             try {
                 Models.search(path, PRESETS, null, null, null, true);
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                Game.LOGGER.warning(ex);
             }
         }
         return PRESETS;

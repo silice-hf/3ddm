@@ -2,6 +2,7 @@
 
 package freeh.kitsune.ui;
 
+import freeh.kitsune.Game;
 import freeh.kitsune.GameInfo;
 import un.api.character.Chars;
 import un.api.tree.Node;
@@ -11,10 +12,10 @@ import un.api.layout.FormLayout;
 import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.Widget;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.science.geometry.Extent;
 import un.science.math.Maths;
-import un.system.path.Path;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -52,7 +53,7 @@ public class WLoading extends WContainer{
             animated.setBestExtent(new Extent(120, 120));
             addChild(animated, new FormConstraint(0, 0));
         } catch (IOException ex) {
-            throw new RuntimeException(ex.getMessage(),ex);
+            Game.LOGGER.warning(ex);
         }
     }
        

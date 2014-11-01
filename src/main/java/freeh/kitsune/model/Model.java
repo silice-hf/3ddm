@@ -15,7 +15,7 @@ import un.api.physic.skeleton.Skeleton;
 import un.engine.opengl.GLProcessContext;
 import un.engine.opengl.phase.picking.PickResetPhase;
 import un.engine.opengl.scenegraph.GLNode;
-import un.system.path.Path;
+import un.api.path.Path;
 
 /**
  *

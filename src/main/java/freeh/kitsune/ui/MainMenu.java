@@ -8,8 +8,6 @@ import freeh.kitsune.GameInfo;
 import freeh.kitsune.stages.deskmate.DeskMateStage;
 import freeh.kitsune.stages.freemode.FreeModeStage;
 import freeh.kitsune.stages.valley.ValleyStage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import un.api.character.Chars;
 import un.api.character.DefaultLanguage;
 import un.api.collection.Iterator;
@@ -18,16 +16,16 @@ import un.api.event.Event;
 import un.api.event.EventListener;
 import un.api.image.Image;
 import un.api.image.Images;
-import un.engine.ui.ievent.MouseEvent;
 import un.api.layout.FormConstraint;
 import un.api.layout.FormLayout;
+import un.engine.ui.ievent.MouseEvent;
 import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WButton;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WLabel;
 import un.engine.ui.widget.Widget;
 import un.storage.keyvalue.TranslationStore;
-import un.system.path.Path;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -40,7 +38,7 @@ public class MainMenu extends WContainer {
             try {
                 game.setStage(new ValleyStage());
             } catch (Exception ex) {
-                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                Game.LOGGER.warning(ex);
             }
         }
     });
@@ -49,7 +47,7 @@ public class MainMenu extends WContainer {
             try {
                 game.setStage(new FreeModeStage());
             } catch (Exception ex) {
-                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                Game.LOGGER.warning(ex);
             }
         }
     });
@@ -58,7 +56,7 @@ public class MainMenu extends WContainer {
             try {
                 game.setStage(new DeskMateStage());
             } catch (Exception ex) {
-                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                Game.LOGGER.warning(ex);
             }
         }
     });
@@ -143,7 +141,7 @@ public class MainMenu extends WContainer {
             try{
                 flagImage = Images.read(flagPath);
             }catch(Exception ex){
-                ex.printStackTrace();
+                Game.LOGGER.warning(ex);
                 //no flag image for this country.
             }
             

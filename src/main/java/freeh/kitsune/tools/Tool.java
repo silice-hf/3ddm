@@ -1,5 +1,6 @@
 package freeh.kitsune.tools;
 
+import freeh.kitsune.Game;
 import freeh.kitsune.MetaObject;
 import freeh.kitsune.model.preset.PresetModel;
 import freeh.kitsune.model.Model;
@@ -8,8 +9,8 @@ import un.api.character.Chars;
 import un.api.collection.Dictionary;
 import un.api.collection.Sequence;
 import un.api.image.Image;
-import un.science.encoding.IOException;
-import un.system.path.Path;
+import un.api.io.IOException;
+import un.api.path.Path;
 
 /**
  *
@@ -67,7 +68,7 @@ public class Tool extends MetaObject {
                         getPathValueChars(PATH_CONTROL, null).toString()
                 ).newInstance();
             } catch (Exception ex) {
-                throw new RuntimeException(ex);
+                Game.LOGGER.warning(ex);
             }
         }
         return control;

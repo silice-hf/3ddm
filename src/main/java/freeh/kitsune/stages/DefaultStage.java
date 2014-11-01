@@ -10,7 +10,6 @@ import freeh.kitsune.maps.MapSelector;
 import freeh.kitsune.maps.Maps;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.ModelSelector;
-import freeh.kitsune.model.Models;
 import freeh.kitsune.dances.Dance;
 import freeh.kitsune.dances.DanceSelector;
 import freeh.kitsune.dances.Dances;

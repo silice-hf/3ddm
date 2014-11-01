@@ -152,7 +152,7 @@ public class FreeModeStage extends DefaultStage{
             }
                         
         }catch(Exception ex){
-            ex.printStackTrace();
+            Game.LOGGER.warning(ex);
         }finally{
             game.getUI().setVisible(uiPlayer,true);
         }

@@ -89,15 +89,15 @@ public class DeskMateStage extends DefaultStage {
         addChild(groundMirror);        
         //lights
         AmbientLight ambiantLight = new AmbientLight();
-        ambiantLight.setColor(new Vector(0.7, 0.7, 0.7));
-        ambiantLight.setAmbient(0.5f);
-        ambiantLight.setDiffuse(0.3f);
+        ambiantLight.setColor(new Vector(0.8, 0.8, 0.8));
+        ambiantLight.setAmbient(0.6f);
+        ambiantLight.setDiffuse(0.4f);
         addChild(ambiantLight);
                 
         final SpotLight light = new SpotLight();
         light.getNodeTransform().getRotation().set(Matrix3.createRotation3(Angles.degreeToRadian(-90), new Vector(1, 0, 0)));
-        light.getNodeTransform().getTranslation().setXYZ(0, 30, 0);
-        light.setFallOffAngle(40);
+        light.getNodeTransform().getTranslation().setXYZ(0, 40, 0);
+        light.setFallOffAngle(70);
         light.getNodeTransform().notifyChanged();
         addChild(light);
         

@@ -8,8 +8,8 @@ import freeh.kitsune.model.Model;
 import freeh.kitsune.model.Models;
 import un.api.character.Chars;
 import un.api.collection.Sequence;
-import un.science.encoding.IOException;
-import un.system.path.Path;
+import un.api.io.IOException;
+import un.api.path.Path;
 
 /**
  *

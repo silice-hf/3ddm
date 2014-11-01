@@ -4,7 +4,7 @@ package freeh.kitsune;
 
 import un.api.character.Chars;
 import un.api.character.LChars;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.storage.keyvalue.TranslationStore;
 import un.system.path.Paths;
 

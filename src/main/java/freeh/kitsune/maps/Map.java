@@ -2,9 +2,9 @@
 
 package freeh.kitsune.maps;
 
+import freeh.kitsune.Game;
 import freeh.kitsune.model.Models;
 import freeh.kitsune.model.preset.PresetModel;
-import javax.media.opengl.GLContext;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
 import un.api.collection.Collection;
@@ -16,8 +16,9 @@ import un.engine.opengl.GLExecutable;
 import un.engine.opengl.GLProcessContext;
 import un.engine.opengl.scenegraph.GLNode;
 import un.engine.scenegraph.SceneNode;
-import un.science.encoding.IOException;
-import un.system.path.Path;
+import un.api.io.IOException;
+import un.api.path.Path;
+import un.api.store.StoreException;
 
 /**
  *
@@ -38,12 +39,12 @@ public class Map {
     public synchronized GLNode getNode(){
         if(root!=null) return root;
         
-        System.out.println("Loading : "+this);
+        Game.LOGGER.info(new Chars("Loading : "+this));
         final Sequence parts = new ArraySequence();
         try {
             Models.search(path, parts, null, null, null, true);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            Game.LOGGER.warning(ex);
         }
         
         //maps are often composed of multiple parts
@@ -53,6 +54,7 @@ public class Map {
             final Path partPath = pm.getPath();
             try{
                 final Model3DStore store = Model3Ds.read(partPath);
+                store.setLogger(Game.LOGGER);
                 final Collection elements = store.getElements();
                 final Iterator ite = elements.createIterator();
                 while (ite.hasNext()) {
@@ -62,7 +64,9 @@ public class Map {
                     }
                 }
             }catch(IOException ex){
-                ex.printStackTrace();
+                Game.LOGGER.warning(ex);
+            }catch(StoreException ex){
+                Game.LOGGER.warning(ex);
             }
         }
         
@@ -79,7 +83,7 @@ public class Map {
         root = null;
         context.addTask(new GLExecutable() {
             public Object execute() {
-                System.out.println("Unloading : "+Map.this);
+                Game.LOGGER.info(new Chars("Unloading : "+Map.this));
                 final SceneNode parent = node.getParent();
                 if(parent!=null) parent.removeChild(node);
                 node.dispose(context);

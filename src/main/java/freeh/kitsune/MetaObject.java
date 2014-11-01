@@ -11,10 +11,10 @@ import un.api.image.Images;
 import un.api.tree.DefaultNamedNode;
 import un.api.tree.NamedNode;
 import un.api.tree.Nodes;
-import un.science.encoding.ByteOutputStream;
-import un.science.encoding.IOException;
+import un.api.io.ByteOutputStream;
+import un.api.io.IOException;
 import un.storage.binding.json.JSONUtilities;
-import un.system.path.Path;
+import un.api.path.Path;
 
 /**
  * Autosaving object informations in json.
@@ -125,7 +125,8 @@ public class MetaObject extends AbstractEventSource {
         final NamedNode node = Nodes.getPathNode(root, path, true);
         Object val = node.getValue();
         if(val!=null && !(val instanceof Boolean)){
-            throw new RuntimeException("Node value is not a boolean : "+val);
+            Game.LOGGER.warning(new Chars("Node value is not a boolean : "+val));
+            return defaultValue;
         }
         
         if(val==null){
@@ -139,7 +140,8 @@ public class MetaObject extends AbstractEventSource {
         final NamedNode node = Nodes.getPathNode(root, path, true);
         Object val = node.getValue();
         if(val!=null && !(val instanceof Number)){
-            throw new RuntimeException("Node value is not a Number : "+val);
+            Game.LOGGER.warning(new Chars("Node value is not a Number : "+val));
+            return defaultValue;
         }
         
         if(val==null){
@@ -153,7 +155,8 @@ public class MetaObject extends AbstractEventSource {
         final NamedNode node = Nodes.getPathNode(root, path, true);
         Object val = node.getValue();
         if(val!=null && !(val instanceof Chars)){
-            throw new RuntimeException("Node value is not a Chars : "+val);
+            Game.LOGGER.warning(new Chars("Node value is not a Chars : "+val));
+            return defaultValue;
         }
         
         if(val==null){

@@ -2,10 +2,12 @@
 
 package freeh.kitsune;
 
+import com.jogamp.opengl.JoglVersion;
 import freeh.kitsune.stages.Stage;
 import freeh.kitsune.stages.StartingStage;
 import freeh.kitsune.ui.UI;
 import freeh.kitsune.ui.UIPhases;
+import javax.media.opengl.GLAutoDrawable;
 import un.api.character.Chars;
 import un.api.character.Language;
 import un.api.country.Country;
@@ -13,8 +15,8 @@ import un.api.event.AbstractEventSource;
 import un.api.event.Event;
 import un.api.event.EventListener;
 import un.api.event.PropertyEvent;
+import un.api.logging.FileLogger;
 import un.api.logging.Logger;
-import un.api.logging.Loggers;
 import un.engine.opengl.GLProcessContext;
 import un.engine.opengl.phase.ClearPhase;
 import un.engine.opengl.phase.GamePhases;
@@ -23,7 +25,7 @@ import un.engine.opengl.scenegraph.GLNode;
 import un.engine.opengl.widget.NewtFrame;
 import un.engine.ui.io.WCSParser;
 import un.engine.ui.style.SystemStyle;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.science.geometry.Extent;
 import un.science.geometry.Point;
 import un.system.path.Paths;
@@ -33,7 +35,14 @@ import un.system.path.Paths;
  */
 public class Game extends AbstractEventSource {
     
-    public static final Logger LOGGER = Loggers.get();
+    public static final Logger LOGGER;
+    static {
+        try {
+            LOGGER = new FileLogger(Paths.resolve("file>./log.txt"));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
     
     public static final Chars PROPERTY_FULLSCREEN = new Chars("FullScreen");
     public static final Chars PROPERTY_LANGUAGE = new Chars("Language");
@@ -57,9 +66,20 @@ public class Game extends AbstractEventSource {
     private boolean fullscreen = false;
     
     public Game(){
-        frame = new NewtFrame(false,false);        
+        
+        //log debug infos
+        final JoglVersion jogl = JoglVersion.getInstance(); 
+        LOGGER.info(new Chars(jogl.toString()));
+        frame = new NewtFrame(false,false){
+            @Override
+            public void init(GLAutoDrawable e) {
+                super.init(e);
+                LOGGER.info(new Chars(jogl.toString(frame.getContext().getGL())));
+            }
+        };        
         frame.getContext().getPhases().removeAll();
         frame.getContext().getPhases().add(new ClearPhase(new float[]{0.1f,0.1f,0.1f,1.0f}));
+        
         
         glcontext = frame.getContext();
         gamePhases = new GamePhases();
@@ -189,7 +209,7 @@ public class Game extends AbstractEventSource {
         try {
             SystemStyle.INSTANCE.getRules().addAll(WCSParser.readStyle(Paths.resolve("mod>/style/game-theme.wcs")).getRules());
         } catch (IOException ex) {
-            throw new RuntimeException("Failed to load default style "+ex.getMessage(),ex);
+            Game.LOGGER.warning(new Chars("Failed to load default style : "+ex.getMessage()),ex);
         }
         new Game();
     }

@@ -11,7 +11,6 @@ import un.api.collection.Sequence;
 import un.api.event.Event;
 import un.api.event.EventListener;
 import un.api.event.PropertyEvent;
-import un.api.logging.Logger;
 import un.api.predicate.ClassPredicate;
 import un.api.tree.Node;
 import un.engine.ui.component.path.PathPresenters;
@@ -23,9 +22,9 @@ import un.engine.ui.style.StyleRule;
 import un.engine.ui.widget.WButton;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.Widget;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.science.geometry.Extent;
-import un.system.path.Path;
+import un.api.path.Path;
 import un.system.path.VirtualFolder;
 
 /**
@@ -42,7 +41,7 @@ public class PresetModelSelector extends WContainer{
             try {
                 PathPresenters.deleteThumbnails();
             } catch (IOException ex) {
-                Game.LOGGER.log(ex,Logger.LEVEL_WARNING);
+                Game.LOGGER.warning(ex);
             }
         }
     });

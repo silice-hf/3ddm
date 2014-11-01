@@ -6,7 +6,7 @@ import un.api.character.Chars;
 import un.api.image.Image;
 import un.api.tree.NamedNode;
 import un.api.tree.Node;
-import un.system.path.Path;
+import un.api.path.Path;
 
 /**
  * Model author credits informations.

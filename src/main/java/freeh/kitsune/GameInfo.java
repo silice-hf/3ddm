@@ -4,8 +4,8 @@ package freeh.kitsune;
 
 import un.api.image.Image;
 import un.api.image.Images;
-import un.science.encoding.IOException;
-import un.system.path.Path;
+import un.api.io.IOException;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**

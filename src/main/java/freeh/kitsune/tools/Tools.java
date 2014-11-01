@@ -2,13 +2,14 @@
 
 package freeh.kitsune.tools;
 
+import freeh.kitsune.Game;
 import freeh.kitsune.GameInfo;
 import un.api.collection.ArraySequence;
 import un.api.collection.Collections;
 import un.api.collection.Sequence;
 import un.api.tree.Node;
-import un.science.encoding.IOException;
-import un.system.path.Path;
+import un.api.io.IOException;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -31,7 +32,7 @@ public class Tools {
                         seq.add(new Tool(p));
                     }
                 }catch(IOException ex){
-                    throw new RuntimeException(ex);
+                    Game.LOGGER.warning(ex);
                 }
             }
             TOOLS = new Tool[seq.getSize()];

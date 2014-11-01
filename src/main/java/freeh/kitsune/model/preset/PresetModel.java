@@ -4,13 +4,13 @@ package freeh.kitsune.model.preset;
 
 import freeh.kitsune.Game;
 import freeh.kitsune.GameInfo;
+import freeh.kitsune.maps.Map;
 import freeh.kitsune.model.Model;
 import freeh.kitsune.model.clothes.Clothe;
 import un.api.character.Chars;
 import un.api.collection.ArraySequence;
 import un.api.collection.Iterator;
 import un.api.collection.Sequence;
-import un.api.logging.Logger;
 import un.api.model3d.Model3DStore;
 import un.api.model3d.Model3Ds;
 import un.api.physic.skeleton.Skeleton;
@@ -23,14 +23,14 @@ import un.engine.opengl.mesh.Mesh;
 import un.engine.opengl.mesh.MultipartMesh;
 import un.engine.opengl.scenegraph.GLNode;
 import un.engine.scenegraph.SceneNode;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.storage.binding.xml.QName;
 import un.storage.binding.xml.XMLOutputStream;
 import un.storage.binding.xml.dom.DomElement;
 import un.storage.binding.xml.dom.DomNode;
 import un.storage.binding.xml.dom.DomReader;
 import un.storage.binding.xml.dom.DomWriter;
-import un.system.path.Path;
+import un.api.path.Path;
 
 /**
  * Existing model, pmx, pmd, xna, mqo ...
@@ -97,9 +97,10 @@ public class PresetModel extends Model {
     private void check() {
         if(mesh!=null) return;
         
-        System.out.println("Loading : "+this);
+        Game.LOGGER.info(new Chars("Loading : "+this));
         try {
             final Model3DStore store = Model3Ds.read(path);
+            store.setLogger(Game.LOGGER);
             final Iterator ite = store.getElements().createIterator();
             while (ite.hasNext()) {
                 final Object obj = ite.next();
@@ -117,7 +118,7 @@ public class PresetModel extends Model {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Game.LOGGER.warning(ex);
         }
         
         //load hit tree
@@ -126,7 +127,7 @@ public class PresetModel extends Model {
                 hitTree = getOrCreateClotheMap();
                 updateClothes();
             } catch (IOException ex) {
-                Game.LOGGER.log(ex, Logger.LEVEL_WARNING);
+                Game.LOGGER.warning(ex);
             }
         }
 
@@ -184,7 +185,7 @@ public class PresetModel extends Model {
             out.setIndent(new Chars("  "));
             writer.write(hitTree);
         }catch(IOException ex){
-            Game.LOGGER.log(ex, Logger.LEVEL_WARNING);
+            Game.LOGGER.warning(ex);
         }
     }
     
@@ -208,7 +209,7 @@ public class PresetModel extends Model {
         mesh = null;
         context.addTask(new GLExecutable() {
             public Object execute() {
-                System.out.println("Unloading : "+PresetModel.this);
+                Game.LOGGER.info(new Chars("Unloading : "+PresetModel.this));
                 final SceneNode parent = node.getParent();
                 if(parent!=null) parent.removeChild(node);
                 node.dispose(context);

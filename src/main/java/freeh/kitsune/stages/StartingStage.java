@@ -6,14 +6,11 @@ import freeh.kitsune.Game;
 import freeh.kitsune.GameBundle;
 import freeh.kitsune.GameInfo;
 import freeh.kitsune.audios.Musics;
+import freeh.kitsune.dances.Dances;
 import freeh.kitsune.items.Items;
 import freeh.kitsune.maps.Maps;
-import freeh.kitsune.model.Models;
-import freeh.kitsune.dances.Dances;
 import freeh.kitsune.model.preset.PresetModels;
 import freeh.kitsune.poses.Poses;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import un.api.character.Chars;
 import un.api.image.Images;
 import un.api.layout.FormConstraint;
@@ -23,10 +20,10 @@ import un.engine.opengl.GLProcessContext;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WLabel;
 import un.engine.ui.widget.WSpace;
-import un.science.encoding.IOException;
+import un.api.io.IOException;
 import un.science.geometry.Extent;
 import un.science.math.Maths;
-import un.system.path.Path;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -69,7 +66,7 @@ public class StartingStage extends Stage{
             final Path path = (Path)nodes[index];
             image.setImage(Images.read(path));
         }catch(IOException ex){
-            ex.printStackTrace();
+            Game.LOGGER.warning(ex);
         }
         
         container.addChild(image, new FormConstraint(0, 0, 1, 7));
@@ -110,9 +107,9 @@ public class StartingStage extends Stage{
                 modelNumber.setText(GameBundle.get(new Chars("start.model")));
                 
                 try {
-                    sleep(2000);
+                    sleep(1500);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(StartingStage.class.getName()).log(Level.SEVERE, null, ex);
+                    Game.LOGGER.warning(ex);
                 }
                 
                 game.getFrame().setUndecorated(false);

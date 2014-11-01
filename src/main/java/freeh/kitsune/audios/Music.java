@@ -2,6 +2,7 @@
 
 package freeh.kitsune.audios;
 
+import freeh.kitsune.Game;
 import un.api.CObject;
 import un.api.array.Arrays;
 import un.api.character.Chars;
@@ -10,11 +11,11 @@ import un.api.media.AudioStreamMeta;
 import un.api.media.MediaReader;
 import un.api.media.MediaStore;
 import un.api.media.Medias;
-import un.science.encoding.ArrayOutputStream;
-import un.science.encoding.DataOutputStream;
-import un.science.encoding.IOException;
-import un.science.encoding.NumberEncoding;
-import un.system.path.Path;
+import un.api.io.ArrayOutputStream;
+import un.api.io.DataOutputStream;
+import un.api.io.IOException;
+import un.api.io.NumberEncoding;
+import un.api.path.Path;
 
 /**
  *
@@ -64,7 +65,7 @@ public class Music extends CObject{
             return out.getBuffer().toArray();
 
         }catch(IOException ex){
-            ex.printStackTrace();
+            Game.LOGGER.warning(ex);
             return Arrays.ARRAY_BYTE_EMPTY;
         }
     }

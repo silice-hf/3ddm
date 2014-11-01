@@ -2,12 +2,13 @@
 
 package freeh.kitsune.dances;
 
+import freeh.kitsune.Game;
 import freeh.kitsune.GameInfo;
 import freeh.kitsune.model.Models;
 import un.api.collection.ArraySequence;
 import un.api.collection.Sequence;
-import un.science.encoding.IOException;
-import un.system.path.Path;
+import un.api.io.IOException;
+import un.api.path.Path;
 import un.system.path.Paths;
 
 /**
@@ -26,7 +27,7 @@ public class Dances {
             try {
                 Models.search(path, null, ALL, null, null, true);
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                Game.LOGGER.warning(ex);
             }
         }
         return ALL;
