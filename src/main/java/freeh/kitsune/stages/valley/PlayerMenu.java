@@ -81,9 +81,9 @@ public class PlayerMenu extends ActionLayer {
         subContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         favoritesContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         favoritesContainer.getStyle().getSelfRule().setProperties(
-                new Chars("border-fill-paint   : colorfill(#FFFFFF88)\n"
+                new Chars("border-fill-paint   : colorfill($back-a88)\n"
                         + "border-brush        : plainbrush(1,'round')\n"
-                        + "border-brush-paint  : colorfill(#FFFFFF)"));
+                        + "border-brush-paint  : colorfill($back-aFF)"));
         for(int i=0;i<10;i++){
             favoritesContainer.addChild(new WButton(new Chars("+"+i)));
         }

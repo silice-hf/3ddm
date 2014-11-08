@@ -140,7 +140,7 @@ public class MainMenu extends WContainer {
             Image flagImage = null;
             try{
                 flagImage = Images.read(flagPath);
-            }catch(Exception ex){
+            }catch(Throwable ex){
                 Game.LOGGER.warning(ex);
                 //no flag image for this country.
             }

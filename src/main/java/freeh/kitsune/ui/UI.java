@@ -13,6 +13,8 @@ import un.api.layout.BorderConstraint;
 import un.api.layout.BorderLayout;
 import un.api.layout.FormConstraint;
 import un.api.layout.FormLayout;
+import un.api.layout.StackConstraint;
+import un.api.layout.StackLayout;
 import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WSpace;
@@ -28,6 +30,7 @@ public class UI {
     private final UIPhases pipeline;
     private final WGLPlane glPlan;
     private final WContainer plan;
+    private final WContainer uiLayer;
     
     private final MainMenu uiMenu;
     private final ControlsConfigurator uiControl;
@@ -39,17 +42,24 @@ public class UI {
     public UI(final Game game) {
         this.game = game;
         this.pipeline = game.getUIPhases();
-        glPlan = new WGLPlane(10, 10, pipeline.getCamera());
+        glPlan = new WGLPlane(10, 10, 4, pipeline.getCamera());
         glPlan.setFitToFrame(true);
         glPlan.setPickable(false);
+        glPlan.setLogger(Game.LOGGER);
+        
+        uiLayer = new WContainer(new BorderLayout());
         
         plan = glPlan.getContainer();
-        plan.setLayout(new BorderLayout());
+        plan.setLayout(new StackLayout());
+        
         uiMenu = new MainMenu(game);
         uiControl = new ControlsConfigurator();
         uiConfig = new GraphicsConfigurator(game);
         uiCredit = new WCredits();
         uiLoading = new WLoading();
+        
+        plan.addChild(uiLayer, new StackConstraint(0));
+        
         
         final FormLayout layout = new FormLayout();
         layout.setColumnSize(0, FormLayout.SIZE_EXPAND);
@@ -62,7 +72,7 @@ public class UI {
         centered.addChild(new WSpace(new Extent(2)), new FormConstraint(0, 0));
         centered.addChild(new WSpace(new Extent(2)), new FormConstraint(2, 2));
         
-        
+        uiLayer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         plan.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         plan.setLanguage(game.getLanguage(), true);
         game.getFrame().addEventListener(MouseEvent.class, plan);
@@ -90,13 +100,9 @@ public class UI {
     public boolean isCreditVisible(){
         return isVisible(uiCredit);
     }
-    
-    public boolean isLoadingVisible(){
-        return isVisible(uiLoading);
-    }
-    
+        
     public boolean isVisible(Widget widget){
-        return Arrays.contains(plan.getChildren(),widget) ||
+        return Arrays.contains(uiLayer.getChildren(),widget) ||
                Arrays.contains(centered.getChildren(),widget);
     }
     
@@ -116,37 +122,43 @@ public class UI {
         setVisible(uiMenu, uiCredit);
     }
     
-    public void setLoadingVisible(){
+    public synchronized void setLoadingVisible(boolean visible){
         //update loading image
-        uiLoading.updateLoader();        
-        setVisible(null, uiLoading);
+        if(visible){
+            if(!Arrays.contains(plan.getChildren(),uiLoading)){
+                uiLoading.updateLoader();
+                plan.addChild(uiLoading, new StackConstraint(1));
+            }
+        }else{
+            plan.removeChild(uiLoading);
+        }
     }
     
     public void setNoneVisible(){
-        plan.removeChildren();
+        uiLayer.removeChildren();
         centered.removeChildren();
     }
         
     public void setVisible(Widget menu, Widget center){
         setNoneVisible();
         if(menu!=null){
-            plan.addChild(menu,BorderConstraint.RIGHT);
+            uiLayer.addChild(menu,BorderConstraint.RIGHT);
         }
         if(center!=null){
             centered.addChild(center, new FormConstraint(1, 1));
-            plan.addChild(centered, BorderConstraint.CENTER);
+            uiLayer.addChild(centered, BorderConstraint.CENTER);
         }
     }
     
     public void setVisible(Widget center, boolean fullspace){
         setNoneVisible();
         if(center!=null){
-            plan.removeChild(centered);
+            uiLayer.removeChild(centered);
             if(fullspace){
-                plan.addChild(center, BorderConstraint.CENTER);
+                uiLayer.addChild(center, BorderConstraint.CENTER);
             }else{
                 centered.addChild(center, new FormConstraint(1, 1));
-                plan.addChild(centered, BorderConstraint.CENTER);
+                uiLayer.addChild(centered, BorderConstraint.CENTER);
             }
         }
     }

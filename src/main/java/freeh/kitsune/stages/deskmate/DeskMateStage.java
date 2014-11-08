@@ -62,7 +62,8 @@ public class DeskMateStage extends DefaultStage {
     public void install(final Game game) {
         super.install(game);
         game.getGamePhases().setAlphaEnable(true);
-        game.getUI().setLoadingVisible();
+        game.getUI().setLoadingVisible(true);
+        game.getUI().setNoneVisible();
                 
         final NewtFrame frame = game.getFrame();
         frame.setUndecorated(true);
@@ -78,7 +79,7 @@ public class DeskMateStage extends DefaultStage {
             randomMusic();
         }finally{
             game.getGamePhases().setCamera(camera);
-            game.getUI().setNoneVisible();
+            game.getUI().setLoadingVisible(false);
             game.getUI().setVisible(menu,true);
         }
         

@@ -53,8 +53,8 @@ public class PresetModelClotheEditor extends WContainer{
                 "border-margin       : [5,5,5,5]\n" +
                 "border-radius       : [8,10,8,8]\n" +
                 "border-brush        : plainbrush(1,'round')\n" +
-                "border-brush-paint  : colorfill(#FFFFFF)\n" +
-                "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,#FFFFFF33,0.3,#FFFFFF88,1,#FFFFFF33)\n"));
+                "border-brush-paint  : colorfill($back-aFF)\n" +
+                "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n"));
         
     }
     

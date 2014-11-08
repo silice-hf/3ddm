@@ -7,7 +7,13 @@ import freeh.kitsune.stages.Stage;
 import freeh.kitsune.stages.StartingStage;
 import freeh.kitsune.ui.UI;
 import freeh.kitsune.ui.UIPhases;
+import java.awt.GridLayout;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLProfile;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
 import un.api.character.Chars;
 import un.api.character.Language;
 import un.api.country.Country;
@@ -26,6 +32,7 @@ import un.engine.opengl.widget.NewtFrame;
 import un.engine.ui.io.WCSParser;
 import un.engine.ui.style.SystemStyle;
 import un.api.io.IOException;
+import un.science.encoding.color.AlphaBlending;
 import un.science.geometry.Extent;
 import un.science.geometry.Point;
 import un.system.path.Paths;
@@ -34,7 +41,7 @@ import un.system.path.Paths;
  * Main game class.
  */
 public class Game extends AbstractEventSource {
-    
+        
     public static final Logger LOGGER;
     static {
         try {
@@ -73,9 +80,41 @@ public class Game extends AbstractEventSource {
         frame = new NewtFrame(false,false){
             @Override
             public void init(GLAutoDrawable e) {
-                super.init(e);
-                LOGGER.info(new Chars(jogl.toString(frame.getContext().getGL())));
+                try{
+                    super.init(e);
+                    LOGGER.info(new Chars(jogl.toString(frame.getContext().getGL())));
+                }catch(Throwable ex){
+                    LOGGER.critical(ex);
+                }
             }
+
+            @Override
+            public void display(GLAutoDrawable e) {
+                try{
+                    super.display(e);
+                }catch(Throwable ex){
+                    LOGGER.critical(ex);
+                }
+            }
+
+            @Override
+            public void reshape(GLAutoDrawable e, int i, int i1, int i2, int i3) {
+                try{
+                    super.reshape(e, i, i1, i2, i3);
+                }catch(Throwable ex){
+                    LOGGER.critical(ex);
+                }
+            }
+
+            @Override
+            public void dispose() {
+                try{
+                    super.dispose();
+                }catch(Throwable ex){
+                    LOGGER.critical(ex);
+                }
+            }
+            
         };        
         frame.getContext().getPhases().removeAll();
         frame.getContext().getPhases().add(new ClearPhase(new float[]{0.1f,0.1f,0.1f,1.0f}));
@@ -83,14 +122,15 @@ public class Game extends AbstractEventSource {
         
         glcontext = frame.getContext();
         gamePhases = new GamePhases();
+        gamePhases.getPaintPhase().setBlending(AlphaBlending.create(AlphaBlending.SRC,1.0f));
         glcontext.getPhases().add(clearPhase);
         glcontext.getPhases().add(gamePhases);
         uiPhases = new UIPhases(glcontext);
+//        uiPhases.getPaintPhase().setBlending(AlphaBlending.create(AlphaBlending.SRC_OVER,1.0f));
         
         //load configuration
         final GameProperties props = GameProperties.INSTANCE;
-        gamePhases.setMsaaEnable(     props.getPropertyBoolean(GamePhases.PROPERTY_MSAA, false));
-        gamePhases.setFxaaEnable(     props.getPropertyBoolean(GamePhases.PROPERTY_FXAA, false));
+        gamePhases.setAAState(props.getPropertyChars(GamePhases.PROPERTY_AASTATE, GamePhases.ANTIALIAZING_NONE));
         gamePhases.setShadowEnable(   props.getPropertyBoolean(GamePhases.PROPERTY_SHADOW, false));
         gamePhases.setShadowTextureSize(props.getPropertyInt(GamePhases.PROPERTY_SHADOW_TEXTURE_SIZE, 512));
         gamePhases.setDofEnable(      props.getPropertyBoolean(GamePhases.PROPERTY_DOF, false));
@@ -206,6 +246,7 @@ public class Game extends AbstractEventSource {
     }
     
     public static void main(String[] args) {
+        checkMinimumSpec();
         try {
             SystemStyle.INSTANCE.getRules().addAll(WCSParser.readStyle(Paths.resolve("mod>/style/game-theme.wcs")).getRules());
         } catch (IOException ex) {
@@ -214,4 +255,24 @@ public class Game extends AbstractEventSource {
         new Game();
     }
 
+    private static void checkMinimumSpec(){
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {}
+        
+        if(!GLProfile.isAvailable(GLProfile.GL4)){
+            final JPanel pane = new JPanel(new GridLayout(-1, 1));
+            pane.add(new JLabel("Your graphic card does not support OpenGL 4, try updating your driver."));
+            pane.add(new JLabel(""));
+            pane.add(new JLabel("Minimum graphic card"));
+            pane.add(new JLabel("- Nvidia GeForce 400 series"));
+            pane.add(new JLabel("- AMD Radeon 5000 series"));
+                        
+            JOptionPane.showMessageDialog(null, pane, "Minimum spec error", JOptionPane.ERROR_MESSAGE);
+            
+            System.exit(0);
+        }
+        
+    }
+    
 }

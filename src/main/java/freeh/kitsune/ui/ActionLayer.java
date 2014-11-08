@@ -109,8 +109,8 @@ public class ActionLayer extends WContainer{
                 "border-margin       : [20,20,20,20]\n" +
                 "border-radius       : [30,30,30,30]\n" +
                 "border-brush        : plainbrush(2,'round')\n" +
-                "border-brush-paint  : colorfill(#FFFFFF)\n" +
-                "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,#FFFFFF33,0.3,#FFFFFF88,1,#FFFFFF33)\n"));
+                "border-brush-paint  : colorfill($back-aFF)\n" +
+                "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n"));
     }
     
     private static void configStyleBar(WContainer container, boolean left){
@@ -121,8 +121,8 @@ public class ActionLayer extends WContainer{
                     "margin              : [0,0,0,0]\n" +
                     "border-radius       : [0,30,0,0]\n" +
                     "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill(#FFFFFF)\n" +
-                    "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,#FFFFFF33,0.3,#FFFFFF88,1,#FFFFFF33)\n" +
+                    "border-brush-paint  : colorfill($back-aFF)\n" +
+                    "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n" +
                     "border-margin       : [0,0,0,0]"));
         }else{
             rule.setProperties(new Chars(
@@ -130,8 +130,8 @@ public class ActionLayer extends WContainer{
                     "margin              : [0,0,0,0]\n" +
                     "border-radius       : [30,0,0,0]\n" +
                     "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill(#FFFFFF)\n" +
-                    "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,#FFFFFF33,0.3,#FFFFFF88,1,#FFFFFF33)\n" +
+                    "border-brush-paint  : colorfill($back-aFF)\n" +
+                    "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n" +
                     "border-margin       : [0,0,0,0]"));
         }
     }
@@ -157,8 +157,8 @@ public class ActionLayer extends WContainer{
                 "margin              : [14,14,14,14]\n" +
                 "border-radius       : [0,0,0,0]\n" +
                 "border-brush        : plainbrush(0,'round')\n" +
-                "border-brush-paint  : colorfill(#FFFFFF00)\n" +
-                "border-fill-paint   : colorfill(#FFFFFF00)\n" +
+                "border-brush-paint  : colorfill($back-a00)\n" +
+                "border-fill-paint   : colorfill($back-a00)\n" +
                 "border-margin       : [14,14,14,14]"));
     }
     
@@ -175,8 +175,8 @@ public class ActionLayer extends WContainer{
                     "margin              : [14,14,14,14]\n" +
                     "border-radius       : [0,0,30,0]\n" +
                     "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill(#FFFFFF)\n" +
-                    "border-fill-paint   : colorfill(#FFFFFF88)\n" +
+                    "border-brush-paint  : colorfill($back-aFF)\n" +
+                    "border-fill-paint   : colorfill($back-a88)\n" +
                     "border-margin       : [16,14,14,14]"));
         }else{
             rule.setProperties(new Chars(
@@ -184,8 +184,8 @@ public class ActionLayer extends WContainer{
                     "margin              : [14,14,14,14]\n" +
                     "border-radius       : [0,0,0,30]\n" +
                     "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill(#FFFFFF)\n" +
-                    "border-fill-paint   : colorfill(#FFFFFF88)\n" +
+                    "border-brush-paint  : colorfill($back-aFF)\n" +
+                    "border-fill-paint   : colorfill($back-a88)\n" +
                     "border-margin       : [16,14,14,14]"));
         }
     }

@@ -122,15 +122,17 @@ public class DefaultStage extends Stage {
         if(model==null) return;
         
         loadModel();
-        getEventManager().sendPropertyEvent(this, ModelSelector.PROPERTY_MODEL, null, currentModel);
+        sendPropertyEvent(this, ModelSelector.PROPERTY_MODEL, null, currentModel);
     }
     
     private void loadModel(){
         new Thread(){
             public void run() {
+                game.getUI().setLoadingVisible(true);
                 final GLNode node = currentModel.getNode();
                 currentModel.makeCLotheHittable(game.getGamePhases().getPickingPhase());
                 DefaultStage.this.addChild(node);
+                game.getUI().setLoadingVisible(false);
             }
         }.start();
     }
@@ -139,7 +141,7 @@ public class DefaultStage extends Stage {
         return currentDance;
     }
 
-    public synchronized void setDance(Dance dance){
+    public void setDance(Dance dance){
         if(CObjects.equals(currentDance,dance)) return;
         
         stopAnimation();
@@ -149,10 +151,18 @@ public class DefaultStage extends Stage {
         
         //load new animation
         if(currentModel!=null && currentDance!=null){
-            final Animation animation = currentDance.getAnimation();
-            Skeletons.mapAnimation(animation, currentModel.getSkeleton(), currentModel.getNode());
-            currentModel.getNode().getUpdaters().add(animation);
-            animation.play();
+            new Thread(){
+                public void run() {
+                    game.getUI().setLoadingVisible(true);
+                    final Animation animation = currentDance.getAnimation();
+                    if(animation!=null){
+                        Skeletons.mapAnimation(animation, currentModel.getSkeleton(), currentModel.getNode());
+                        currentModel.getNode().getUpdaters().add(animation);
+                        animation.play();
+                    }
+                    game.getUI().setLoadingVisible(false);
+                }
+            }.start();
         }
         
         getEventManager().sendPropertyEvent(this, DanceSelector.PROPERTY_DANCE, null, currentDance);
@@ -231,9 +241,12 @@ public class DefaultStage extends Stage {
         
     protected void stopAnimation(){
         if (currentDance != null) {
-            currentDance.getAnimation().stop();
-            if(currentModel!=null){
-                currentModel.getNode().getUpdaters().remove(currentDance.getAnimation());
+            final Animation animation = currentDance.getAnimation();
+            if(animation!=null){
+                animation.stop();
+                if(currentModel!=null){
+                    currentModel.getNode().getUpdaters().remove(animation);
+                }
             }
             currentDance.unload();
             currentDance = null;

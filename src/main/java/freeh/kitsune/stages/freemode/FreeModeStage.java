@@ -94,7 +94,8 @@ public class FreeModeStage extends DefaultStage{
         
     public void install(Game game){
         super.install(game);
-        game.getUI().setLoadingVisible();
+        game.getUI().setNoneVisible();
+        game.getUI().setLoadingVisible(true);
         
         try{
             randomModel();
@@ -135,7 +136,7 @@ public class FreeModeStage extends DefaultStage{
 //                final Image tiletex = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/skybox/tile.png"));
 //                final SkyBox skyBox = new SkyBox(tiletex,tiletex,tiletex,tiletex,tiletex,tiletex);
 //                addChild(skyBox);
-//            }catch(Exception ex){
+//            }catch(Throwable ex){
 //                ex.printStackTrace();
 //            }
             
@@ -151,9 +152,10 @@ public class FreeModeStage extends DefaultStage{
                 navConstraint.setGroundDistance(cellHeight*6);
             }
                         
-        }catch(Exception ex){
+        }catch(Throwable ex){
             Game.LOGGER.warning(ex);
         }finally{
+            game.getUI().setLoadingVisible(false);
             game.getUI().setVisible(uiPlayer,true);
         }
         

@@ -144,7 +144,7 @@ public class PresetModel extends Model {
         final Path hitPath = GameInfo.replaceSuffix(path,"hitmap");
         try{
             hitPath.createInputStream().close();
-        }catch(Exception ex){
+        }catch(Throwable ex){
             //create it if it does not exist
             saveClotheMap();
         }

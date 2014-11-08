@@ -16,14 +16,26 @@ import un.science.geometry.Extent;
 public class WCenteredPane extends WContainer{
 
     public WCenteredPane(Widget center) {
-        super(new FormLayout());
+        super();
+        final FormLayout layout = new FormLayout();
+        layout.setColumnSize(0, FormLayout.SIZE_EXPAND);
+        layout.setColumnSize(2, FormLayout.SIZE_EXPAND);
+        layout.setRowSize(0, FormLayout.SIZE_EXPAND);
+        layout.setRowSize(2, FormLayout.SIZE_EXPAND);
+        
+        setLayout(layout);
         getStyle().getSelfRule().setProperties(new Chars(
             "background : none\n"));
         addChild(new WSpace(new Extent(2)), new FormConstraint(0, 0));
         addChild(new WSpace(new Extent(2)), new FormConstraint(2, 2));
-        addChild(center, new FormConstraint(1, 1));
+        
+        setCenter(center);
     }
     
-    
+    public void setCenter(Widget center){
+        if(center!=null){
+            addChild(center, new FormConstraint(1, 1));
+        }
+    }
     
 }

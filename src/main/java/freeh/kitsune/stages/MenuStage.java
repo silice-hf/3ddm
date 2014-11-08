@@ -44,7 +44,7 @@ public class MenuStage extends Stage{
             final Image tiletex = Images.read(Paths.resolve(GameInfo.PATH_RESOURCE+"/game/skybox/tile.png"));
             final SkyBox skyBox = new SkyBox(tiletex,tiletex,tiletex,tiletex,tiletex,tiletex);
             addChild(skyBox);
-        }catch(Exception ex){
+        }catch(Throwable ex){
             Game.LOGGER.warning(ex);
         }
         
@@ -96,7 +96,7 @@ public class MenuStage extends Stage{
             camera.getUpdaters().add(rotator);
             camera.getUpdaters().add(controller);
             
-        }catch(Exception ex){
+        }catch(Throwable ex){
             throw new RuntimeException(ex.getMessage(),ex);
         }
         

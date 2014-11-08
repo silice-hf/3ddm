@@ -22,6 +22,11 @@
     font              : font('mona',16,'none')
     font-fill-paint   : colorfill($color-main-0)
     env-background    : colorfill(#000000AA)
+
+    back-a33          : #11111177
+    back-a88          : #111111BB
+    back-a00          : #11111100
+    back-aFF          : #111111FF
 }
 
 ("Class"='un.engine.ui.widget.WButton':class) {

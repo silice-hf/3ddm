@@ -4,14 +4,8 @@ package freeh.kitsune.ui;
 
 import freeh.kitsune.Game;
 import freeh.kitsune.GameInfo;
-import un.api.character.Chars;
 import un.api.tree.Node;
 import un.engine.opengl.widget.WMediaPreview;
-import un.api.layout.FormConstraint;
-import un.api.layout.FormLayout;
-import un.engine.ui.style.WidgetStyles;
-import un.engine.ui.widget.WContainer;
-import un.engine.ui.widget.Widget;
 import un.api.io.IOException;
 import un.science.geometry.Extent;
 import un.science.math.Maths;
@@ -21,20 +15,13 @@ import un.system.path.Paths;
 /**
  *
  */
-public class WLoading extends WContainer{
+public class WLoading extends WCenteredPane{
     
     private WMediaPreview animated;
 
     
     public WLoading() {
-        super(new FormLayout());
-        getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_MARGIN, new Chars("[15,15,15,15]"));
-        getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
-        
-        ((FormLayout)getLayout()).setDefaultRowSpace(10);
-        ((FormLayout)getLayout()).setDefaultColumnSpace(30);
-        ((FormLayout)getLayout()).setColumnSize(0, FormLayout.SIZE_EXPAND);
-        ((FormLayout)getLayout()).setRowSize(0, FormLayout.SIZE_EXPAND);
+        super(null);
     }
 
     public synchronized void updateLoader(){
@@ -51,7 +38,7 @@ public class WLoading extends WContainer{
         try {
             this.animated = new WMediaPreview((Path)nodes[index]);
             animated.setBestExtent(new Extent(120, 120));
-            addChild(animated, new FormConstraint(0, 0));
+            setCenter(animated);
         } catch (IOException ex) {
             Game.LOGGER.warning(ex);
         }

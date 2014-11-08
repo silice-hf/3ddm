@@ -104,7 +104,7 @@ public class WeaponFireTask extends LocalController.GestureTask {
             alsource.setLoop(false);
             alsource.setBuffer(data);
             alsource.load();
-        }catch(Exception ex){
+        }catch(Throwable ex){
             Game.LOGGER.warning(ex);
         }
     }
@@ -174,7 +174,7 @@ public class WeaponFireTask extends LocalController.GestureTask {
                     hit.localAdd(new Vector(Vectors.scale(uv1, (float)bary[1])));
                     hit.localAdd(new Vector(Vectors.scale(uv2, (float)bary[2])));
 
-                }catch(Exception ex){
+                }catch(Throwable ex){
                     Game.LOGGER.warning(ex);
                 }
 
