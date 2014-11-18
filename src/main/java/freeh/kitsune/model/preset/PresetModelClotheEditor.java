@@ -19,7 +19,6 @@ import un.engine.ui.model.DefaultColumnModel;
 import un.engine.ui.model.DefaultRowModel;
 import un.engine.ui.model.ObjectPresenter;
 import un.engine.ui.model.RowModel;
-import un.engine.ui.model.TableModel;
 import un.engine.ui.model.TreeRowPath;
 import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WContainer;
@@ -43,19 +42,8 @@ public class PresetModelClotheEditor extends WContainer{
     public PresetModelClotheEditor() {
         super(new BorderLayout());
         
-        table.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         table.setRowHeight(28);
         addChild(table, BorderConstraint.CENTER);
-        
-        getStyle().getSelfRule().setProperties(new Chars(
-                "background          : none\n" +
-                "margin              : [6,6,6,6]\n" +
-                "border-margin       : [5,5,5,5]\n" +
-                "border-radius       : [8,10,8,8]\n" +
-                "border-brush        : plainbrush(1,'round')\n" +
-                "border-brush-paint  : colorfill($back-aFF)\n" +
-                "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n"));
-        
     }
     
     public void setModel(final Model model){
@@ -65,15 +53,16 @@ public class PresetModelClotheEditor extends WContainer{
         this.model = model;
         
         if(model==null){
-            table.setModel(new TableModel(new DefaultRowModel(),new ColumnModel[]{}));
+            table.setRowModel(new DefaultRowModel());
+            table.getColumnModels().removeAll();
         }else{
             final Node[] nodes = model.getNode().getChildren();
             final Sequence possibleClothes = new ArraySequence(nodes);
             final RowModel rowModel = new DefaultRowModel(possibleClothes);
             final ColumnModel isClotheCol = new IsClotheColumn();
-            final TableModel tableModel = new TableModel(rowModel, new ColumnModel[]{
-                new NameColumn(),isClotheCol});
-            table.setModel(tableModel);
+            table.setRowModel(rowModel);
+            table.getColumnModels().add(new NameColumn());
+            table.getColumnModels().add(isClotheCol);
         }
         
         getEventManager().sendPropertyEvent(this, PROPERTY_MODEL, old, model);

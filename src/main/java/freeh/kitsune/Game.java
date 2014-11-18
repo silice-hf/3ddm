@@ -29,9 +29,9 @@ import un.engine.opengl.phase.GamePhases;
 import un.engine.opengl.scenegraph.CameraMono;
 import un.engine.opengl.scenegraph.GLNode;
 import un.engine.opengl.widget.NewtFrame;
-import un.engine.ui.io.WCSParser;
 import un.engine.ui.style.SystemStyle;
 import un.api.io.IOException;
+import un.engine.ui.io.RSReader;
 import un.science.encoding.color.AlphaBlending;
 import un.science.geometry.Extent;
 import un.science.geometry.Point;
@@ -248,7 +248,7 @@ public class Game extends AbstractEventSource {
     public static void main(String[] args) {
         checkMinimumSpec();
         try {
-            SystemStyle.INSTANCE.getRules().addAll(WCSParser.readStyle(Paths.resolve("mod>/style/game-theme.wcs")).getRules());
+            SystemStyle.INSTANCE.getRules().addAll(RSReader.readStyle(Paths.resolve("mod>/style/game-theme.wcs")).getRules());
         } catch (IOException ex) {
             Game.LOGGER.warning(new Chars("Failed to load default style : "+ex.getMessage()),ex);
         }

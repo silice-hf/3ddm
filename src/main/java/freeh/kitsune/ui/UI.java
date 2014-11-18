@@ -15,7 +15,6 @@ import un.api.layout.FormConstraint;
 import un.api.layout.FormLayout;
 import un.api.layout.StackConstraint;
 import un.api.layout.StackLayout;
-import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WSpace;
 import un.engine.ui.widget.Widget;
@@ -50,6 +49,7 @@ public class UI {
         uiLayer = new WContainer(new BorderLayout());
         
         plan = glPlan.getContainer();
+        plan.getStyle().getSelfRule().setProperties(new Chars("background:none;"));
         plan.setLayout(new StackLayout());
         
         uiMenu = new MainMenu(game);
@@ -67,13 +67,9 @@ public class UI {
         layout.setRowSize(0, FormLayout.SIZE_EXPAND);
         layout.setRowSize(2, FormLayout.SIZE_EXPAND);
         centered = new WContainer(layout);
-        centered.getStyle().getSelfRule().setProperties(new Chars(
-            "background : none\n"));
         centered.addChild(new WSpace(new Extent(2)), new FormConstraint(0, 0));
         centered.addChild(new WSpace(new Extent(2)), new FormConstraint(2, 2));
         
-        uiLayer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
-        plan.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         plan.setLanguage(game.getLanguage(), true);
         game.getFrame().addEventListener(MouseEvent.class, plan);
         game.getFrame().addEventListener(KeyEvent.class, plan);

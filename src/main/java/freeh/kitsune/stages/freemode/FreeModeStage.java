@@ -26,7 +26,7 @@ import un.engine.ui.widget.WButton;
 import un.science.geometry.BBox;
 import un.science.geometry.Extent;
 import un.science.geometry.s3d.Grid;
-import un.science.math.Angles;
+import un.api.math.Angles;
 import un.science.math.Vector;
 
 

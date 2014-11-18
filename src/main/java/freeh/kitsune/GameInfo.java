@@ -2,6 +2,7 @@
 
 package freeh.kitsune;
 
+import un.api.character.Chars;
 import un.api.image.Image;
 import un.api.image.Images;
 import un.api.io.IOException;
@@ -26,6 +27,12 @@ public final class GameInfo {
     public static final String PATH_POSES = PATH_RESOURCE+"/game/poses";
     public static final String PATH_CLOTHES = PATH_RESOURCE+"/game/models/clothes";
     public static final String PATH_PRESETS = PATH_RESOURCE+"/game/models/presets";
+    
+    public static final Chars FLAG_MAINPANE = new Chars("mainpane");
+    public static final Chars FLAG_INNERPANE = new Chars("innerpane");
+    public static final Chars FLAG_TOOLBAR_LEFT = new Chars("toolbar-left");
+    public static final Chars FLAG_TOOLBAR_RIGHT = new Chars("toolbar-right");
+    public static final Chars FLAG_TOOLBAR_BUTTON = new Chars("toolbar-button");
     
     public static final Image SMALL_CROSSHAIR;
     public static final Image BIG_CROSSHAIR;

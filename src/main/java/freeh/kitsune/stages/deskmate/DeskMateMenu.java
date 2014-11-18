@@ -108,7 +108,6 @@ public class DeskMateMenu extends ActionLayer {
     });
     
     public DeskMateMenu(final DeskMateStage stage) {
-        super(false);
         this.stage = stage;
                 
         clothePane.setBestExtent(new Extent(400, 500));

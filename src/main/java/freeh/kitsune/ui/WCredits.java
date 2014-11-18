@@ -4,6 +4,7 @@ package freeh.kitsune.ui;
 
 import freeh.kitsune.Game;
 import freeh.kitsune.GameBundle;
+import freeh.kitsune.GameInfo;
 import freeh.kitsune.MetaObject;
 import freeh.kitsune.dances.Dances;
 import freeh.kitsune.maps.Maps;
@@ -21,12 +22,9 @@ import un.api.layout.FormConstraint;
 import un.api.layout.FormLayout;
 import un.api.layout.GridLayout;
 import un.engine.ui.model.CheckGroup;
-import un.engine.ui.model.ColumnModel;
 import un.engine.ui.model.DefaultColumnModel;
 import un.engine.ui.model.DefaultRowModel;
 import un.engine.ui.model.ObjectPresenter;
-import un.engine.ui.model.TableModel;
-import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WButton;
 import un.engine.ui.widget.WContainer;
 import un.engine.ui.widget.WLabel;
@@ -77,19 +75,12 @@ public class WCredits extends WContainer{
     
     public WCredits() {
         super(new BorderLayout());
-        getStyle().getSelfRule().setProperties(
-                new Chars("margin              : [15,15,15,15]\n"
-                        + "background          : none\n"
-                        + "border-margin       : [14,14,14,14]\n"
-                        + "border-radius       : [30,30,30,30]\n"
-                        + "border-fill-paint   : $env-background\n"
-                        + "border-brush        : plainbrush(1,'round')\n"
-                        + "border-brush-paint  : colorfill($color-main-3)"));
+        getFlags().add(GameInfo.FLAG_MAINPANE);
         
         final WContainer top = new WContainer(new GridLayout(1, -1));
         top.getStyle().getSelfRule().setProperties(new Chars(
-                "margin     : [5,5,5,5]\n"+
-                "background : none"));
+                "margin     : [5,5,5,5];\n"+
+                "background : none;"));
         addChild(top, BorderConstraint.TOP);
         maps.setId(new Chars("state"));
         models.setId(new Chars("state"));
@@ -127,13 +118,10 @@ public class WCredits extends WContainer{
     }
     
     private WContainer createCreditPane(Sequence elements){
-                
-        final TableModel tableModel = new TableModel(new DefaultRowModel(elements), new ColumnModel[]{
-            new TextColumnModel()
-        });
         
-        final WTable table = new WTable(tableModel);
-        table.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
+        final WTable table = new WTable();
+        table.setRowModel(new DefaultRowModel(elements));
+        table.getColumnModels().add(new TextColumnModel());
         table.setBestExtent(new Extent(600, 600));
         table.setRowHeight(108);
         
@@ -151,13 +139,13 @@ public class WCredits extends WContainer{
                         final WContainer pane = new WContainer(new FormLayout());
                         ((FormLayout)pane.getLayout()).setColumnSize(1, FormLayout.SIZE_EXPAND);
                         pane.getStyle().getSelfRule().setProperties(
-                        new Chars("margin              : [4,4,4,4]\n"
-                                + "background          : none\n"
-                                + "border-margin       : [3,30,30,30]\n"
-                                + "border-radius       : [0,0,0,0]\n"
-                                + "border-fill-paint   : $env-background\n"
-                                + "border-brush        : plainbrush(1,'round')\n"
-                                + "border-brush-paint  : colorfill($color-main-5)"));
+                        new Chars("margin              : [4,4,4,4];"
+                                + "background          : none;"
+                                + "border-margin       : [3,30,30,30];"
+                                + "border-radius       : [0,0,0,0];"
+                                + "border-fill-paint   : $env-background;"
+                                + "border-brush        : plainbrush(1,'round');"
+                                + "border-brush-paint  : colorfill($color-main-5);"));
                         final WLabel lblPreview = new WLabel(null,obj.getPreview());
                         final WLabel lblTitle = new WLabel(obj.getTitle());
                         final WLabel lblAuthor = new WLabel(new Chars("Author: ").concat(obj.getCredits().getName()));

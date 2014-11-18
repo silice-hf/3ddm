@@ -1,112 +1,161 @@
 
 
 (){
-    color-main-15         : #000000
-    color-main-14         : #111111
-    color-main-13         : #222222
-    color-main-12         : #333333
-    color-main-11         : #444444
-    color-main-10         : #555555
-    color-main-9          : #666666
-    color-main-8          : #777777
-    color-main-7          : #888888
-    color-main-6          : #999999
-    color-main-5          : #AAAAAA
-    color-main-4          : #BBBBBB
-    color-main-3          : #CCCCCC
-    color-main-2          : #DDDDDD
-    color-main-1          : #EEEEEE
-    color-main-0          : #FFFFFF
-    color-trs             : #00000000
+    color-main-15         : #000000;
+    color-main-14         : #111111;
+    color-main-13         : #222222;
+    color-main-12         : #333333;
+    color-main-11         : #444444;
+    color-main-10         : #555555;
+    color-main-9          : #666666;
+    color-main-8          : #777777;
+    color-main-7          : #888888;
+    color-main-6          : #999999;
+    color-main-5          : #AAAAAA;
+    color-main-4          : #BBBBBB;
+    color-main-3          : #CCCCCC;
+    color-main-2          : #DDDDDD;
+    color-main-1          : #EEEEEE;
+    color-main-0          : #FFFFFF;
+    color-trs             : #00000000;
 
-    font              : font('mona',16,'none')
-    font-fill-paint   : colorfill($color-main-0)
-    env-background    : colorfill(#000000AA)
+    font              : font('mona',16,'none');
+    font-fill-paint   : colorfill($color-main-0);
+    env-background    : colorfill(#000000AA);
 
-    back-a33          : #11111177
-    back-a88          : #111111BB
-    back-a00          : #11111100
-    back-aFF          : #111111FF
+    back-a33          : #11111177;
+    back-a88          : #111111BB;
+    back-a00          : #11111100;
+    back-aFF          : #111111FF;
 }
 
 ("Class"='un.engine.ui.widget.WButton':class) {
-    font-fill-paint     : colorfill(#FFFFFF)
-    background          : none
-    margin              : [10,20,10,20]
-    border-margin       : [20,20,20,20]
-    border-radius       : [30,30,30,30]
-    border-brush        : plainbrush(2,'round')
-    border-brush-paint  : colorfill($color-main-3)
-    border-fill-paint   : lineargradientfill('%',0,0,1,0,0,$color-main-15,0.5,$color-main-10,1,$color-main-15)
+    font-fill-paint     : colorfill(#FFFFFF);
+    background          : none;
+    margin              : [10,20,10,20];
+    border-margin       : [20,20,20,20];
+    border-radius       : [30,30,30,30];
+    border-brush        : plainbrush(2,'round');
+    border-brush-paint  : colorfill($color-main-3);
+    border-fill-paint   : lineargradientfill('%',0,0,1,0,0,$color-main-15,0.5,$color-main-10,1,$color-main-15);
 
     ("MouseOver"=true) {
-        font-fill-paint     : colorfill($color-main-5)
-        border-fill-paint   : none
+        font-fill-paint     : colorfill($color-main-5);
+        border-fill-paint   : none;
     }
 
     ("MousePress"=true) {
-        border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-6,1,$color-main-8)
+        border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-6,1,$color-main-8);
     }
 
     ("StackEnable"=false) {
-        font-fill-paint     : colorfill($color-main-10)
-        border-fill-paint   : colorfill($color-main-12)
+        font-fill-paint     : colorfill($color-main-10);
+        border-fill-paint   : colorfill($color-main-12);
     }
 }
 
 ("Class"='un.engine.ui.widget.WSpinner$WSpinnerUpButton':class) {
-    border-brush        : plainbrush(1,'round')
-    border-brush-paint  : colorfill($color-main-8)
-    border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-11,1,$color-main-9)
-    border-margin       : [4,6,4,6]
-    margin              : [4,6,4,6]
-    border-radius       : [0,5,0,0]
+    border-brush        : plainbrush(1,'round');
+    border-brush-paint  : colorfill($color-main-8);
+    border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-11,1,$color-main-9);
+    border-margin       : [4,6,4,6];
+    margin              : [4,6,4,6];
+    border-radius       : [0,5,0,0];
 }
 
 ("Class"='un.engine.ui.widget.WSpinner$WSpinnerDownButton':class) {
-    border-brush        : plainbrush(1,'round')
-    border-brush-paint  : colorfill($color-main-8)
-    border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-11,1,$color-main-9)
-    border-margin       : [4,6,4,6]
-    margin              : [4,6,4,6]
-    border-radius       : [0,0,5,0]
+    border-brush        : plainbrush(1,'round');
+    border-brush-paint  : colorfill($color-main-8);
+    border-fill-paint   : lineargradientfill('%',0,0,0,1,0,$color-main-11,1,$color-main-9);
+    border-margin       : [4,6,4,6];
+    margin              : [4,6,4,6];
+    border-radius       : [0,0,5,0];
 }
 
 ("Class"='un.engine.ui.widget.AbstractRowWidget':class) {
-    cornertop-fill-paint    : none
-    cornerbottom-fill-paint : none
-    line1-fill-paint        : none
-    line2-fill-paint        : none
+    cornertop-fill-paint    : none;
+    cornerbottom-fill-paint : none;
+    line1-fill-paint        : none;
+    line2-fill-paint        : none;
 }
 
 ("Class"='un.engine.ui.widget.WScrollContainer':class) {
-    background          : none
-    border-radius       : 0
-    border-brush        : none
-    border-brush-paint  : none
+    background          : none;
+    border-radius       : 0;
+    border-brush        : none;
+    border-brush-paint  : none;
 }
 
 ("Class"='un.engine.ui.widget.WScrollBar':class) {
-    back-paint          : none
-    corner-paint        : none
-    cursor-paint        : colorfill($color-main-0)
+    back-paint          : none;
+    corner-paint        : none;
+    cursor-paint        : colorfill($color-main-0);
 }
 
 ("Class"='un.engine.ui.widget.WSwitch':class) {
     ("Id"='state') {
-        margin              : [4,4,4,4]
-        border-margin       : [3,3,3,3]
-        border-radius       : [8,8,8,8]
-        border-brush        : plainbrush(0,'round')
-        border-brush-paint  : none
-        border-fill-paint   : none
+        margin              : [4,4,4,4];
+        border-margin       : [3,3,3,3];
+        border-radius       : [8,8,8,8];
+        border-brush        : plainbrush(0,'round');
+        border-brush-paint  : none;
+        border-fill-paint   : none;
 
         ("MousePress"=true) {
-            border-fill-paint   : colorfill($color-main-5)
+            border-fill-paint   : colorfill($color-main-5);
         }
 
         ("Check"=true) {
-            border-fill-paint   : colorfill($color-main-5)
+            border-fill-paint   : colorfill($color-main-5);
         }
     }
+}
+
+('mainpane' in "Flags") {
+    margin              : [15,15,15,15];
+    border-margin       : [14,14,14,14];
+    border-radius       : [30,30,30,30];
+    border-fill-paint   : colorfill(#000000BB);
+    border-brush        : plainbrush(1,'round');
+    border-brush-paint  : colorfill($color-main-3);
+}
+
+('innerpane' in "Flags") {
+    background          : none;
+    margin              : [10,10,10,10];
+    border-margin       : [8,8,8,8];
+    border-radius       : [15,15,15,15];
+    border-brush        : plainbrush(1,'round');
+    border-brush-paint  : colorfill($color-main-3);
+    border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33);
+}
+
+('toolbar-left' in "Flags") {
+    background          : none;
+    margin              : [0,0,0,0];
+    border-radius       : [0,30,30,0];
+    border-brush        : plainbrush(2,'round');
+    border-brush-paint  : colorfill($color-main-3);
+    border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33);
+    border-margin       : [0,0,0,0];
+}
+
+('toolbar-right' in "Flags") {
+    background          : none;
+    margin              : [0,0,0,0];
+    border-radius       : [30,0,0,30];
+    border-brush        : plainbrush(2,'round');
+    border-brush-paint  : colorfill($color-main-3);
+    border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33);
+    border-margin       : [0,0,0,0];
+}
+
+('toolbar-button' in "Flags") {
+    background          : none;
+    margin              : [14,14,14,14];
+    border-radius       : [0,0,0,0];
+    border-brush        : plainbrush(0,'round');
+    border-brush-paint  : colorfill($back-a00);
+    border-fill-paint   : colorfill($back-a00);
+    border-margin       : [14,14,14,14];
 }

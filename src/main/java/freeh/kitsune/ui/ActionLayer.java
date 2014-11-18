@@ -2,9 +2,8 @@
 
 package freeh.kitsune.ui;
 
-import freeh.kitsune.GameProperties;
+import freeh.kitsune.GameInfo;
 import un.api.array.Arrays;
-import un.api.character.Chars;
 import un.api.tree.Node;
 import un.api.layout.BorderConstraint;
 import un.api.layout.BorderLayout;
@@ -12,7 +11,6 @@ import un.api.layout.FormConstraint;
 import un.api.layout.FormLayout;
 import un.api.layout.StackConstraint;
 import un.api.layout.StackLayout;
-import un.engine.ui.style.StyleRule;
 import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WButton;
 import un.engine.ui.widget.WContainer;
@@ -27,16 +25,12 @@ public class ActionLayer extends WContainer{
     private final WContainer rightSide = new WContainer(new FormLayout());
     private final WContainer leftBar = new WContainer(new FormLayout());
     private final WContainer rightBar = new WContainer(new FormLayout());
-    
-    private final WButton visibleLeftButton = new WButton();
-    private final WButton visibleRightButton = new WButton();
-    
+        
     private final WContainer borderContainer = new WContainer(new BorderLayout());
     private final WContainer centerContainer = new WContainer();
     
-    public ActionLayer(boolean showHideButton){
+    public ActionLayer(){
         super(new StackLayout());
-        getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         
         final FormLayout layout = new FormLayout();
         layout.setRowSize(0, FormLayout.SIZE_EXPAND);
@@ -45,9 +39,7 @@ public class ActionLayer extends WContainer{
         layout.setColumnSize(2, FormLayout.SIZE_EXPAND);
         layout.setColumnSize(3, FormLayout.SIZE_EXPAND);
         centerContainer.setLayout(layout);
-        centerContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         
-        borderContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         borderContainer.addChild(leftSide, BorderConstraint.LEFT);
         borderContainer.addChild(centerContainer, BorderConstraint.CENTER);
         borderContainer.addChild(rightSide, BorderConstraint.RIGHT);
@@ -55,28 +47,24 @@ public class ActionLayer extends WContainer{
         leftSide.setVisible(false);
         rightSide.setVisible(false);
         
-        configStyleBar(leftBar, true);
-        configStyleBar(rightBar, false);        
+        leftBar.getFlags().add(GameInfo.FLAG_TOOLBAR_LEFT);
+        rightBar.getFlags().add(GameInfo.FLAG_TOOLBAR_RIGHT);    
         configStyleSide(leftSide);
         configStyleSide(rightSide);        
-        configStyleVisible(visibleLeftButton,true,showHideButton);        
-        configStyleVisible(visibleRightButton,false,showHideButton);  
         leftSide.addChild(leftBar, new FormConstraint(0, 1));
-        leftSide.addChild(visibleLeftButton, new FormConstraint(0, 2));
         rightSide.addChild(rightBar, new FormConstraint(0, 1));
-        rightSide.addChild(visibleRightButton, new FormConstraint(0, 2));
         
         addChild(borderContainer,new StackConstraint(1));
     }
     
     public void addLeftAction(WButton button){
-        configStyleButton(button);
+        button.getFlags().add(GameInfo.FLAG_TOOLBAR_BUTTON);
         leftBar.addChild(button, new FormConstraint(0, leftBar.getChildCount()));
         leftSide.setVisible(true);
     }
     
     public void addRightAction(WButton button){
-        configStyleButton(button);
+        button.getFlags().add(GameInfo.FLAG_TOOLBAR_BUTTON);
         rightBar.addChild(button, new FormConstraint(0, rightBar.getChildCount()));
         rightSide.setVisible(true);
     }
@@ -91,7 +79,7 @@ public class ActionLayer extends WContainer{
             centerContainer.removeChildren();
         }else{
             centerContainer.removeChildren();
-            configPaneStyle(widget);
+            widget.getFlags().add(GameInfo.FLAG_INNERPANE);
             if(position == BorderConstraint.LEFT){
                 centerContainer.addChild(widget, new FormConstraint(0, 1, 1, 1, FormConstraint.FILL_BOTH));
             }else if(position == BorderConstraint.CENTER){
@@ -102,91 +90,13 @@ public class ActionLayer extends WContainer{
         }
     }
     
-    private static void configPaneStyle(Widget container){    
-        container.getStyle().getSelfRule().setProperties(new Chars(
-                "background          : none\n" +
-                "margin              : [30,30,30,30]\n" +
-                "border-margin       : [20,20,20,20]\n" +
-                "border-radius       : [30,30,30,30]\n" +
-                "border-brush        : plainbrush(2,'round')\n" +
-                "border-brush-paint  : colorfill($back-aFF)\n" +
-                "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n"));
-    }
-    
-    private static void configStyleBar(WContainer container, boolean left){
-        final StyleRule rule = container.getStyle().getSelfRule();                
-        if(left){
-            rule.setProperties(new Chars(
-                    "background          : none\n" +
-                    "margin              : [0,0,0,0]\n" +
-                    "border-radius       : [0,30,0,0]\n" +
-                    "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill($back-aFF)\n" +
-                    "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n" +
-                    "border-margin       : [0,0,0,0]"));
-        }else{
-            rule.setProperties(new Chars(
-                    "background          : none\n" +
-                    "margin              : [0,0,0,0]\n" +
-                    "border-radius       : [30,0,0,0]\n" +
-                    "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill($back-aFF)\n" +
-                    "border-fill-paint   : lineargradientfill('%',0,0,1,1,0,$back-a33,0.3,$back-a88,1,$back-a33)\n" +
-                    "border-margin       : [0,0,0,0]"));
-        }
-    }
-    
-    private static void configStyleSide(WContainer container){
-        final StyleRule rule = container.getStyle().getSelfRule();
-        rule.setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
-        rule.setProperty(Widget.STYLE_PROP_MARGIN, new Chars("[0,0,0,0]"));
-        
+    private static void configStyleSide(WContainer container){        
         final FormLayout layout = (FormLayout) container.getLayout();
         layout.setDefaultColumnSpace(0);
         layout.setDefaultRowSpace(0);
         layout.setRowSize(0, FormLayout.SIZE_EXPAND);
-        layout.setRowSize(3, FormLayout.SIZE_EXPAND);
+        layout.setRowSize(2, FormLayout.SIZE_EXPAND);
         layout.setColumnSize(0, FormLayout.SIZE_EXPAND);
     }
-    
-    private static void configStyleButton(WButton candidate){
-                
-        final StyleRule rule = candidate.getStyle().getSelfRule();        
-        rule.setProperties(new Chars(
-                "background          : none\n" +
-                "margin              : [14,14,14,14]\n" +
-                "border-radius       : [0,0,0,0]\n" +
-                "border-brush        : plainbrush(0,'round')\n" +
-                "border-brush-paint  : colorfill($back-a00)\n" +
-                "border-fill-paint   : colorfill($back-a00)\n" +
-                "border-margin       : [14,14,14,14]"));
-    }
-    
-    private static void configStyleVisible(WButton candidate, boolean left, boolean showButton){     
-        if(showButton){
-            candidate.setImage(GameProperties.ICON_LOCK);
-        }
-        candidate.setEnable(showButton);
         
-        final StyleRule rule = candidate.getStyle().getSelfRule();
-        if(left){
-            rule.setProperties(new Chars(
-                    "background          : none\n" +
-                    "margin              : [14,14,14,14]\n" +
-                    "border-radius       : [0,0,30,0]\n" +
-                    "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill($back-aFF)\n" +
-                    "border-fill-paint   : colorfill($back-a88)\n" +
-                    "border-margin       : [16,14,14,14]"));
-        }else{
-            rule.setProperties(new Chars(
-                    "background          : none\n" +
-                    "margin              : [14,14,14,14]\n" +
-                    "border-radius       : [0,0,0,30]\n" +
-                    "border-brush        : plainbrush(2,'round')\n" +
-                    "border-brush-paint  : colorfill($back-aFF)\n" +
-                    "border-fill-paint   : colorfill($back-a88)\n" +
-                    "border-margin       : [16,14,14,14]"));
-        }
-    }
 }

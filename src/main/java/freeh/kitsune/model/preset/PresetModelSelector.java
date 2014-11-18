@@ -11,17 +11,13 @@ import un.api.collection.Sequence;
 import un.api.event.Event;
 import un.api.event.EventListener;
 import un.api.event.PropertyEvent;
-import un.api.predicate.ClassPredicate;
-import un.api.tree.Node;
 import un.engine.ui.component.path.PathPresenters;
 import un.engine.ui.component.path.PathView;
 import un.engine.ui.component.path.WPreviewView;
 import un.api.layout.FormConstraint;
 import un.api.layout.FormLayout;
-import un.engine.ui.style.StyleRule;
 import un.engine.ui.widget.WButton;
 import un.engine.ui.widget.WContainer;
-import un.engine.ui.widget.Widget;
 import un.api.io.IOException;
 import un.science.geometry.Extent;
 import un.api.path.Path;
@@ -49,20 +45,10 @@ public class PresetModelSelector extends WContainer{
 
     private Model model;
     
-    public PresetModelSelector() {
-        getStyle().getSelfRule().setProperties(new Chars(
-                "background : none\n"+
-                "margin     : [2,2,2,2]\n"));
-        
-        final StyleRule rule = new StyleRule();
-        rule.setFilter(new ClassPredicate(WContainer.class));
-        rule.setProperties(new Chars("background : none\nenv-background : none"));
-        ptree.getStyle().getRules().add(rule);
-        //setTrans(refreshPreview);
-        
+    public PresetModelSelector() {        
         setBestExtent(new Extent(440, 400));
         
-//        ptree.setBlockSize(new Extent(128,128));
+        ptree.setBlockSize(new Extent(128,128));
         ptree.setCacheThumbs(true);
         setLayout(new FormLayout());
         ((FormLayout)getLayout()).setRowSize(0, FormLayout.SIZE_EXPAND);
@@ -116,18 +102,5 @@ public class PresetModelSelector extends WContainer{
         ptree.setViewRoot(p);
         
     }
-    
-    private static void setTrans(Widget candidate){
-        if(candidate instanceof WContainer){
-            candidate.getStyle().getSelfRule().setProperties(new Chars(
-                "background : none\n"));
-        }
         
-        for(Node n : candidate.getChildren()){
-            if(n instanceof WContainer){
-                setTrans((Widget) n);
-            }
-        }
-    }
-    
 }

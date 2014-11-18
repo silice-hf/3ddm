@@ -23,7 +23,7 @@ import un.engine.ui.widget.WLabel;
 import un.engine.ui.widget.WSpace;
 import un.api.io.IOException;
 import un.science.geometry.Extent;
-import un.science.math.Maths;
+import un.api.math.Maths;
 import un.api.path.Path;
 import un.system.path.Paths;
 
@@ -47,14 +47,7 @@ public class StartingStage extends Stage{
         
         final WContainer container = new WContainer(layout);
         
-        container.getStyle().getSelfRule().setProperties(
-                new Chars("margin              : [15,15,15,15]\n"
-                        + "background          : none\n"
-                        + "border-margin       : [14,14,14,14]\n"
-                        + "border-radius       : [30,30,30,30]\n"
-                        + "border-fill-paint   : colorfill(#000000BB)\n"
-                        + "border-brush        : plainbrush(1,'round')\n"
-                        + "border-brush-paint  : colorfill($color-main-3)"));
+        container.getFlags().add(GameInfo.FLAG_MAINPANE);
         game.getUI().setVisible(container, false);
         
         

@@ -18,8 +18,8 @@ import un.engine.opengl.phase.RenderContext;
 import un.engine.opengl.scenegraph.Camera;
 import un.engine.opengl.scenegraph.GLNode;
 import un.science.geometry.BBox;
-import un.science.math.Angles;
-import un.science.math.Maths;
+import un.api.math.Angles;
+import un.api.math.Maths;
 import un.system.path.Paths;
 
 /**

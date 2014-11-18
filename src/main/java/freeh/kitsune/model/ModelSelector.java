@@ -56,9 +56,7 @@ public class ModelSelector extends WContainer{
                 
         PropertyBinding.bidirectional(this, PROPERTY_MODEL, presetPane, ModelSelector.PROPERTY_MODEL);
         PropertyBinding.bidirectional(this, PROPERTY_MODEL, customPane, ModelSelector.PROPERTY_MODEL);
-          
-        getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
-        
+                
         customButton.setId(new Chars("state"));
         presetButton.setId(new Chars("state"));
         
@@ -66,8 +64,8 @@ public class ModelSelector extends WContainer{
         topPane.addChild(customButton);
         topPane.addChild(presetButton);
         topPane.getStyle().getSelfRule().setProperties(new Chars(
-                "margin     : [5,5,5,5]\n"+
-                "background : none"));
+                "margin     : [5,5,5,5];\n"+
+                "background : none;"));
         
         final CheckGroup group = new CheckGroup();
         group.add(customButton);
@@ -75,8 +73,8 @@ public class ModelSelector extends WContainer{
         
         center.addChild(topPane,BorderConstraint.TOP);
         center.getStyle().getSelfRule().setProperties(new Chars(
-                "margin     : [5,5,5,5]\n"+
-                "background : none"));
+                "margin     : [5,5,5,5];\n"+
+                "background : none;"));
         
         
         presetButton.setCheck(true);

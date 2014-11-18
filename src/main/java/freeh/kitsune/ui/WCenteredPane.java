@@ -2,7 +2,6 @@
 
 package freeh.kitsune.ui;
 
-import un.api.character.Chars;
 import un.api.layout.FormConstraint;
 import un.api.layout.FormLayout;
 import un.engine.ui.widget.WContainer;
@@ -24,8 +23,6 @@ public class WCenteredPane extends WContainer{
         layout.setRowSize(2, FormLayout.SIZE_EXPAND);
         
         setLayout(layout);
-        getStyle().getSelfRule().setProperties(new Chars(
-            "background : none\n"));
         addChild(new WSpace(new Extent(2)), new FormConstraint(0, 0));
         addChild(new WSpace(new Extent(2)), new FormConstraint(2, 2));
         

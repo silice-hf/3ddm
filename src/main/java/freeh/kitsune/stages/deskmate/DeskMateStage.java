@@ -27,7 +27,7 @@ import un.engine.ui.ievent.MouseEvent;
 import un.science.encoding.color.Color;
 import un.science.geometry.Extent;
 import un.science.geometry.Point;
-import un.science.math.Angles;
+import un.api.math.Angles;
 import un.science.math.Matrix3;
 import un.science.math.Vector;
 

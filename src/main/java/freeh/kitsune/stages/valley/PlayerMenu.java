@@ -66,7 +66,6 @@ public class PlayerMenu extends ActionLayer {
     private final ModelSelector modelsContainer = new ModelSelector();
     
     public PlayerMenu(Game game, Player player){
-        super(true);
         this.game = game;
         this.player = player;
         
@@ -78,12 +77,10 @@ public class PlayerMenu extends ActionLayer {
         clothesContainer.setBestExtent(new Extent(400, 500));
         modelsContainer.setBestExtent(new Extent(900, 900));
         
-        subContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
-        favoritesContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         favoritesContainer.getStyle().getSelfRule().setProperties(
-                new Chars("border-fill-paint   : colorfill($back-a88)\n"
-                        + "border-brush        : plainbrush(1,'round')\n"
-                        + "border-brush-paint  : colorfill($back-aFF)"));
+                new Chars("border-fill-paint   : colorfill($back-a88);\n"
+                        + "border-brush        : plainbrush(1,'round');\n"
+                        + "border-brush-paint  : colorfill($back-aFF);"));
         for(int i=0;i<10;i++){
             favoritesContainer.addChild(new WButton(new Chars("+"+i)));
         }

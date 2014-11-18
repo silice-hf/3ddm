@@ -102,7 +102,6 @@ public class MainMenu extends WContainer {
     
     public MainMenu(final Game game){
         this.game = game;
-        getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_MARGIN, new Chars("[10,10,10,10]"));
         final FormLayout layout = new FormLayout();
         setLayout(layout);
@@ -111,11 +110,9 @@ public class MainMenu extends WContainer {
         layout.setRowSize(9, FormLayout.SIZE_EXPAND);
         
         newGame.setEnable(false);
-        freeMode.setEnable(false);
         controls.setEnable(false);
         
         final WContainer flagsContainer = new WContainer(new FormLayout());
-        flagsContainer.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         ((FormLayout)flagsContainer.getLayout()).setDefaultColumnSpace(5);
         ((FormLayout)flagsContainer.getLayout()).setColumnSize(0,FormLayout.SIZE_EXPAND);
         addChild(flagsContainer, new FormConstraint(0, 0, FormConstraint.FILL_BOTH));

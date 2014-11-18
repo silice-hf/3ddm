@@ -8,7 +8,7 @@ import un.api.tree.Node;
 import un.engine.opengl.widget.WMediaPreview;
 import un.api.io.IOException;
 import un.science.geometry.Extent;
-import un.science.math.Maths;
+import un.api.math.Maths;
 import un.api.path.Path;
 import un.system.path.Paths;
 

@@ -17,7 +17,6 @@ import un.engine.ui.model.DefaultColumnModel;
 import un.engine.ui.model.DefaultRowModel;
 import un.engine.ui.model.ObjectPresenter;
 import un.engine.ui.model.RowModel;
-import un.engine.ui.model.TableModel;
 import un.engine.ui.model.TreeRowPath;
 import un.engine.ui.style.WidgetStyles;
 import un.engine.ui.widget.WContainer;
@@ -41,8 +40,6 @@ public class ClotheStateSelector extends WContainer{
     public ClotheStateSelector() {
         super(new BorderLayout());
         
-        getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
-        table.getStyle().getSelfRule().setProperty(Widget.STYLE_PROP_BACKGROUND, WidgetStyles.NONE);
         table.setRowHeight(34);
         addChild(table, BorderConstraint.CENTER);
         
@@ -55,14 +52,15 @@ public class ClotheStateSelector extends WContainer{
         this.model = model;
         
         if(model==null){
-            table.setModel(new TableModel(new DefaultRowModel(),new ColumnModel[]{}));
+            table.setRowModel(new DefaultRowModel());
+            table.getColumnModels().removeAll();
         }else{
             final Sequence clothes = model.getClothes();
             final RowModel rowModel = new DefaultRowModel(clothes);
             final ColumnModel visibleCol = new StateColumn();
-            final TableModel tableModel = new TableModel(rowModel, new ColumnModel[]{
-                new NameColumn(),visibleCol});
-            table.setModel(tableModel);
+            table.setRowModel(rowModel);
+            table.getColumnModels().add(new NameColumn());
+            table.getColumnModels().add(visibleCol);
         }
         
         getEventManager().sendPropertyEvent(this, PROPERTY_MODEL, old, model);
@@ -112,8 +110,8 @@ public class ClotheStateSelector extends WContainer{
                     
                     final WContainer container = new WContainer(new GridLayout(1, -1, 5, 0));
                     container.getStyle().getSelfRule().setProperties(new Chars(
-                            "background : none\n"+
-                            "margin     : [5,5,5,5]"));
+                            "background : none;\n"+
+                            "margin     : [5,5,5,5];"));
                     final CheckGroup group = new CheckGroup();
                     for(int i=0,n=states.getSize();i<n;i++){
                         final ClotheState state = (ClotheState) states.get(i);
